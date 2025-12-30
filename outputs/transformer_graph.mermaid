@@ -1,0 +1,97 @@
+flowchart TD
+
+    %% Style definitions
+    classDef transformer_attention fill:#FF9F43,stroke:#333,stroke-width:1px,color:#fff
+    classDef transformer_architecture fill:#5F27CD,stroke:#333,stroke-width:1px,color:#fff
+    classDef transformer_efficiency fill:#00D2D3,stroke:#333,stroke-width:1px,color:#fff
+    classDef transformer_training fill:#54A0FF,stroke:#333,stroke-width:1px,color:#fff
+    classDef external fill:#gray,stroke:#333,stroke-width:1px,color:#fff,stroke-dasharray: 5 5
+
+    transformer_attention_intuition["Attention 직관"]
+    transformer_positional_encoding["Positional Encoding"]
+    transformer_feed_forward["Feed-Forward Network"]
+    transformer_attention_score["Attention Score 계산"]
+    transformer_query_key_value["Query, Key, Value"]
+    transformer_scaled_dot_product["Scaled Dot-Product Attention"]
+    transformer_multi_head_attention["Multi-Head Attention"]
+    transformer_attention_complexity["Attention 복잡도"]
+    transformer_self_attention["Self-Attention"]
+    transformer_cross_attention["Cross-Attention"]
+    transformer_causal_attention["Causal (Masked) Attention"]
+    transformer_efficient_attention["효율적인 Attention 변형"]
+    transformer_transformer_encoder["Transformer Encoder"]
+    transformer_transformer_decoder["Transformer Decoder"]
+    transformer_transformer_training["Transformer 학습 기법"]
+    transformer_encoder_decoder["Encoder-Decoder 구조"]
+
+    %% External dependencies
+    deep_learning_softmax["Softmax<br/><small>(딥러닝 기초)</small>"]
+    deep_learning_seq2seq["Sequence-to-Sequence<br/><small>(딥러닝 기초)</small>"]
+    deep_learning_mlp["다층 퍼셉트론 (MLP)<br/><small>(딥러닝 기초)</small>"]
+    math_foundations_dot_product["내적 (Dot Product)<br/><small>(수학적 기초)</small>"]
+    deep_learning_layer_normalization["Layer Normalization<br/><small>(딥러닝 기초)</small>"]
+    deep_learning_adamw["AdamW<br/><small>(딥러닝 기초)</small>"]
+    deep_learning_residual_connection["잔차 연결 (Residual Connection)<br/><small>(딥러닝 기초)</small>"]
+    math_foundations_cosine_similarity["코사인 유사도<br/><small>(수학적 기초)</small>"]
+    math_foundations_linear_transformation["선형 변환<br/><small>(수학적 기초)</small>"]
+
+    %% Edges
+    deep_learning_seq2seq -.-> transformer_attention_intuition
+    transformer_attention_intuition --> transformer_attention_score
+    math_foundations_dot_product -.-> transformer_attention_score
+    math_foundations_cosine_similarity -.-> transformer_attention_score
+    transformer_attention_intuition --> transformer_query_key_value
+    math_foundations_linear_transformation -.-> transformer_query_key_value
+    transformer_attention_score --> transformer_scaled_dot_product
+    transformer_query_key_value --> transformer_scaled_dot_product
+    deep_learning_softmax -.-> transformer_scaled_dot_product
+    transformer_scaled_dot_product --> transformer_multi_head_attention
+    transformer_multi_head_attention --> transformer_self_attention
+    transformer_multi_head_attention --> transformer_cross_attention
+    transformer_self_attention --> transformer_causal_attention
+    transformer_attention_intuition --> transformer_positional_encoding
+    deep_learning_mlp -.-> transformer_feed_forward
+    transformer_self_attention --> transformer_transformer_encoder
+    transformer_feed_forward --> transformer_transformer_encoder
+    transformer_positional_encoding --> transformer_transformer_encoder
+    deep_learning_layer_normalization -.-> transformer_transformer_encoder
+    deep_learning_residual_connection -.-> transformer_transformer_encoder
+    transformer_causal_attention --> transformer_transformer_decoder
+    transformer_cross_attention --> transformer_transformer_decoder
+    transformer_feed_forward --> transformer_transformer_decoder
+    deep_learning_layer_normalization -.-> transformer_transformer_decoder
+    deep_learning_residual_connection -.-> transformer_transformer_decoder
+    transformer_transformer_encoder --> transformer_encoder_decoder
+    transformer_transformer_decoder --> transformer_encoder_decoder
+    transformer_self_attention --> transformer_attention_complexity
+    transformer_attention_complexity --> transformer_efficient_attention
+    transformer_transformer_encoder --> transformer_transformer_training
+    transformer_transformer_decoder --> transformer_transformer_training
+    deep_learning_adamw -.-> transformer_transformer_training
+
+    %% Apply styles
+    class transformer_attention_intuition transformer_attention
+    class transformer_attention_score transformer_attention
+    class transformer_query_key_value transformer_attention
+    class transformer_scaled_dot_product transformer_attention
+    class transformer_multi_head_attention transformer_attention
+    class transformer_self_attention transformer_attention
+    class transformer_cross_attention transformer_attention
+    class transformer_causal_attention transformer_attention
+    class transformer_positional_encoding transformer_architecture
+    class transformer_feed_forward transformer_architecture
+    class transformer_transformer_encoder transformer_architecture
+    class transformer_transformer_decoder transformer_architecture
+    class transformer_encoder_decoder transformer_architecture
+    class transformer_attention_complexity transformer_efficiency
+    class transformer_efficient_attention transformer_efficiency
+    class transformer_transformer_training transformer_training
+    class deep_learning_softmax external
+    class deep_learning_seq2seq external
+    class deep_learning_mlp external
+    class math_foundations_dot_product external
+    class deep_learning_layer_normalization external
+    class deep_learning_adamw external
+    class deep_learning_residual_connection external
+    class math_foundations_cosine_similarity external
+    class math_foundations_linear_transformation external

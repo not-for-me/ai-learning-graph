@@ -1,0 +1,605 @@
+# 03. Transformer 아키텍처
+# Attention mechanism과 Transformer 구조
+
+domain:
+  id: transformer
+  name: "Transformer 아키텍처"
+  description: "Attention mechanism, Transformer 구조, 주요 변형들"
+
+# =============================================================================
+# 노드 정의
+# =============================================================================
+nodes:
+  # ---------------------------------------------------------------------------
+  # Attention Mechanism
+  # ---------------------------------------------------------------------------
+  - id: attention_intuition
+    name: "Attention 직관"
+    category: attention
+    depth: 0
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites: []
+    external_prerequisites:
+      - domain: deep_learning
+        node: seq2seq
+    
+    leads_to:
+      - attention_score
+      - query_key_value
+    
+    core_concepts:
+      - "입력의 어떤 부분에 '집중'할지 학습"
+      - "동적 가중치 vs 고정 가중치"
+      - "seq2seq bottleneck 해결"
+    
+    quiz:
+      - question: "Attention이 해결하려는 seq2seq의 문제는?"
+        answer: "모든 입력을 하나의 고정 벡터로 압축하는 정보 병목"
+        type: conceptual
+      - question: "Attention의 핵심 아이디어를 한 문장으로?"
+        answer: "입력의 모든 위치를 동적으로 가중 평균하여 필요한 정보 선택적 추출"
+        type: conceptual
+      - question: "사람의 attention과 neural attention의 유사점은?"
+        answer: "관련 있는 정보에 집중, 덜 중요한 정보는 무시"
+        type: application
+
+  - id: attention_score
+    name: "Attention Score 계산"
+    category: attention
+    depth: 1
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - attention_intuition
+    external_prerequisites:
+      - domain: math_foundations
+        node: dot_product
+      - domain: math_foundations
+        node: cosine_similarity
+    
+    leads_to:
+      - scaled_dot_product
+    
+    core_concepts:
+      - "Query와 Key의 유사도"
+      - "dot product attention"
+      - "additive vs multiplicative"
+    
+    quiz:
+      - question: "dot product attention의 수식은?"
+        answer: "score = Q · K^T"
+        type: calculation
+      - question: "왜 내적으로 유사도를 측정하나요?"
+        answer: "같은 방향(의미적 유사)일수록 내적 값이 큼, 계산도 효율적"
+        type: conceptual
+
+  - id: query_key_value
+    name: "Query, Key, Value"
+    category: attention
+    depth: 1
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - attention_intuition
+    external_prerequisites:
+      - domain: math_foundations
+        node: linear_transformation
+    
+    leads_to:
+      - scaled_dot_product
+      - multi_head_attention
+    
+    core_concepts:
+      - "Q: 질문 (무엇을 찾고 있나)"
+      - "K: 키 (매칭 기준)"
+      - "V: 값 (실제 반환 정보)"
+      - "입력 → 선형 변환 → Q, K, V"
+    
+    quiz:
+      - question: "Q, K, V를 정보 검색에 비유하면?"
+        answer: "Q는 검색어, K는 문서 제목/태그, V는 문서 내용"
+        type: conceptual
+      - question: "왜 Q, K, V를 따로 projection하나요?"
+        answer: "역할별로 다른 representation 학습 가능, 표현력 증가"
+        type: application
+      - question: "Self-attention에서 Q, K, V의 출처는?"
+        answer: "모두 같은 입력 시퀀스에서 유래"
+        type: knowledge
+
+  - id: scaled_dot_product
+    name: "Scaled Dot-Product Attention"
+    category: attention
+    depth: 2
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - attention_score
+      - query_key_value
+    external_prerequisites:
+      - domain: deep_learning
+        node: softmax
+    
+    leads_to:
+      - multi_head_attention
+    
+    core_concepts:
+      - "Attention(Q,K,V) = softmax(QK^T/√d_k)V"
+      - "√d_k로 스케일링하는 이유"
+      - "softmax로 확률 분포 생성"
+    
+    quiz:
+      - question: "왜 √d_k로 나누나요?"
+        answer: "d_k가 크면 내적 값이 커져 softmax가 극단적으로 치우침, gradient 소실 방지"
+        type: conceptual
+      - question: "d_k=64일 때 scaling factor는?"
+        answer: "√64 = 8"
+        type: calculation
+      - question: "softmax 후 attention weights의 합은?"
+        answer: "1 (확률 분포)"
+        type: knowledge
+
+  - id: multi_head_attention
+    name: "Multi-Head Attention"
+    category: attention
+    depth: 3
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - scaled_dot_product
+    
+    leads_to:
+      - self_attention
+      - cross_attention
+    
+    core_concepts:
+      - "여러 attention을 병렬로"
+      - "각 head가 다른 관계 학습"
+      - "concat 후 projection"
+    
+    quiz:
+      - question: "d_model=512, h=8일 때 각 head의 차원은?"
+        answer: "d_k = d_v = 512/8 = 64"
+        type: calculation
+      - question: "multi-head의 장점은?"
+        answer: "다양한 관점(문법, 의미, 위치 등)에서 관계 학습"
+        type: conceptual
+      - question: "8개 head의 출력을 합치는 방법은?"
+        answer: "concatenate → linear projection"
+        type: knowledge
+
+  - id: self_attention
+    name: "Self-Attention"
+    category: attention
+    depth: 4
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - multi_head_attention
+    
+    leads_to:
+      - transformer_encoder
+      - causal_attention
+    
+    core_concepts:
+      - "Q, K, V 모두 같은 시퀀스"
+      - "시퀀스 내 관계 학습"
+      - "O(n²) 복잡도"
+    
+    quiz:
+      - question: "self-attention에서 '자기 자신'이 의미하는 것은?"
+        answer: "입력 시퀀스가 Q, K, V의 출처가 모두 같음"
+        type: conceptual
+      - question: "시퀀스 길이 n에 대한 self-attention의 복잡도는?"
+        answer: "O(n²) - 모든 위치 쌍을 비교"
+        type: knowledge
+      - question: "RNN 대비 self-attention의 장점은?"
+        answer: "병렬 처리 가능, 긴 거리 의존성을 직접 연결"
+        type: application
+
+  - id: cross_attention
+    name: "Cross-Attention"
+    category: attention
+    depth: 4
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - multi_head_attention
+    
+    leads_to:
+      - transformer_decoder
+    
+    core_concepts:
+      - "Q는 한 시퀀스, K/V는 다른 시퀀스"
+      - "encoder-decoder 연결"
+      - "조건부 생성"
+    
+    quiz:
+      - question: "번역에서 cross-attention의 역할은?"
+        answer: "디코더가 인코더의 어떤 부분을 참조할지 결정"
+        type: conceptual
+      - question: "cross-attention에서 Q의 출처는?"
+        answer: "decoder (생성 중인 시퀀스)"
+        type: knowledge
+      - question: "K, V의 출처는?"
+        answer: "encoder (입력 시퀀스)"
+        type: knowledge
+
+  - id: causal_attention
+    name: "Causal (Masked) Attention"
+    category: attention
+    depth: 4
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - self_attention
+    
+    leads_to:
+      - transformer_decoder
+      - autoregressive_generation  # llm으로 연결
+    
+    core_concepts:
+      - "미래 토큰 참조 금지"
+      - "삼각형 마스크"
+      - "autoregressive 생성의 핵심"
+    
+    quiz:
+      - question: "causal mask의 모양은?"
+        answer: "하삼각 행렬 (대각선 포함 아래만 1)"
+        type: knowledge
+      - question: "왜 미래 토큰을 마스킹하나요?"
+        answer: "학습 시 정답을 보면 안 됨 (teacher forcing에서도 실제 생성 상황 모방)"
+        type: conceptual
+      - question: "GPT가 causal attention을 쓰는 이유는?"
+        answer: "왼쪽→오른쪽 autoregressive 생성을 위해"
+        type: application
+
+  # ---------------------------------------------------------------------------
+  # Transformer Architecture
+  # ---------------------------------------------------------------------------
+  - id: positional_encoding
+    name: "Positional Encoding"
+    category: architecture
+    depth: 1
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - attention_intuition
+    
+    leads_to:
+      - transformer_encoder
+      - rotary_embedding  # llm으로 연결
+    
+    core_concepts:
+      - "순서 정보 주입 (attention은 순서 무관)"
+      - "sinusoidal vs learned"
+      - "임베딩에 더함"
+    
+    quiz:
+      - question: "attention 자체가 순서를 모르는 이유는?"
+        answer: "입력을 집합처럼 처리, 위치 정보 없이 유사도만 계산"
+        type: conceptual
+      - question: "sinusoidal encoding의 장점은?"
+        answer: "학습 불필요, 임의의 길이로 일반화 가능"
+        type: knowledge
+      - question: "PE(pos, 2i)의 수식은?"
+        answer: "sin(pos / 10000^(2i/d_model))"
+        type: calculation
+
+  - id: feed_forward
+    name: "Feed-Forward Network"
+    category: architecture
+    depth: 1
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites: []
+    external_prerequisites:
+      - domain: deep_learning
+        node: mlp
+    
+    leads_to:
+      - transformer_encoder
+    
+    core_concepts:
+      - "FFN(x) = ReLU(xW₁+b₁)W₂+b₂"
+      - "position-wise (각 위치에 독립 적용)"
+      - "차원 확장 후 축소 (보통 4배)"
+    
+    quiz:
+      - question: "d_model=512일 때 FFN의 hidden dim은 보통?"
+        answer: "2048 (4배 확장)"
+        type: calculation
+      - question: "FFN이 position-wise라는 의미는?"
+        answer: "각 토큰 위치에 같은 FFN을 독립적으로 적용"
+        type: conceptual
+      - question: "attention만으로 부족한 이유는?"
+        answer: "attention은 mixing, FFN은 비선형 변환으로 표현력 증가"
+        type: application
+
+  - id: transformer_encoder
+    name: "Transformer Encoder"
+    category: architecture
+    depth: 5
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - self_attention
+      - feed_forward
+      - positional_encoding
+    external_prerequisites:
+      - domain: deep_learning
+        node: layer_normalization
+      - domain: deep_learning
+        node: residual_connection
+    
+    leads_to:
+      - bert_architecture  # llm으로 연결
+      - encoder_decoder
+    
+    core_concepts:
+      - "Self-Attention + FFN 블록의 스택"
+      - "Pre-norm vs Post-norm"
+      - "양방향 컨텍스트"
+    
+    quiz:
+      - question: "encoder 블록 하나의 구조는?"
+        answer: "LayerNorm → Self-Attention → Residual → LayerNorm → FFN → Residual"
+        type: knowledge
+      - question: "Pre-LN이 Post-LN보다 학습에 유리한 이유는?"
+        answer: "gradient flow가 더 안정적, warm-up 덜 필요"
+        type: conceptual
+      - question: "BERT가 encoder-only인 이유는?"
+        answer: "양방향 컨텍스트로 문맥 이해에 특화"
+        type: application
+
+  - id: transformer_decoder
+    name: "Transformer Decoder"
+    category: architecture
+    depth: 5
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - causal_attention
+      - cross_attention
+      - feed_forward
+    external_prerequisites:
+      - domain: deep_learning
+        node: layer_normalization
+      - domain: deep_learning
+        node: residual_connection
+    
+    leads_to:
+      - gpt_architecture  # llm으로 연결
+      - encoder_decoder
+    
+    core_concepts:
+      - "Masked Self-Attention + (Cross-Attention) + FFN"
+      - "autoregressive 생성"
+      - "decoder-only vs encoder-decoder"
+    
+    quiz:
+      - question: "decoder block의 attention 종류는?"
+        answer: "masked self-attention (+ encoder가 있으면 cross-attention)"
+        type: knowledge
+      - question: "GPT가 decoder-only인 이유는?"
+        answer: "왼쪽→오른쪽 생성에 특화, encoder 불필요"
+        type: application
+      - question: "decoder-only에서 cross-attention은?"
+        answer: "없음 (참조할 encoder가 없으므로)"
+        type: knowledge
+
+  - id: encoder_decoder
+    name: "Encoder-Decoder 구조"
+    category: architecture
+    depth: 6
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - transformer_encoder
+      - transformer_decoder
+    
+    leads_to:
+      - t5_architecture  # llm으로 연결
+    
+    core_concepts:
+      - "encoder가 입력 인코딩"
+      - "decoder가 cross-attention으로 참조하며 생성"
+      - "seq2seq 태스크에 적합"
+    
+    quiz:
+      - question: "encoder-decoder가 적합한 태스크는?"
+        answer: "번역, 요약 등 입출력이 다른 seq2seq"
+        type: application
+      - question: "T5의 핵심 아이디어는?"
+        answer: "모든 NLP 태스크를 text-to-text로 통일"
+        type: knowledge
+
+  # ---------------------------------------------------------------------------
+  # Training & Efficiency
+  # ---------------------------------------------------------------------------
+  - id: attention_complexity
+    name: "Attention 복잡도"
+    category: efficiency
+    depth: 3
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - self_attention
+    
+    leads_to:
+      - efficient_attention
+      - kv_cache  # llm으로 연결
+    
+    core_concepts:
+      - "O(n²) 시간/공간 복잡도"
+      - "긴 시퀀스의 병목"
+      - "메모리 제약"
+    
+    quiz:
+      - question: "시퀀스 길이 4096의 attention matrix 크기는?"
+        answer: "4096 × 4096 = ~16M elements"
+        type: calculation
+      - question: "O(n²)가 문제가 되는 경우는?"
+        answer: "긴 문서, 고해상도 이미지, 긴 대화 히스토리"
+        type: application
+
+  - id: efficient_attention
+    name: "효율적인 Attention 변형"
+    category: efficiency
+    depth: 4
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - attention_complexity
+    
+    leads_to:
+      - flash_attention  # llm으로 연결
+    
+    core_concepts:
+      - "Linear attention (O(n))"
+      - "Sparse attention"
+      - "Local + Global patterns"
+    
+    quiz:
+      - question: "Flash Attention의 핵심 아이디어는?"
+        answer: "IO-aware 알고리즘으로 메모리 접근 최적화"
+        type: conceptual
+      - question: "Sparse attention의 접근법은?"
+        answer: "모든 쌍이 아닌 일부 패턴만 attend (local, strided 등)"
+        type: knowledge
+
+  - id: transformer_training
+    name: "Transformer 학습 기법"
+    category: training
+    depth: 5
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - transformer_encoder
+      - transformer_decoder
+    external_prerequisites:
+      - domain: deep_learning
+        node: adamw
+    
+    leads_to:
+      - pretraining  # llm으로 연결
+    
+    core_concepts:
+      - "warmup + cosine decay"
+      - "gradient accumulation"
+      - "mixed precision training"
+    
+    quiz:
+      - question: "learning rate warmup의 목적은?"
+        answer: "초기 불안정한 gradient에서 급격한 업데이트 방지"
+        type: conceptual
+      - question: "gradient accumulation의 용도는?"
+        answer: "메모리 제한에서 effective batch size 증가"
+        type: application
+      - question: "mixed precision의 장점은?"
+        answer: "메모리 절약, 속도 향상 (FP16 연산)"
+        type: knowledge
+
+# =============================================================================
+# 카테고리별 노드 그룹
+# =============================================================================
+categories:
+  attention:
+    name: "Attention Mechanism"
+    color: "#FF9F43"
+    nodes: [attention_intuition, attention_score, query_key_value, 
+            scaled_dot_product, multi_head_attention, self_attention,
+            cross_attention, causal_attention]
+    
+  architecture:
+    name: "Transformer 구조"
+    color: "#5F27CD"
+    nodes: [positional_encoding, feed_forward, transformer_encoder,
+            transformer_decoder, encoder_decoder]
+    
+  efficiency:
+    name: "효율성"
+    color: "#00D2D3"
+    nodes: [attention_complexity, efficient_attention]
+    
+  training:
+    name: "학습 기법"
+    color: "#54A0FF"
+    nodes: [transformer_training]
+
+# =============================================================================
+# 도메인 간 연결점
+# =============================================================================
+cross_domain_connections:
+  from_math_foundations:
+    - from: dot_product
+      to: attention_score
+      notes: "내적 → attention score 계산"
+    - from: linear_transformation
+      to: query_key_value
+      notes: "선형변환 → Q, K, V projection"
+    - from: cosine_similarity
+      to: attention_score
+      notes: "유사도 → attention 가중치"
+      
+  from_deep_learning:
+    - from: seq2seq
+      to: attention_intuition
+      notes: "seq2seq 한계 → attention 등장 배경"
+    - from: softmax
+      to: scaled_dot_product
+      notes: "softmax → attention weights"
+    - from: mlp
+      to: feed_forward
+      notes: "MLP → FFN"
+    - from: layer_normalization
+      to: transformer_encoder
+      notes: "LayerNorm → Transformer 정규화"
+    - from: residual_connection
+      to: transformer_encoder
+      notes: "Residual → skip connection"
+    - from: adamw
+      to: transformer_training
+      notes: "AdamW → Transformer 학습"
+      
+  to_llm:
+    - from: transformer_encoder
+      to: bert_architecture
+      notes: "Encoder → BERT"
+    - from: transformer_decoder
+      to: gpt_architecture
+      notes: "Decoder → GPT"
+    - from: encoder_decoder
+      to: t5_architecture
+      notes: "Enc-Dec → T5"
+    - from: causal_attention
+      to: autoregressive_generation
+      notes: "Causal mask → 자기회귀 생성"
+    - from: positional_encoding
+      to: rotary_embedding
+      notes: "PE → RoPE"
+    - from: attention_complexity
+      to: kv_cache
+      notes: "복잡도 → KV 캐시 최적화"
+    - from: efficient_attention
+      to: flash_attention
+      notes: "효율화 → Flash Attention"
+    - from: transformer_training
+      to: pretraining
+      notes: "학습 기법 → 사전학습"

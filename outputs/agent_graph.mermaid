@@ -1,0 +1,152 @@
+flowchart TD
+
+    %% Style definitions
+    classDef agent_fundamentals fill:#FF6B6B,stroke:#333,stroke-width:1px,color:#fff
+    classDef agent_tools fill:#4ECDC4,stroke:#333,stroke-width:1px,color:#fff
+    classDef agent_rag fill:#45B7D1,stroke:#333,stroke-width:1px,color:#fff
+    classDef agent_reasoning fill:#96CEB4,stroke:#333,stroke-width:1px,color:#fff
+    classDef agent_memory fill:#DDA0DD,stroke:#333,stroke-width:1px,color:#fff
+    classDef agent_multi_agent fill:#FFEAA7,stroke:#333,stroke-width:1px,color:#fff
+    classDef agent_frameworks fill:#74B9FF,stroke:#333,stroke-width:1px,color:#fff
+    classDef agent_applications fill:#A29BFE,stroke:#333,stroke-width:1px,color:#fff
+    classDef external fill:#gray,stroke:#333,stroke-width:1px,color:#fff,stroke-dasharray: 5 5
+
+    agent_agent_fundamentals["Agent 기초 개념"]
+    agent_agent_loop["Agent Loop (Perception-Action)"]
+    agent_rag["RAG 개요"]
+    agent_reasoning_techniques["추론 기법"]
+    agent_tool_use["Tool Use (Function Calling)"]
+    agent_agent_frameworks["Agent Framework"]
+    agent_agent_memory["Agent Memory"]
+    agent_semantic_search["시맨틱 검색"]
+    agent_chunking_strategies["Chunking 전략"]
+    agent_react["ReAct (Reasoning + Acting)"]
+    agent_function_calling_format["Function Calling 포맷"]
+    agent_langchain_basics["LangChain / LangGraph"]
+    agent_autogen_basics["AutoGen"]
+    agent_short_term_memory["Short-term Memory"]
+    agent_long_term_memory["Long-term Memory"]
+    agent_multi_agent_basics["Multi-Agent 기초"]
+    agent_vector_database["Vector Database"]
+    agent_hybrid_search["Hybrid Search"]
+    agent_self_reflection["Self-Reflection"]
+    agent_planning_strategies["Planning 전략"]
+    agent_tool_selection["Tool Selection"]
+    agent_code_execution["Code Execution (Code Interpreter)"]
+    agent_data_analysis_agent["Data Analysis Agent"]
+    agent_research_agent["Research Agent"]
+    agent_memory_management["Memory Management"]
+    agent_agent_communication["Agent 간 통신"]
+    agent_agent_roles["Agent 역할 설계"]
+    agent_advanced_rag["Advanced RAG 기법"]
+    agent_reflexion["Reflexion"]
+    agent_hierarchical_planning["Hierarchical Planning"]
+    agent_multi_tool_orchestration["Multi-Tool Orchestration"]
+    agent_complex_workflows["복잡한 워크플로우 구축"]
+    agent_coordination_patterns["조율 패턴"]
+    agent_agentic_rag["Agentic RAG"]
+    agent_production_deployment["프로덕션 배포"]
+
+    %% External dependencies
+    llm_context_length_extension["Context Length 확장<br/><small>(Large Language Models)</small>"]
+    llm_sentence_embeddings["문장/문서 임베딩<br/><small>(Large Language Models)</small>"]
+    llm_chain_of_thought["Chain-of-Thought (CoT)<br/><small>(Large Language Models)</small>"]
+    llm_chat_format["Chat Format & System Prompt<br/><small>(Large Language Models)</small>"]
+
+    %% Edges
+    llm_chat_format -.-> agent_agent_fundamentals
+    llm_chain_of_thought -.-> agent_agent_fundamentals
+    agent_agent_fundamentals --> agent_agent_loop
+    agent_agent_fundamentals --> agent_tool_use
+    agent_tool_use --> agent_function_calling_format
+    agent_function_calling_format --> agent_tool_selection
+    agent_tool_selection --> agent_multi_tool_orchestration
+    agent_planning_strategies --> agent_multi_tool_orchestration
+    agent_tool_use --> agent_code_execution
+    agent_agent_fundamentals --> agent_rag
+    llm_sentence_embeddings -.-> agent_rag
+    llm_context_length_extension -.-> agent_rag
+    agent_rag --> agent_semantic_search
+    llm_sentence_embeddings -.-> agent_semantic_search
+    agent_semantic_search --> agent_vector_database
+    agent_rag --> agent_chunking_strategies
+    agent_semantic_search --> agent_hybrid_search
+    agent_chunking_strategies --> agent_advanced_rag
+    agent_hybrid_search --> agent_advanced_rag
+    agent_advanced_rag --> agent_agentic_rag
+    agent_agent_loop --> agent_agentic_rag
+    agent_agent_fundamentals --> agent_reasoning_techniques
+    llm_chain_of_thought -.-> agent_reasoning_techniques
+    agent_reasoning_techniques --> agent_react
+    agent_tool_use --> agent_react
+    agent_reasoning_techniques --> agent_self_reflection
+    agent_self_reflection --> agent_reflexion
+    agent_agent_loop --> agent_reflexion
+    agent_react --> agent_planning_strategies
+    agent_planning_strategies --> agent_hierarchical_planning
+    agent_agent_loop --> agent_agent_memory
+    agent_agent_memory --> agent_short_term_memory
+    agent_agent_memory --> agent_long_term_memory
+    agent_vector_database --> agent_long_term_memory
+    agent_short_term_memory --> agent_memory_management
+    agent_long_term_memory --> agent_memory_management
+    agent_agent_loop --> agent_multi_agent_basics
+    agent_tool_use --> agent_multi_agent_basics
+    agent_multi_agent_basics --> agent_agent_communication
+    agent_multi_agent_basics --> agent_agent_roles
+    agent_agent_communication --> agent_coordination_patterns
+    agent_agent_roles --> agent_coordination_patterns
+    agent_agent_loop --> agent_agent_frameworks
+    agent_tool_use --> agent_agent_frameworks
+    agent_agent_frameworks --> agent_langchain_basics
+    agent_agent_frameworks --> agent_autogen_basics
+    agent_multi_agent_basics --> agent_autogen_basics
+    agent_multi_tool_orchestration --> agent_complex_workflows
+    agent_coordination_patterns --> agent_complex_workflows
+    agent_langchain_basics --> agent_complex_workflows
+    agent_code_execution --> agent_data_analysis_agent
+    agent_rag --> agent_data_analysis_agent
+    agent_agentic_rag --> agent_research_agent
+    agent_planning_strategies --> agent_research_agent
+    agent_complex_workflows --> agent_production_deployment
+
+    %% Apply styles
+    class agent_agent_fundamentals agent_fundamentals
+    class agent_agent_loop agent_fundamentals
+    class agent_tool_use agent_tools
+    class agent_function_calling_format agent_tools
+    class agent_tool_selection agent_tools
+    class agent_multi_tool_orchestration agent_tools
+    class agent_code_execution agent_tools
+    class agent_rag agent_rag
+    class agent_semantic_search agent_rag
+    class agent_vector_database agent_rag
+    class agent_chunking_strategies agent_rag
+    class agent_hybrid_search agent_rag
+    class agent_advanced_rag agent_rag
+    class agent_agentic_rag agent_rag
+    class agent_reasoning_techniques agent_reasoning
+    class agent_react agent_reasoning
+    class agent_self_reflection agent_reasoning
+    class agent_reflexion agent_reasoning
+    class agent_planning_strategies agent_reasoning
+    class agent_hierarchical_planning agent_reasoning
+    class agent_agent_memory agent_memory
+    class agent_short_term_memory agent_memory
+    class agent_long_term_memory agent_memory
+    class agent_memory_management agent_memory
+    class agent_multi_agent_basics agent_multi_agent
+    class agent_agent_communication agent_multi_agent
+    class agent_agent_roles agent_multi_agent
+    class agent_coordination_patterns agent_multi_agent
+    class agent_agent_frameworks agent_frameworks
+    class agent_langchain_basics agent_frameworks
+    class agent_autogen_basics agent_frameworks
+    class agent_complex_workflows agent_frameworks
+    class agent_data_analysis_agent agent_applications
+    class agent_research_agent agent_applications
+    class agent_production_deployment agent_applications
+    class llm_context_length_extension external
+    class llm_sentence_embeddings external
+    class llm_chain_of_thought external
+    class llm_chat_format external

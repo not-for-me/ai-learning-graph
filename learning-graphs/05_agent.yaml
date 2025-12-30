@@ -1,0 +1,1069 @@
+# 05. AI Agents
+# Tool use, RAG, Multi-agent, Planning 등
+
+domain:
+  id: agent
+  name: "AI Agents"
+  description: "LLM 기반 에이전트, 도구 사용, RAG, 멀티에이전트 시스템"
+
+# =============================================================================
+# 노드 정의
+# =============================================================================
+nodes:
+  # ---------------------------------------------------------------------------
+  # Agent 기초
+  # ---------------------------------------------------------------------------
+  - id: agent_fundamentals
+    name: "Agent 기초 개념"
+    category: fundamentals
+    depth: 0
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites: []
+    external_prerequisites:
+      - domain: llm
+        node: chat_format
+      - domain: llm
+        node: chain_of_thought
+    
+    leads_to:
+      - agent_loop
+      - tool_use
+    
+    core_concepts:
+      - "Agent = LLM + 행동 능력"
+      - "환경과 상호작용"
+      - "목표 지향적 행동"
+    
+    quiz:
+      - question: "Agent가 단순 chatbot과 다른 점은?"
+        answer: "외부 도구 사용, 환경 변화, 자율적 의사결정"
+        type: conceptual
+      - question: "Agent의 핵심 구성 요소는?"
+        answer: "LLM (두뇌), Tools (행동), Memory (기억), Planning (계획)"
+        type: knowledge
+
+  - id: agent_loop
+    name: "Agent Loop (Perception-Action)"
+    category: fundamentals
+    depth: 1
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - agent_fundamentals
+    
+    leads_to:
+      - react
+      - planning_strategies
+    
+    core_concepts:
+      - "Observe → Think → Act → Repeat"
+      - "환경 피드백 기반 반복"
+      - "종료 조건 판단"
+    
+    quiz:
+      - question: "Agent loop의 기본 단계는?"
+        answer: "1) 입력/환경 관찰, 2) 추론/계획, 3) 행동 실행, 4) 결과 관찰"
+        type: knowledge
+      - question: "무한 루프를 방지하는 방법은?"
+        answer: "최대 반복 횟수, 목표 달성 판단, 타임아웃"
+        type: application
+
+  # ---------------------------------------------------------------------------
+  # Tool Use
+  # ---------------------------------------------------------------------------
+  - id: tool_use
+    name: "Tool Use (Function Calling)"
+    category: tools
+    depth: 1
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - agent_fundamentals
+    
+    leads_to:
+      - function_calling_format
+      - tool_selection
+    
+    core_concepts:
+      - "LLM이 외부 도구/API 호출"
+      - "자연어 → 구조화된 호출"
+      - "LLM 한계 극복 (계산, 검색, 실행)"
+    
+    quiz:
+      - question: "tool use가 필요한 이유는?"
+        answer: "LLM은 계산, 실시간 정보, 외부 시스템 접근에 한계"
+        type: conceptual
+      - question: "tool use의 예시는?"
+        answer: "계산기, 웹 검색, 코드 실행, DB 쿼리, API 호출"
+        type: application
+
+  - id: function_calling_format
+    name: "Function Calling 포맷"
+    category: tools
+    depth: 2
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - tool_use
+    
+    leads_to:
+      - tool_selection
+    
+    core_concepts:
+      - "JSON schema로 도구 정의"
+      - "LLM이 파라미터 추출"
+      - "OpenAI, Anthropic, LangChain 포맷"
+    
+    quiz:
+      - question: "function schema에 포함되는 정보는?"
+        answer: "함수명, 설명, 파라미터 (이름, 타입, 설명, 필수 여부)"
+        type: knowledge
+      - question: "좋은 function 설명의 요소는?"
+        answer: "명확한 목적, 사용 상황, 파라미터 의미, 반환값 설명"
+        type: application
+
+  - id: tool_selection
+    name: "Tool Selection"
+    category: tools
+    depth: 3
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - function_calling_format
+    
+    leads_to:
+      - multi_tool_orchestration
+    
+    core_concepts:
+      - "여러 도구 중 적절한 것 선택"
+      - "도구 설명 기반 판단"
+      - "여러 도구 조합"
+    
+    quiz:
+      - question: "tool selection의 어려움은?"
+        answer: "유사한 도구 구분, 조합 필요 시 순서 결정, 불필요한 호출 방지"
+        type: conceptual
+      - question: "tool 수가 많을 때 전략은?"
+        answer: "카테고리화, 관련 도구만 제공, retrieval로 필터링"
+        type: application
+
+  - id: multi_tool_orchestration
+    name: "Multi-Tool Orchestration"
+    category: tools
+    depth: 4
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - tool_selection
+      - planning_strategies
+    
+    leads_to:
+      - complex_workflows
+    
+    core_concepts:
+      - "여러 도구의 순차/병렬 실행"
+      - "도구 간 데이터 전달"
+      - "에러 핸들링과 재시도"
+    
+    quiz:
+      - question: "복잡한 태스크에서 도구 조합 예시는?"
+        answer: "검색 → 요약 → 번역 → 이메일 발송"
+        type: application
+      - question: "도구 실패 시 대응 전략은?"
+        answer: "재시도, 대안 도구 사용, 사용자에게 알림, graceful degradation"
+        type: application
+
+  - id: code_execution
+    name: "Code Execution (Code Interpreter)"
+    category: tools
+    depth: 3
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - tool_use
+    
+    leads_to:
+      - data_analysis_agent
+    
+    core_concepts:
+      - "LLM이 코드 생성 → 실행"
+      - "샌드박스 환경"
+      - "데이터 분석, 시각화"
+    
+    quiz:
+      - question: "code interpreter의 장점은?"
+        answer: "정확한 계산, 데이터 처리, 시각화, 복잡한 로직 실행"
+        type: conceptual
+      - question: "보안 고려사항은?"
+        answer: "샌드박스 격리, 리소스 제한, 위험 작업 차단"
+        type: application
+
+  # ---------------------------------------------------------------------------
+  # RAG (Retrieval Augmented Generation)
+  # ---------------------------------------------------------------------------
+  - id: rag
+    name: "RAG 개요"
+    category: rag
+    depth: 1
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - agent_fundamentals
+    external_prerequisites:
+      - domain: llm
+        node: sentence_embeddings
+      - domain: llm
+        node: context_length_extension
+    
+    leads_to:
+      - semantic_search
+      - chunking_strategies
+    
+    core_concepts:
+      - "검색으로 LLM 지식 보강"
+      - "Retrieve → Augment → Generate"
+      - "환각 감소, 최신 정보 제공"
+    
+    quiz:
+      - question: "RAG가 필요한 이유는?"
+        answer: "LLM 학습 데이터 한계, 환각, 최신/도메인 특화 정보 부재"
+        type: conceptual
+      - question: "RAG의 기본 파이프라인은?"
+        answer: "Query → 검색 → 관련 문서 추출 → LLM 컨텍스트에 추가 → 생성"
+        type: knowledge
+
+  - id: semantic_search
+    name: "시맨틱 검색"
+    category: rag
+    depth: 2
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - rag
+    external_prerequisites:
+      - domain: llm
+        node: sentence_embeddings
+    
+    leads_to:
+      - vector_database
+      - hybrid_search
+    
+    core_concepts:
+      - "의미 기반 검색 (키워드 아님)"
+      - "embedding 유사도"
+      - "cosine similarity, dot product"
+    
+    quiz:
+      - question: "시맨틱 검색이 키워드 검색보다 나은 경우는?"
+        answer: "유의어, 다른 표현, 개념적 유사성을 찾을 때"
+        type: conceptual
+      - question: "'자동차 사고'로 검색해서 '교통 충돌' 문서를 찾을 수 있는 이유는?"
+        answer: "의미적으로 유사한 임베딩 벡터를 가지므로"
+        type: application
+
+  - id: vector_database
+    name: "Vector Database"
+    category: rag
+    depth: 3
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - semantic_search
+    
+    leads_to:
+      - indexing_strategies
+    
+    core_concepts:
+      - "벡터 저장 및 유사도 검색"
+      - "ANN (Approximate Nearest Neighbor)"
+      - "Pinecone, Weaviate, Chroma, FAISS"
+    
+    quiz:
+      - question: "vector DB가 일반 DB와 다른 점은?"
+        answer: "고차원 벡터 저장 및 유사도 기반 검색에 최적화"
+        type: conceptual
+      - question: "ANN이 exact search보다 좋은 이유는?"
+        answer: "속도-정확도 트레이드오프로 대규모 데이터에서 실용적"
+        type: application
+      - question: "대표적인 ANN 알고리즘은?"
+        answer: "HNSW, IVF, LSH"
+        type: knowledge
+
+  - id: chunking_strategies
+    name: "Chunking 전략"
+    category: rag
+    depth: 2
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - rag
+    
+    leads_to:
+      - advanced_rag
+    
+    core_concepts:
+      - "문서를 적절한 단위로 분할"
+      - "chunk 크기 vs 컨텍스트 보존"
+      - "overlap, semantic chunking"
+    
+    quiz:
+      - question: "chunk가 너무 크면 문제점은?"
+        answer: "관련 없는 내용 포함, embedding 품질 저하"
+        type: conceptual
+      - question: "chunk가 너무 작으면 문제점은?"
+        answer: "문맥 손실, 중요 정보 분리"
+        type: conceptual
+      - question: "overlap의 목적은?"
+        answer: "chunk 경계에서 문맥 손실 방지"
+        type: application
+
+  - id: hybrid_search
+    name: "Hybrid Search"
+    category: rag
+    depth: 3
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - semantic_search
+    
+    leads_to:
+      - advanced_rag
+    
+    core_concepts:
+      - "semantic + keyword 검색 결합"
+      - "BM25 + dense retrieval"
+      - "reciprocal rank fusion"
+    
+    quiz:
+      - question: "hybrid search가 필요한 이유는?"
+        answer: "고유명사, 코드 등은 키워드가 정확, 의미는 semantic이 좋음"
+        type: conceptual
+      - question: "두 검색 결과를 합치는 방법은?"
+        answer: "점수 정규화 후 가중 합산, RRF (Reciprocal Rank Fusion)"
+        type: knowledge
+
+  - id: advanced_rag
+    name: "Advanced RAG 기법"
+    category: rag
+    depth: 4
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - chunking_strategies
+      - hybrid_search
+    
+    leads_to:
+      - agentic_rag
+    
+    core_concepts:
+      - "Query transformation"
+      - "Re-ranking"
+      - "Self-RAG, Corrective RAG"
+    
+    quiz:
+      - question: "HyDE (Hypothetical Document Embeddings)란?"
+        answer: "쿼리로 가상 답변 생성 후 그것으로 검색"
+        type: knowledge
+      - question: "re-ranking의 목적은?"
+        answer: "초기 검색 결과를 cross-encoder로 정밀 재정렬"
+        type: conceptual
+      - question: "Self-RAG의 아이디어는?"
+        answer: "LLM이 검색 필요 여부와 결과 관련성을 스스로 판단"
+        type: knowledge
+
+  - id: agentic_rag
+    name: "Agentic RAG"
+    category: rag
+    depth: 5
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - advanced_rag
+      - agent_loop
+    
+    leads_to: []
+    
+    core_concepts:
+      - "RAG를 agent loop에 통합"
+      - "반복 검색, 질의 분해"
+      - "검색 전략 동적 결정"
+    
+    quiz:
+      - question: "agentic RAG가 단순 RAG보다 나은 점은?"
+        answer: "검색 실패 시 재시도, 복잡한 질문 분해, 다중 소스 통합"
+        type: conceptual
+      - question: "질의 분해의 예시는?"
+        answer: "'A와 B의 차이점' → A 검색, B 검색, 비교"
+        type: application
+
+  # ---------------------------------------------------------------------------
+  # Reasoning & Planning
+  # ---------------------------------------------------------------------------
+  - id: reasoning_techniques
+    name: "추론 기법"
+    category: reasoning
+    depth: 1
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - agent_fundamentals
+    external_prerequisites:
+      - domain: llm
+        node: chain_of_thought
+    
+    leads_to:
+      - react
+      - self_reflection
+    
+    core_concepts:
+      - "CoT, Tree-of-Thought"
+      - "단계적 문제 분해"
+      - "추론 검증"
+    
+    quiz:
+      - question: "Tree-of-Thought가 CoT와 다른 점은?"
+        answer: "여러 추론 경로 탐색, 평가 후 최선 선택"
+        type: conceptual
+      - question: "복잡한 추론에서 LLM의 한계는?"
+        answer: "긴 추론 체인에서 오류 누적, 논리적 일관성 부족"
+        type: application
+
+  - id: react
+    name: "ReAct (Reasoning + Acting)"
+    category: reasoning
+    depth: 2
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - reasoning_techniques
+      - tool_use
+    
+    leads_to:
+      - planning_strategies
+    
+    core_concepts:
+      - "Thought → Action → Observation 반복"
+      - "추론과 행동의 결합"
+      - "중간 추론 명시화"
+    
+    quiz:
+      - question: "ReAct의 세 단계는?"
+        answer: "Thought (추론), Action (도구 호출), Observation (결과 관찰)"
+        type: knowledge
+      - question: "ReAct가 단순 tool use보다 나은 이유는?"
+        answer: "명시적 추론으로 결정 근거 제공, 오류 진단 용이"
+        type: conceptual
+
+  - id: self_reflection
+    name: "Self-Reflection"
+    category: reasoning
+    depth: 3
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - reasoning_techniques
+    
+    leads_to:
+      - reflexion
+    
+    core_concepts:
+      - "자신의 출력 평가"
+      - "오류 발견 및 수정"
+      - "반복적 개선"
+    
+    quiz:
+      - question: "self-reflection의 프롬프트 예시는?"
+        answer: "'위 답변을 검토하고 오류가 있으면 수정하세요'"
+        type: application
+      - question: "self-reflection의 한계는?"
+        answer: "자신의 오류를 항상 발견하지 못함, 잘못된 확신 가능"
+        type: conceptual
+
+  - id: reflexion
+    name: "Reflexion"
+    category: reasoning
+    depth: 4
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - self_reflection
+      - agent_loop
+    
+    leads_to: []
+    
+    core_concepts:
+      - "실패에서 학습"
+      - "verbal reinforcement"
+      - "메모리에 반성 저장"
+    
+    quiz:
+      - question: "Reflexion이 self-reflection과 다른 점은?"
+        answer: "여러 시도에 걸쳐 반성을 축적, 장기 메모리로 학습"
+        type: conceptual
+      - question: "Reflexion의 구성 요소는?"
+        answer: "Actor, Evaluator, Self-reflection, Memory"
+        type: knowledge
+
+  - id: planning_strategies
+    name: "Planning 전략"
+    category: reasoning
+    depth: 3
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - react
+    
+    leads_to:
+      - hierarchical_planning
+      - multi_tool_orchestration
+    
+    core_concepts:
+      - "목표 → 하위 목표 분해"
+      - "plan-and-execute"
+      - "동적 재계획"
+    
+    quiz:
+      - question: "planning의 두 가지 접근법은?"
+        answer: "사전 계획 (plan-then-execute) vs 점진적 계획 (interleaved)"
+        type: knowledge
+      - question: "재계획이 필요한 상황은?"
+        answer: "예상치 못한 결과, 실패, 새로운 정보 발견"
+        type: application
+
+  - id: hierarchical_planning
+    name: "Hierarchical Planning"
+    category: reasoning
+    depth: 4
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - planning_strategies
+    
+    leads_to:
+      - complex_workflows
+    
+    core_concepts:
+      - "고수준 → 저수준 분해"
+      - "추상화 수준별 계획"
+      - "복잡한 태스크 관리"
+    
+    quiz:
+      - question: "hierarchical planning의 장점은?"
+        answer: "복잡성 관리, 각 수준에서 독립적 수정 가능"
+        type: conceptual
+      - question: "예시: '여행 계획'의 계층 분해는?"
+        answer: "목적지 선정 → 교통 예약 → 숙소 예약 → 일정 계획 → 각각의 세부 단계"
+        type: application
+
+  # ---------------------------------------------------------------------------
+  # Memory
+  # ---------------------------------------------------------------------------
+  - id: agent_memory
+    name: "Agent Memory"
+    category: memory
+    depth: 2
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - agent_loop
+    
+    leads_to:
+      - short_term_memory
+      - long_term_memory
+    
+    core_concepts:
+      - "과거 정보 저장 및 활용"
+      - "context window 한계 극복"
+      - "일관된 행동 유지"
+    
+    quiz:
+      - question: "agent에 memory가 필요한 이유는?"
+        answer: "context 한계, 장기 태스크, 과거 경험 활용"
+        type: conceptual
+      - question: "memory의 주요 유형은?"
+        answer: "단기 (working), 장기 (episodic, semantic, procedural)"
+        type: knowledge
+
+  - id: short_term_memory
+    name: "Short-term Memory"
+    category: memory
+    depth: 3
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - agent_memory
+    
+    leads_to:
+      - memory_management
+    
+    core_concepts:
+      - "현재 태스크의 작업 기억"
+      - "context window 내 유지"
+      - "scratch pad, 중간 결과"
+    
+    quiz:
+      - question: "short-term memory의 구현 방법은?"
+        answer: "시스템 프롬프트, 대화 히스토리, 명시적 state 변수"
+        type: application
+      - question: "context window 초과 시 대응은?"
+        answer: "요약, 오래된 것 삭제, 중요도 기반 선택"
+        type: application
+
+  - id: long_term_memory
+    name: "Long-term Memory"
+    category: memory
+    depth: 3
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - agent_memory
+      - vector_database
+    
+    leads_to:
+      - memory_management
+    
+    core_concepts:
+      - "세션 간 지속되는 기억"
+      - "vector DB 기반 저장/검색"
+      - "경험, 사실, 절차 기억"
+    
+    quiz:
+      - question: "long-term memory 저장 대상은?"
+        answer: "사용자 선호, 과거 대화 요약, 학습된 정보"
+        type: application
+      - question: "검색 기반 long-term memory의 구현은?"
+        answer: "경험/정보를 embedding하여 vector DB에 저장, 관련 시 검색"
+        type: knowledge
+
+  - id: memory_management
+    name: "Memory Management"
+    category: memory
+    depth: 4
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - short_term_memory
+      - long_term_memory
+    
+    leads_to: []
+    
+    core_concepts:
+      - "기억 추가, 검색, 삭제"
+      - "중요도/시간 기반 관리"
+      - "요약 및 압축"
+    
+    quiz:
+      - question: "memory 관리의 도전은?"
+        answer: "관련성 판단, 노이즈 필터링, 일관성 유지"
+        type: conceptual
+      - question: "오래된 기억 처리 전략은?"
+        answer: "decay (점점 희미), 압축/요약, 중요도 기반 유지"
+        type: application
+
+  # ---------------------------------------------------------------------------
+  # Multi-Agent
+  # ---------------------------------------------------------------------------
+  - id: multi_agent_basics
+    name: "Multi-Agent 기초"
+    category: multi_agent
+    depth: 3
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - agent_loop
+      - tool_use
+    
+    leads_to:
+      - agent_communication
+      - agent_roles
+    
+    core_concepts:
+      - "여러 agent의 협력"
+      - "분업과 전문화"
+      - "복잡한 문제의 분할 정복"
+    
+    quiz:
+      - question: "multi-agent가 single agent보다 나은 경우는?"
+        answer: "복잡한 태스크, 다양한 전문성 필요, 병렬 처리 가능"
+        type: conceptual
+      - question: "multi-agent의 도전은?"
+        answer: "조율, 통신, 충돌 해결, 일관성"
+        type: application
+
+  - id: agent_communication
+    name: "Agent 간 통신"
+    category: multi_agent
+    depth: 4
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - multi_agent_basics
+    
+    leads_to:
+      - coordination_patterns
+    
+    core_concepts:
+      - "메시지 전달 방식"
+      - "공유 상태 vs 메시지 패싱"
+      - "통신 프로토콜"
+    
+    quiz:
+      - question: "agent 통신의 주요 방식은?"
+        answer: "직접 메시지, 공유 메모리/블랙보드, 이벤트 기반"
+        type: knowledge
+      - question: "자연어 vs 구조화된 통신의 트레이드오프는?"
+        answer: "자연어: 유연하지만 모호, 구조화: 정확하지만 표현 제한"
+        type: conceptual
+
+  - id: agent_roles
+    name: "Agent 역할 설계"
+    category: multi_agent
+    depth: 4
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - multi_agent_basics
+    
+    leads_to:
+      - coordination_patterns
+    
+    core_concepts:
+      - "역할별 전문화"
+      - "Planner, Executor, Critic 등"
+      - "역할 간 분업"
+    
+    quiz:
+      - question: "일반적인 agent 역할 예시는?"
+        answer: "Planner, Researcher, Writer, Reviewer, Coordinator"
+        type: knowledge
+      - question: "역할 분리의 장점은?"
+        answer: "각 역할에 최적화된 프롬프트/도구, 모듈성, 디버깅 용이"
+        type: application
+
+  - id: coordination_patterns
+    name: "조율 패턴"
+    category: multi_agent
+    depth: 5
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - agent_communication
+      - agent_roles
+    
+    leads_to:
+      - complex_workflows
+    
+    core_concepts:
+      - "Sequential, Parallel, Hierarchical"
+      - "Supervisor 패턴"
+      - "토론/투표 메커니즘"
+    
+    quiz:
+      - question: "supervisor 패턴이란?"
+        answer: "상위 agent가 하위 agent들에게 태스크 할당 및 결과 종합"
+        type: knowledge
+      - question: "debate 패턴의 장점은?"
+        answer: "다양한 관점, 오류 상호 검증, 더 신뢰성 있는 결과"
+        type: conceptual
+
+  # ---------------------------------------------------------------------------
+  # Frameworks & Applications
+  # ---------------------------------------------------------------------------
+  - id: agent_frameworks
+    name: "Agent Framework"
+    category: frameworks
+    depth: 2
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - agent_loop
+      - tool_use
+    
+    leads_to:
+      - langchain_basics
+      - autogen_basics
+    
+    core_concepts:
+      - "agent 개발 추상화"
+      - "공통 패턴 제공"
+      - "LangChain, AutoGen, CrewAI 등"
+    
+    quiz:
+      - question: "agent framework의 장점은?"
+        answer: "보일러플레이트 감소, 검증된 패턴, 빠른 프로토타이핑"
+        type: conceptual
+      - question: "주요 agent framework들은?"
+        answer: "LangChain/LangGraph, AutoGen, CrewAI, Semantic Kernel"
+        type: knowledge
+
+  - id: langchain_basics
+    name: "LangChain / LangGraph"
+    category: frameworks
+    depth: 3
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - agent_frameworks
+    
+    leads_to:
+      - complex_workflows
+    
+    core_concepts:
+      - "Chain, Agent, Tool 추상화"
+      - "LangGraph로 복잡한 flow"
+      - "LCEL (LangChain Expression Language)"
+    
+    quiz:
+      - question: "LangChain의 핵심 컴포넌트는?"
+        answer: "Models, Prompts, Chains, Agents, Memory, Retrievers"
+        type: knowledge
+      - question: "LangGraph가 LangChain Agent보다 좋은 점은?"
+        answer: "복잡한 분기/루프, 상태 관리, 더 세밀한 제어"
+        type: conceptual
+
+  - id: autogen_basics
+    name: "AutoGen"
+    category: frameworks
+    depth: 3
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - agent_frameworks
+      - multi_agent_basics
+    
+    leads_to:
+      - complex_workflows
+    
+    core_concepts:
+      - "대화형 multi-agent"
+      - "agent 간 자동 대화"
+      - "코드 실행 통합"
+    
+    quiz:
+      - question: "AutoGen의 핵심 아이디어는?"
+        answer: "agent 간 대화로 태스크 수행, 사람도 agent로 참여 가능"
+        type: conceptual
+      - question: "AutoGen의 주요 agent 타입은?"
+        answer: "AssistantAgent, UserProxyAgent, GroupChatManager"
+        type: knowledge
+
+  - id: complex_workflows
+    name: "복잡한 워크플로우 구축"
+    category: frameworks
+    depth: 5
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - multi_tool_orchestration
+      - coordination_patterns
+      - langchain_basics
+    
+    leads_to:
+      - production_deployment
+    
+    core_concepts:
+      - "조건 분기, 반복, 병렬"
+      - "에러 핸들링, 폴백"
+      - "human-in-the-loop"
+    
+    quiz:
+      - question: "human-in-the-loop의 적용 시점은?"
+        answer: "고위험 결정, 불확실한 상황, 승인 필요 작업"
+        type: application
+      - question: "워크플로우 디버깅 방법은?"
+        answer: "단계별 로깅, 중간 상태 검사, 재현 가능한 테스트"
+        type: application
+
+  # ---------------------------------------------------------------------------
+  # 실전 응용
+  # ---------------------------------------------------------------------------
+  - id: data_analysis_agent
+    name: "Data Analysis Agent"
+    category: applications
+    depth: 4
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - code_execution
+      - rag
+    
+    leads_to:
+      - production_deployment
+    
+    core_concepts:
+      - "데이터 로드, 분석, 시각화"
+      - "자연어 → 분석 코드"
+      - "인사이트 도출"
+    
+    quiz:
+      - question: "data analysis agent의 도구 구성은?"
+        answer: "코드 실행, 파일 읽기, 시각화 생성, 보고서 작성"
+        type: application
+      - question: "데이터 분석 agent의 도전은?"
+        answer: "데이터 이해, 적절한 분석 방법 선택, 해석 정확성"
+        type: conceptual
+
+  - id: research_agent
+    name: "Research Agent"
+    category: applications
+    depth: 4
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - agentic_rag
+      - planning_strategies
+    
+    leads_to:
+      - production_deployment
+    
+    core_concepts:
+      - "정보 수집 및 종합"
+      - "다중 소스 검색"
+      - "보고서 생성"
+    
+    quiz:
+      - question: "research agent의 워크플로우는?"
+        answer: "질문 분해 → 검색 → 정보 추출 → 종합 → 보고서 작성"
+        type: knowledge
+      - question: "정보 신뢰성 검증 방법은?"
+        answer: "다중 소스 확인, 출처 추적, 최신성 확인"
+        type: application
+
+  - id: production_deployment
+    name: "프로덕션 배포"
+    category: applications
+    depth: 6
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - complex_workflows
+    
+    leads_to: []
+    
+    core_concepts:
+      - "안정성, 모니터링"
+      - "비용 관리"
+      - "보안, 규정 준수"
+    
+    quiz:
+      - question: "agent 프로덕션 고려사항은?"
+        answer: "latency, 비용, 에러 처리, 로깅, 보안, 스케일링"
+        type: knowledge
+      - question: "agent 모니터링 지표는?"
+        answer: "성공률, 응답 시간, 토큰 사용량, 도구 호출 통계"
+        type: application
+      - question: "비용 최적화 방법은?"
+        answer: "캐싱, 작은 모델 사용, 불필요한 호출 감소, 배치 처리"
+        type: application
+
+# =============================================================================
+# 카테고리별 노드 그룹
+# =============================================================================
+categories:
+  fundamentals:
+    name: "기초"
+    color: "#FF6B6B"
+    nodes: [agent_fundamentals, agent_loop]
+    
+  tools:
+    name: "도구 사용"
+    color: "#4ECDC4"
+    nodes: [tool_use, function_calling_format, tool_selection, 
+            multi_tool_orchestration, code_execution]
+    
+  rag:
+    name: "RAG"
+    color: "#45B7D1"
+    nodes: [rag, semantic_search, vector_database, chunking_strategies,
+            hybrid_search, advanced_rag, agentic_rag]
+    
+  reasoning:
+    name: "추론/계획"
+    color: "#96CEB4"
+    nodes: [reasoning_techniques, react, self_reflection, reflexion,
+            planning_strategies, hierarchical_planning]
+    
+  memory:
+    name: "메모리"
+    color: "#DDA0DD"
+    nodes: [agent_memory, short_term_memory, long_term_memory, memory_management]
+    
+  multi_agent:
+    name: "멀티에이전트"
+    color: "#FFEAA7"
+    nodes: [multi_agent_basics, agent_communication, agent_roles, 
+            coordination_patterns]
+    
+  frameworks:
+    name: "프레임워크"
+    color: "#74B9FF"
+    nodes: [agent_frameworks, langchain_basics, autogen_basics, complex_workflows]
+    
+  applications:
+    name: "응용"
+    color: "#A29BFE"
+    nodes: [data_analysis_agent, research_agent, production_deployment]
+
+# =============================================================================
+# 도메인 간 연결점
+# =============================================================================
+cross_domain_connections:
+  from_llm:
+    - from: chain_of_thought
+      to: reasoning_techniques
+      notes: "CoT → Agent 추론 기법"
+    - from: sentence_embeddings
+      to: semantic_search
+      notes: "임베딩 → RAG 검색"
+    - from: context_length_extension
+      to: rag
+      notes: "컨텍스트 한계 → RAG 필요성"
+    - from: chat_format
+      to: agent_fundamentals
+      notes: "채팅 포맷 → Agent 프롬프트"
+      
+  from_transformer:
+    - from: attention_complexity
+      to: rag
+      notes: "긴 컨텍스트 비용 → RAG로 해결"
+      
+  from_deep_learning:
+    - from: cross_entropy
+      to: rag
+      notes: "검색 모델 학습"

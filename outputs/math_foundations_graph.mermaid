@@ -1,0 +1,70 @@
+flowchart TD
+
+    %% Style definitions
+    classDef math_foundations_linear_algebra fill:#4A90D9,stroke:#333,stroke-width:1px,color:#fff
+    classDef math_foundations_calculus fill:#D94A4A,stroke:#333,stroke-width:1px,color:#fff
+    classDef math_foundations_probability fill:#4AD94A,stroke:#333,stroke-width:1px,color:#fff
+    classDef external fill:#gray,stroke:#333,stroke-width:1px,color:#fff,stroke-dasharray: 5 5
+
+    math_foundations_derivative["미분 (Derivative)"]
+    math_foundations_vector["벡터"]
+    math_foundations_probability_basics["확률 기초"]
+    math_foundations_partial_derivative["편미분"]
+    math_foundations_chain_rule["연쇄 법칙 (Chain Rule)"]
+    math_foundations_dot_product["내적 (Dot Product)"]
+    math_foundations_vector_norm["벡터 노름 (Norm)"]
+    math_foundations_matrix["행렬 (Matrix)"]
+    math_foundations_conditional_probability["조건부 확률"]
+    math_foundations_expectation["기댓값"]
+    math_foundations_gradient["그래디언트 (Gradient)"]
+    math_foundations_matrix_multiplication["행렬 곱셈"]
+    math_foundations_transpose["전치 (Transpose)"]
+    math_foundations_cosine_similarity["코사인 유사도"]
+    math_foundations_bayes_theorem["베이즈 정리"]
+    math_foundations_variance["분산과 표준편차"]
+    math_foundations_linear_transformation["선형 변환"]
+    math_foundations_eigenvalue["고유값/고유벡터"]
+    math_foundations_maximum_likelihood["최대 우도 추정 (MLE)"]
+
+    %% Edges
+    math_foundations_vector --> math_foundations_dot_product
+    math_foundations_vector --> math_foundations_vector_norm
+    math_foundations_vector --> math_foundations_matrix
+    math_foundations_matrix --> math_foundations_matrix_multiplication
+    math_foundations_dot_product --> math_foundations_matrix_multiplication
+    math_foundations_matrix --> math_foundations_transpose
+    math_foundations_matrix_multiplication --> math_foundations_linear_transformation
+    math_foundations_linear_transformation --> math_foundations_eigenvalue
+    math_foundations_derivative --> math_foundations_partial_derivative
+    math_foundations_derivative --> math_foundations_chain_rule
+    math_foundations_partial_derivative --> math_foundations_gradient
+    math_foundations_vector --> math_foundations_gradient
+    math_foundations_probability_basics --> math_foundations_conditional_probability
+    math_foundations_conditional_probability --> math_foundations_bayes_theorem
+    math_foundations_probability_basics --> math_foundations_expectation
+    math_foundations_expectation --> math_foundations_variance
+    math_foundations_bayes_theorem --> math_foundations_maximum_likelihood
+    math_foundations_gradient --> math_foundations_maximum_likelihood
+    math_foundations_dot_product --> math_foundations_cosine_similarity
+    math_foundations_vector_norm --> math_foundations_cosine_similarity
+
+    %% Apply styles
+    class math_foundations_vector math_foundations_linear_algebra
+    class math_foundations_dot_product math_foundations_linear_algebra
+    class math_foundations_vector_norm math_foundations_linear_algebra
+    class math_foundations_matrix math_foundations_linear_algebra
+    class math_foundations_matrix_multiplication math_foundations_linear_algebra
+    class math_foundations_transpose math_foundations_linear_algebra
+    class math_foundations_linear_transformation math_foundations_linear_algebra
+    class math_foundations_eigenvalue math_foundations_linear_algebra
+    class math_foundations_derivative math_foundations_calculus
+    class math_foundations_partial_derivative math_foundations_calculus
+    class math_foundations_chain_rule math_foundations_calculus
+    class math_foundations_gradient math_foundations_calculus
+    class math_foundations_probability_basics math_foundations_probability
+    class math_foundations_conditional_probability math_foundations_probability
+    class math_foundations_bayes_theorem math_foundations_probability
+    class math_foundations_expectation math_foundations_probability
+    class math_foundations_variance math_foundations_probability
+    class math_foundations_maximum_likelihood math_foundations_probability
+    class math_foundations_cosine_similarity math_foundations_linear_algebra

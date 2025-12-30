@@ -1,0 +1,162 @@
+# AI Learning Graph - Meta Structure
+# 큰 주제(도메인) 간의 관계와 전체 학습 경로를 정의합니다.
+
+version: "1.0"
+created: "2025-12-30"
+author: "조우진"
+goal: "2026년 AI Engineer 피봇팅을 위한 체계적 학습"
+
+# =============================================================================
+# 도메인 정의
+# =============================================================================
+domains:
+  - id: math_foundations
+    name: "수학적 기초"
+    file: "01_math_foundations.yaml"
+    description: "선형대수, 미적분, 확률/통계 등 ML/DL의 수학적 토대"
+    estimated_hours: 40
+    priority: 1  # 가장 먼저 점검해야 할 영역
+    
+  - id: deep_learning
+    name: "딥러닝 기초"
+    file: "02_deep_learning.yaml"
+    description: "신경망 기본 구조, 학습 알고리즘, CNN, RNN 등"
+    estimated_hours: 60
+    priority: 2
+    
+  - id: transformer
+    name: "Transformer 아키텍처"
+    file: "03_transformer.yaml"
+    description: "Attention mechanism, Transformer 구조, 주요 변형들"
+    estimated_hours: 40
+    priority: 3
+    
+  - id: llm
+    name: "Large Language Models"
+    file: "04_llm.yaml"
+    description: "LLM 학습/추론, 프롬프팅, Fine-tuning, RLHF 등"
+    estimated_hours: 50
+    priority: 4
+    
+  - id: agent
+    name: "AI Agents"
+    file: "05_agent.yaml"
+    description: "Tool use, RAG, Multi-agent, Planning 등"
+    estimated_hours: 40
+    priority: 5
+
+# =============================================================================
+# 도메인 간 의존성 그래프
+# =============================================================================
+domain_dependencies:
+  # 수학 기초는 독립적 (선수 도메인 없음)
+  - from: math_foundations
+    to: deep_learning
+    type: prerequisite
+    strength: strong  # strong: 필수, moderate: 권장, weak: 도움됨
+    notes: "경사하강법, 역전파 이해에 미적분/선형대수 필수"
+    
+  - from: deep_learning
+    to: transformer
+    type: prerequisite
+    strength: strong
+    notes: "신경망 기본 구조, 학습 원리 이해 필요"
+    
+  - from: transformer
+    to: llm
+    type: prerequisite
+    strength: strong
+    notes: "Transformer가 LLM의 핵심 아키텍처"
+    
+  - from: llm
+    to: agent
+    type: prerequisite
+    strength: strong
+    notes: "Agent는 LLM을 기반으로 동작"
+    
+  # 교차 의존성
+  - from: math_foundations
+    to: transformer
+    type: reference
+    strength: moderate
+    notes: "Attention의 softmax, 행렬 연산 이해에 필요"
+    
+  - from: deep_learning
+    to: llm
+    type: reference
+    strength: moderate
+    notes: "학습 기법(optimizer, regularization) 공유"
+
+# =============================================================================
+# 학습 경로 (Learning Paths)
+# =============================================================================
+learning_paths:
+  - id: full_path
+    name: "Full AI Engineer Path"
+    description: "처음부터 끝까지 전체 경로"
+    domains: [math_foundations, deep_learning, transformer, llm, agent]
+    
+  - id: quick_path
+    name: "빠른 실무 경로"
+    description: "수학 기초가 어느정도 있다고 가정, 핵심만"
+    domains: [deep_learning, transformer, llm, agent]
+    skip_if_mastered: [math_foundations]
+    
+  - id: llm_focus
+    name: "LLM 집중 경로"
+    description: "DL 기초가 있다고 가정, LLM/Agent 집중"
+    domains: [transformer, llm, agent]
+    skip_if_mastered: [math_foundations, deep_learning]
+
+# =============================================================================
+# 전체 학습 진행 상태
+# =============================================================================
+progress:
+  current_domain: null
+  current_path: full_path
+  started_at: null
+  
+  domain_status:
+    math_foundations:
+      status: not_started  # not_started, in_progress, review_needed, completed
+      mastered_nodes: 0
+      total_nodes: 0  # 각 도메인 yaml 로드 후 업데이트
+      last_reviewed: null
+      
+    deep_learning:
+      status: not_started
+      mastered_nodes: 0
+      total_nodes: 0
+      last_reviewed: null
+      
+    transformer:
+      status: not_started
+      mastered_nodes: 0
+      total_nodes: 0
+      last_reviewed: null
+      
+    llm:
+      status: not_started
+      mastered_nodes: 0
+      total_nodes: 0
+      last_reviewed: null
+      
+    agent:
+      status: not_started
+      mastered_nodes: 0
+      total_nodes: 0
+      last_reviewed: null
+
+# =============================================================================
+# 설정
+# =============================================================================
+settings:
+  mastery_threshold: 0.8  # 80% 이상 퀴즈 정답 시 mastered로 간주
+  review_interval_days: 14  # 복습 주기
+  spaced_repetition: true  # 간격 반복 학습 활성화
+  
+  mastery_levels:
+    0: "미학습"
+    1: "학습중"
+    2: "이해완료"
+    3: "숙달"

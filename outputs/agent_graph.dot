@@ -1,0 +1,154 @@
+digraph agent {
+    rankdir=TB;
+    node [shape=box, style="rounded,filled", fontname="Arial"];
+    edge [fontname="Arial"];
+    label="AI Agents";
+    labelloc=t;
+    fontsize=20;
+
+    subgraph cluster_agent_reasoning {
+        label="추론/계획";
+        style=rounded;
+        bgcolor="#fafafa";
+        agent_reasoning_techniques [label="추론 기법", fillcolor="#96CEB4", fontcolor="white"];
+        agent_react [label="ReAct (Reasoning + Acting)", fillcolor="#96CEB4", fontcolor="white"];
+        agent_self_reflection [label="Self-Reflection", fillcolor="#96CEB4", fontcolor="white"];
+        agent_reflexion [label="Reflexion", fillcolor="#96CEB4", fontcolor="white"];
+        agent_planning_strategies [label="Planning 전략", fillcolor="#96CEB4", fontcolor="white"];
+        agent_hierarchical_planning [label="Hierarchical Planning", fillcolor="#96CEB4", fontcolor="white"];
+    }
+
+    subgraph cluster_agent_rag {
+        label="RAG";
+        style=rounded;
+        bgcolor="#fafafa";
+        agent_rag [label="RAG 개요", fillcolor="#45B7D1", fontcolor="white"];
+        agent_semantic_search [label="시맨틱 검색", fillcolor="#45B7D1", fontcolor="white"];
+        agent_vector_database [label="Vector Database", fillcolor="#45B7D1", fontcolor="white"];
+        agent_chunking_strategies [label="Chunking 전략", fillcolor="#45B7D1", fontcolor="white"];
+        agent_hybrid_search [label="Hybrid Search", fillcolor="#45B7D1", fontcolor="white"];
+        agent_advanced_rag [label="Advanced RAG 기법", fillcolor="#45B7D1", fontcolor="white"];
+        agent_agentic_rag [label="Agentic RAG", fillcolor="#45B7D1", fontcolor="white"];
+    }
+
+    subgraph cluster_agent_tools {
+        label="도구 사용";
+        style=rounded;
+        bgcolor="#fafafa";
+        agent_tool_use [label="Tool Use (Function Calling)", fillcolor="#4ECDC4", fontcolor="white"];
+        agent_function_calling_format [label="Function Calling 포맷", fillcolor="#4ECDC4", fontcolor="white"];
+        agent_tool_selection [label="Tool Selection", fillcolor="#4ECDC4", fontcolor="white"];
+        agent_multi_tool_orchestration [label="Multi-Tool Orchestration", fillcolor="#4ECDC4", fontcolor="white"];
+        agent_code_execution [label="Code Execution (Code Interpreter)", fillcolor="#4ECDC4", fontcolor="white"];
+    }
+
+    subgraph cluster_agent_applications {
+        label="응용";
+        style=rounded;
+        bgcolor="#fafafa";
+        agent_data_analysis_agent [label="Data Analysis Agent", fillcolor="#A29BFE", fontcolor="white"];
+        agent_research_agent [label="Research Agent", fillcolor="#A29BFE", fontcolor="white"];
+        agent_production_deployment [label="프로덕션 배포", fillcolor="#A29BFE", fontcolor="white"];
+    }
+
+    subgraph cluster_agent_frameworks {
+        label="프레임워크";
+        style=rounded;
+        bgcolor="#fafafa";
+        agent_agent_frameworks [label="Agent Framework", fillcolor="#74B9FF", fontcolor="white"];
+        agent_langchain_basics [label="LangChain / LangGraph", fillcolor="#74B9FF", fontcolor="white"];
+        agent_autogen_basics [label="AutoGen", fillcolor="#74B9FF", fontcolor="white"];
+        agent_complex_workflows [label="복잡한 워크플로우 구축", fillcolor="#74B9FF", fontcolor="white"];
+    }
+
+    subgraph cluster_agent_multi_agent {
+        label="멀티에이전트";
+        style=rounded;
+        bgcolor="#fafafa";
+        agent_multi_agent_basics [label="Multi-Agent 기초", fillcolor="#FFEAA7", fontcolor="white"];
+        agent_agent_communication [label="Agent 간 통신", fillcolor="#FFEAA7", fontcolor="white"];
+        agent_agent_roles [label="Agent 역할 설계", fillcolor="#FFEAA7", fontcolor="white"];
+        agent_coordination_patterns [label="조율 패턴", fillcolor="#FFEAA7", fontcolor="white"];
+    }
+
+    subgraph cluster_agent_fundamentals {
+        label="기초";
+        style=rounded;
+        bgcolor="#fafafa";
+        agent_agent_fundamentals [label="Agent 기초 개념", fillcolor="#FF6B6B", fontcolor="white"];
+        agent_agent_loop [label="Agent Loop (Perception-Action)", fillcolor="#FF6B6B", fontcolor="white"];
+    }
+
+    subgraph cluster_agent_memory {
+        label="메모리";
+        style=rounded;
+        bgcolor="#fafafa";
+        agent_agent_memory [label="Agent Memory", fillcolor="#DDA0DD", fontcolor="white"];
+        agent_short_term_memory [label="Short-term Memory", fillcolor="#DDA0DD", fontcolor="white"];
+        agent_long_term_memory [label="Long-term Memory", fillcolor="#DDA0DD", fontcolor="white"];
+        agent_memory_management [label="Memory Management", fillcolor="#DDA0DD", fontcolor="white"];
+    }
+
+    // External dependencies
+    llm_context_length_extension [label="Context Length 확장\n(Large Language Models)", fillcolor="#cccccc", style="rounded,filled,dashed"];
+    llm_sentence_embeddings [label="문장/문서 임베딩\n(Large Language Models)", fillcolor="#cccccc", style="rounded,filled,dashed"];
+    llm_chain_of_thought [label="Chain-of-Thought (CoT)\n(Large Language Models)", fillcolor="#cccccc", style="rounded,filled,dashed"];
+    llm_chat_format [label="Chat Format & System Prompt\n(Large Language Models)", fillcolor="#cccccc", style="rounded,filled,dashed"];
+
+    // Edges
+    llm_chat_format -> agent_agent_fundamentals [style=dashed, color="#999999"];
+    llm_chain_of_thought -> agent_agent_fundamentals [style=dashed, color="#999999"];
+    agent_agent_fundamentals -> agent_agent_loop;
+    agent_agent_fundamentals -> agent_tool_use;
+    agent_tool_use -> agent_function_calling_format;
+    agent_function_calling_format -> agent_tool_selection;
+    agent_tool_selection -> agent_multi_tool_orchestration;
+    agent_planning_strategies -> agent_multi_tool_orchestration;
+    agent_tool_use -> agent_code_execution;
+    agent_agent_fundamentals -> agent_rag;
+    llm_sentence_embeddings -> agent_rag [style=dashed, color="#999999"];
+    llm_context_length_extension -> agent_rag [style=dashed, color="#999999"];
+    agent_rag -> agent_semantic_search;
+    llm_sentence_embeddings -> agent_semantic_search [style=dashed, color="#999999"];
+    agent_semantic_search -> agent_vector_database;
+    agent_rag -> agent_chunking_strategies;
+    agent_semantic_search -> agent_hybrid_search;
+    agent_chunking_strategies -> agent_advanced_rag;
+    agent_hybrid_search -> agent_advanced_rag;
+    agent_advanced_rag -> agent_agentic_rag;
+    agent_agent_loop -> agent_agentic_rag;
+    agent_agent_fundamentals -> agent_reasoning_techniques;
+    llm_chain_of_thought -> agent_reasoning_techniques [style=dashed, color="#999999"];
+    agent_reasoning_techniques -> agent_react;
+    agent_tool_use -> agent_react;
+    agent_reasoning_techniques -> agent_self_reflection;
+    agent_self_reflection -> agent_reflexion;
+    agent_agent_loop -> agent_reflexion;
+    agent_react -> agent_planning_strategies;
+    agent_planning_strategies -> agent_hierarchical_planning;
+    agent_agent_loop -> agent_agent_memory;
+    agent_agent_memory -> agent_short_term_memory;
+    agent_agent_memory -> agent_long_term_memory;
+    agent_vector_database -> agent_long_term_memory;
+    agent_short_term_memory -> agent_memory_management;
+    agent_long_term_memory -> agent_memory_management;
+    agent_agent_loop -> agent_multi_agent_basics;
+    agent_tool_use -> agent_multi_agent_basics;
+    agent_multi_agent_basics -> agent_agent_communication;
+    agent_multi_agent_basics -> agent_agent_roles;
+    agent_agent_communication -> agent_coordination_patterns;
+    agent_agent_roles -> agent_coordination_patterns;
+    agent_agent_loop -> agent_agent_frameworks;
+    agent_tool_use -> agent_agent_frameworks;
+    agent_agent_frameworks -> agent_langchain_basics;
+    agent_agent_frameworks -> agent_autogen_basics;
+    agent_multi_agent_basics -> agent_autogen_basics;
+    agent_multi_tool_orchestration -> agent_complex_workflows;
+    agent_coordination_patterns -> agent_complex_workflows;
+    agent_langchain_basics -> agent_complex_workflows;
+    agent_code_execution -> agent_data_analysis_agent;
+    agent_rag -> agent_data_analysis_agent;
+    agent_agentic_rag -> agent_research_agent;
+    agent_planning_strategies -> agent_research_agent;
+    agent_complex_workflows -> agent_production_deployment;
+}

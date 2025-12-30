@@ -1,0 +1,133 @@
+digraph deep_learning {
+    rankdir=TB;
+    node [shape=box, style="rounded,filled", fontname="Arial"];
+    edge [fontname="Arial"];
+    label="딥러닝 기초";
+    labelloc=t;
+    fontsize=20;
+
+    subgraph cluster_deep_learning_cnn {
+        label="CNN";
+        style=rounded;
+        bgcolor="#fafafa";
+        deep_learning_convolution [label="합성곱 (Convolution)", fillcolor="#FFEAA7", fontcolor="white"];
+        deep_learning_pooling [label="Pooling", fillcolor="#FFEAA7", fontcolor="white"];
+        deep_learning_cnn_architecture [label="CNN 아키텍처", fillcolor="#FFEAA7", fontcolor="white"];
+        deep_learning_resnet [label="ResNet", fillcolor="#FFEAA7", fontcolor="white"];
+    }
+
+    subgraph cluster_deep_learning_regularization {
+        label="정규화";
+        style=rounded;
+        bgcolor="#fafafa";
+        deep_learning_overfitting [label="과적합 (Overfitting)", fillcolor="#45B7D1", fontcolor="white"];
+        deep_learning_regularization [label="정규화 (Regularization)", fillcolor="#45B7D1", fontcolor="white"];
+        deep_learning_dropout [label="Dropout", fillcolor="#45B7D1", fontcolor="white"];
+        deep_learning_batch_normalization [label="Batch Normalization", fillcolor="#45B7D1", fontcolor="white"];
+        deep_learning_layer_normalization [label="Layer Normalization", fillcolor="#45B7D1", fontcolor="white"];
+    }
+
+    subgraph cluster_deep_learning_rnn {
+        label="RNN";
+        style=rounded;
+        bgcolor="#fafafa";
+        deep_learning_rnn [label="순환 신경망 (RNN)", fillcolor="#DDA0DD", fontcolor="white"];
+        deep_learning_lstm [label="LSTM", fillcolor="#DDA0DD", fontcolor="white"];
+        deep_learning_seq2seq [label="Sequence-to-Sequence", fillcolor="#DDA0DD", fontcolor="white"];
+    }
+
+    subgraph cluster_deep_learning_problems {
+        label="문제와 해결책";
+        style=rounded;
+        bgcolor="#fafafa";
+        deep_learning_vanishing_gradient [label="기울기 소실 문제", fillcolor="#96CEB4", fontcolor="white"];
+        deep_learning_residual_connection [label="잔차 연결 (Residual Connection)", fillcolor="#96CEB4", fontcolor="white"];
+    }
+
+    subgraph cluster_deep_learning_learning {
+        label="학습 알고리즘";
+        style=rounded;
+        bgcolor="#fafafa";
+        deep_learning_loss_function [label="손실 함수", fillcolor="#4ECDC4", fontcolor="white"];
+        deep_learning_cross_entropy [label="Cross-Entropy Loss", fillcolor="#4ECDC4", fontcolor="white"];
+        deep_learning_gradient_descent [label="경사하강법", fillcolor="#4ECDC4", fontcolor="white"];
+        deep_learning_learning_rate [label="학습률 (Learning Rate)", fillcolor="#4ECDC4", fontcolor="white"];
+        deep_learning_sgd [label="Stochastic Gradient Descent", fillcolor="#4ECDC4", fontcolor="white"];
+        deep_learning_momentum [label="Momentum", fillcolor="#4ECDC4", fontcolor="white"];
+        deep_learning_adam [label="Adam Optimizer", fillcolor="#4ECDC4", fontcolor="white"];
+        deep_learning_adamw [label="AdamW", fillcolor="#4ECDC4", fontcolor="white"];
+        deep_learning_backpropagation [label="역전파 (Backpropagation)", fillcolor="#4ECDC4", fontcolor="white"];
+        deep_learning_computational_graph [label="계산 그래프", fillcolor="#4ECDC4", fontcolor="white"];
+    }
+
+    subgraph cluster_deep_learning_nn_basics {
+        label="신경망 기초";
+        style=rounded;
+        bgcolor="#fafafa";
+        deep_learning_perceptron [label="퍼셉트론", fillcolor="#FF6B6B", fontcolor="white"];
+        deep_learning_activation_function [label="활성화 함수", fillcolor="#FF6B6B", fontcolor="white"];
+        deep_learning_relu [label="ReLU", fillcolor="#FF6B6B", fontcolor="white"];
+        deep_learning_sigmoid [label="Sigmoid", fillcolor="#FF6B6B", fontcolor="white"];
+        deep_learning_softmax [label="Softmax", fillcolor="#FF6B6B", fontcolor="white"];
+        deep_learning_neural_network_layer [label="신경망 층 (Layer)", fillcolor="#FF6B6B", fontcolor="white"];
+        deep_learning_mlp [label="다층 퍼셉트론 (MLP)", fillcolor="#FF6B6B", fontcolor="white"];
+    }
+
+    // External dependencies
+    math_foundations_probability_basics [label="확률 기초\n(수학적 기초)", fillcolor="#cccccc", style="rounded,filled,dashed"];
+    math_foundations_variance [label="분산과 표준편차\n(수학적 기초)", fillcolor="#cccccc", style="rounded,filled,dashed"];
+    math_foundations_maximum_likelihood [label="최대 우도 추정 (MLE)\n(수학적 기초)", fillcolor="#cccccc", style="rounded,filled,dashed"];
+    math_foundations_vector_norm [label="벡터 노름 (Norm)\n(수학적 기초)", fillcolor="#cccccc", style="rounded,filled,dashed"];
+    math_foundations_chain_rule [label="연쇄 법칙 (Chain Rule)\n(수학적 기초)", fillcolor="#cccccc", style="rounded,filled,dashed"];
+    math_foundations_gradient [label="그래디언트 (Gradient)\n(수학적 기초)", fillcolor="#cccccc", style="rounded,filled,dashed"];
+    math_foundations_linear_transformation [label="선형 변환\n(수학적 기초)", fillcolor="#cccccc", style="rounded,filled,dashed"];
+
+    // Edges
+    math_foundations_linear_transformation -> deep_learning_perceptron [style=dashed, color="#999999"];
+    deep_learning_perceptron -> deep_learning_activation_function;
+    deep_learning_activation_function -> deep_learning_relu;
+    deep_learning_activation_function -> deep_learning_sigmoid;
+    math_foundations_probability_basics -> deep_learning_sigmoid [style=dashed, color="#999999"];
+    deep_learning_activation_function -> deep_learning_softmax;
+    math_foundations_probability_basics -> deep_learning_softmax [style=dashed, color="#999999"];
+    deep_learning_perceptron -> deep_learning_neural_network_layer;
+    math_foundations_linear_transformation -> deep_learning_neural_network_layer [style=dashed, color="#999999"];
+    deep_learning_neural_network_layer -> deep_learning_mlp;
+    deep_learning_activation_function -> deep_learning_mlp;
+    deep_learning_loss_function -> deep_learning_cross_entropy;
+    deep_learning_softmax -> deep_learning_cross_entropy;
+    math_foundations_maximum_likelihood -> deep_learning_cross_entropy [style=dashed, color="#999999"];
+    deep_learning_loss_function -> deep_learning_gradient_descent;
+    math_foundations_gradient -> deep_learning_gradient_descent [style=dashed, color="#999999"];
+    deep_learning_gradient_descent -> deep_learning_learning_rate;
+    deep_learning_gradient_descent -> deep_learning_sgd;
+    deep_learning_sgd -> deep_learning_momentum;
+    deep_learning_momentum -> deep_learning_adam;
+    deep_learning_learning_rate -> deep_learning_adam;
+    deep_learning_adam -> deep_learning_adamw;
+    deep_learning_regularization -> deep_learning_adamw;
+    deep_learning_gradient_descent -> deep_learning_backpropagation;
+    deep_learning_mlp -> deep_learning_backpropagation;
+    math_foundations_chain_rule -> deep_learning_backpropagation [style=dashed, color="#999999"];
+    deep_learning_backpropagation -> deep_learning_computational_graph;
+    deep_learning_overfitting -> deep_learning_regularization;
+    math_foundations_vector_norm -> deep_learning_regularization [style=dashed, color="#999999"];
+    deep_learning_regularization -> deep_learning_dropout;
+    deep_learning_mlp -> deep_learning_dropout;
+    deep_learning_mlp -> deep_learning_batch_normalization;
+    math_foundations_variance -> deep_learning_batch_normalization [style=dashed, color="#999999"];
+    deep_learning_batch_normalization -> deep_learning_layer_normalization;
+    deep_learning_backpropagation -> deep_learning_vanishing_gradient;
+    deep_learning_sigmoid -> deep_learning_vanishing_gradient;
+    deep_learning_vanishing_gradient -> deep_learning_residual_connection;
+    deep_learning_neural_network_layer -> deep_learning_convolution;
+    deep_learning_convolution -> deep_learning_pooling;
+    deep_learning_convolution -> deep_learning_cnn_architecture;
+    deep_learning_pooling -> deep_learning_cnn_architecture;
+    deep_learning_cnn_architecture -> deep_learning_resnet;
+    deep_learning_residual_connection -> deep_learning_resnet;
+    deep_learning_mlp -> deep_learning_rnn;
+    deep_learning_rnn -> deep_learning_lstm;
+    deep_learning_vanishing_gradient -> deep_learning_lstm;
+    deep_learning_lstm -> deep_learning_seq2seq;
+}

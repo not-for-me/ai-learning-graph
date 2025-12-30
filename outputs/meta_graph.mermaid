@@ -1,0 +1,24 @@
+flowchart LR
+
+    %% Domain nodes
+    math_foundations[("수학적 기초")]
+    deep_learning[("딥러닝 기초")]
+    transformer[("Transformer 아키텍처")]
+    llm[("Large Language Models")]
+    agent[("AI Agents")]
+
+    %% Domain relationships
+    deep_learning --> llm
+    deep_learning --> transformer
+    llm --> agent
+    math_foundations --> deep_learning
+    math_foundations --> llm
+    math_foundations --> transformer
+    transformer --> llm
+
+    %% Styles
+    style math_foundations fill:#E17055,stroke:#333,stroke-width:2px,color:#fff
+    style deep_learning fill:#00B894,stroke:#333,stroke-width:2px,color:#fff
+    style transformer fill:#0984E3,stroke:#333,stroke-width:2px,color:#fff
+    style llm fill:#6C5CE7,stroke:#333,stroke-width:2px,color:#fff
+    style agent fill:#FDCB6E,stroke:#333,stroke-width:2px,color:#fff

@@ -1,0 +1,156 @@
+flowchart TD
+
+    %% Style definitions
+    classDef llm_architecture fill:#E17055,stroke:#333,stroke-width:1px,color:#fff
+    classDef llm_preprocessing fill:#00B894,stroke:#333,stroke-width:1px,color:#fff
+    classDef llm_training fill:#0984E3,stroke:#333,stroke-width:1px,color:#fff
+    classDef llm_inference fill:#6C5CE7,stroke:#333,stroke-width:1px,color:#fff
+    classDef llm_finetuning fill:#FDCB6E,stroke:#333,stroke-width:1px,color:#fff
+    classDef llm_alignment fill:#E84393,stroke:#333,stroke-width:1px,color:#fff
+    classDef llm_prompting fill:#00CEC9,stroke:#333,stroke-width:1px,color:#fff
+    classDef llm_optimization fill:#636E72,stroke:#333,stroke-width:1px,color:#fff
+    classDef llm_context fill:#A29BFE,stroke:#333,stroke-width:1px,color:#fff
+    classDef external fill:#gray,stroke:#333,stroke-width:1px,color:#fff,stroke-dasharray: 5 5
+
+    llm_gpt_architecture["GPT 아키텍처"]
+    llm_bert_architecture["BERT 아키텍처"]
+    llm_t5_architecture["T5 아키텍처"]
+    llm_tokenization["토크나이제이션"]
+    llm_finetuning["Fine-tuning 기초"]
+    llm_bpe["BPE (Byte Pair Encoding)"]
+    llm_pretraining["사전학습 (Pretraining)"]
+    llm_sentence_embeddings["문장/문서 임베딩"]
+    llm_instruction_tuning["Instruction Tuning"]
+    llm_peft["PEFT (Parameter-Efficient Fine-Tuning)"]
+    llm_autoregressive_generation["자기회귀 생성"]
+    llm_embedding_layer["임베딩 레이어"]
+    llm_prompting_techniques["프롬프팅 기법"]
+    llm_next_token_prediction["Next Token Prediction"]
+    llm_masked_language_modeling["Masked Language Modeling (MLM)"]
+    llm_rlhf["RLHF"]
+    llm_chat_format["Chat Format & System Prompt"]
+    llm_lora["LoRA"]
+    llm_sampling_strategies["샘플링 전략"]
+    llm_kv_cache["KV Cache"]
+    llm_quantization["양자화 (Quantization)"]
+    llm_rotary_embedding["RoPE (Rotary Position Embedding)"]
+    llm_few_shot_prompting["Few-shot Prompting"]
+    llm_scaling_laws["스케일링 법칙"]
+    llm_reward_model["Reward Model"]
+    llm_ppo["PPO (Proximal Policy Optimization)"]
+    llm_dpo["DPO (Direct Preference Optimization)"]
+    llm_context_length_extension["Context Length 확장"]
+    llm_qlora["QLoRA"]
+    llm_temperature_sampling["Temperature 샘플링"]
+    llm_top_k_top_p["Top-k / Top-p (Nucleus) Sampling"]
+    llm_flash_attention["Flash Attention"]
+    llm_chain_of_thought["Chain-of-Thought (CoT)"]
+    llm_chinchilla_scaling["Chinchilla 스케일링"]
+
+    %% External dependencies
+    deep_learning_cross_entropy["Cross-Entropy Loss<br/><small>(딥러닝 기초)</small>"]
+    deep_learning_softmax["Softmax<br/><small>(딥러닝 기초)</small>"]
+    transformer_transformer_encoder["Transformer Encoder<br/><small>(Transformer 아키텍처)</small>"]
+    transformer_transformer_decoder["Transformer Decoder<br/><small>(Transformer 아키텍처)</small>"]
+    transformer_encoder_decoder["Encoder-Decoder 구조<br/><small>(Transformer 아키텍처)</small>"]
+    transformer_positional_encoding["Positional Encoding<br/><small>(Transformer 아키텍처)</small>"]
+    transformer_causal_attention["Causal (Masked) Attention<br/><small>(Transformer 아키텍처)</small>"]
+    math_foundations_vector["벡터<br/><small>(수학적 기초)</small>"]
+    transformer_attention_complexity["Attention 복잡도<br/><small>(Transformer 아키텍처)</small>"]
+    transformer_transformer_training["Transformer 학습 기법<br/><small>(Transformer 아키텍처)</small>"]
+    transformer_efficient_attention["효율적인 Attention 변형<br/><small>(Transformer 아키텍처)</small>"]
+
+    %% Edges
+    transformer_transformer_decoder -.-> llm_gpt_architecture
+    transformer_causal_attention -.-> llm_gpt_architecture
+    transformer_transformer_encoder -.-> llm_bert_architecture
+    transformer_encoder_decoder -.-> llm_t5_architecture
+    llm_tokenization --> llm_bpe
+    llm_bpe --> llm_embedding_layer
+    math_foundations_vector -.-> llm_embedding_layer
+    llm_embedding_layer --> llm_rotary_embedding
+    transformer_positional_encoding -.-> llm_rotary_embedding
+    llm_gpt_architecture --> llm_pretraining
+    transformer_transformer_training -.-> llm_pretraining
+    llm_pretraining --> llm_next_token_prediction
+    deep_learning_cross_entropy -.-> llm_next_token_prediction
+    llm_bert_architecture --> llm_masked_language_modeling
+    llm_pretraining --> llm_masked_language_modeling
+    llm_pretraining --> llm_scaling_laws
+    llm_scaling_laws --> llm_chinchilla_scaling
+    llm_next_token_prediction --> llm_autoregressive_generation
+    transformer_causal_attention -.-> llm_autoregressive_generation
+    llm_autoregressive_generation --> llm_sampling_strategies
+    deep_learning_softmax -.-> llm_sampling_strategies
+    llm_sampling_strategies --> llm_temperature_sampling
+    llm_temperature_sampling --> llm_top_k_top_p
+    llm_autoregressive_generation --> llm_kv_cache
+    transformer_attention_complexity -.-> llm_kv_cache
+    llm_kv_cache --> llm_flash_attention
+    transformer_efficient_attention -.-> llm_flash_attention
+    llm_pretraining --> llm_finetuning
+    llm_finetuning --> llm_instruction_tuning
+    llm_instruction_tuning --> llm_chat_format
+    llm_instruction_tuning --> llm_rlhf
+    llm_rlhf --> llm_reward_model
+    llm_reward_model --> llm_ppo
+    llm_rlhf --> llm_dpo
+    llm_finetuning --> llm_peft
+    llm_peft --> llm_lora
+    llm_lora --> llm_qlora
+    llm_quantization --> llm_qlora
+    llm_gpt_architecture --> llm_quantization
+    llm_chat_format --> llm_prompting_techniques
+    llm_prompting_techniques --> llm_few_shot_prompting
+    llm_few_shot_prompting --> llm_chain_of_thought
+    llm_rotary_embedding --> llm_context_length_extension
+    llm_kv_cache --> llm_context_length_extension
+    llm_embedding_layer --> llm_sentence_embeddings
+    llm_bert_architecture --> llm_sentence_embeddings
+
+    %% Apply styles
+    class llm_gpt_architecture llm_architecture
+    class llm_bert_architecture llm_architecture
+    class llm_t5_architecture llm_architecture
+    class llm_tokenization llm_preprocessing
+    class llm_bpe llm_preprocessing
+    class llm_embedding_layer llm_preprocessing
+    class llm_rotary_embedding llm_preprocessing
+    class llm_pretraining llm_training
+    class llm_next_token_prediction llm_training
+    class llm_masked_language_modeling llm_training
+    class llm_scaling_laws llm_training
+    class llm_chinchilla_scaling llm_training
+    class llm_autoregressive_generation llm_inference
+    class llm_sampling_strategies llm_inference
+    class llm_temperature_sampling llm_inference
+    class llm_top_k_top_p llm_inference
+    class llm_kv_cache llm_inference
+    class llm_flash_attention llm_inference
+    class llm_finetuning llm_finetuning
+    class llm_instruction_tuning llm_finetuning
+    class llm_chat_format llm_finetuning
+    class llm_rlhf llm_alignment
+    class llm_reward_model llm_alignment
+    class llm_ppo llm_alignment
+    class llm_dpo llm_alignment
+    class llm_peft llm_finetuning
+    class llm_lora llm_finetuning
+    class llm_qlora llm_finetuning
+    class llm_quantization llm_optimization
+    class llm_prompting_techniques llm_prompting
+    class llm_few_shot_prompting llm_prompting
+    class llm_chain_of_thought llm_prompting
+    class llm_context_length_extension llm_context
+    class llm_sentence_embeddings llm_context
+    class deep_learning_cross_entropy external
+    class deep_learning_softmax external
+    class transformer_transformer_encoder external
+    class transformer_transformer_decoder external
+    class transformer_encoder_decoder external
+    class transformer_positional_encoding external
+    class transformer_causal_attention external
+    class math_foundations_vector external
+    class transformer_attention_complexity external
+    class transformer_transformer_training external
+    class transformer_efficient_attention external

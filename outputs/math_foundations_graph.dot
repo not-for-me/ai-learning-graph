@@ -1,0 +1,67 @@
+digraph math_foundations {
+    rankdir=TB;
+    node [shape=box, style="rounded,filled", fontname="Arial"];
+    edge [fontname="Arial"];
+    label="수학적 기초";
+    labelloc=t;
+    fontsize=20;
+
+    subgraph cluster_math_foundations_linear_algebra {
+        label="선형대수";
+        style=rounded;
+        bgcolor="#fafafa";
+        math_foundations_vector [label="벡터", fillcolor="#4A90D9", fontcolor="white"];
+        math_foundations_dot_product [label="내적 (Dot Product)", fillcolor="#4A90D9", fontcolor="white"];
+        math_foundations_vector_norm [label="벡터 노름 (Norm)", fillcolor="#4A90D9", fontcolor="white"];
+        math_foundations_matrix [label="행렬 (Matrix)", fillcolor="#4A90D9", fontcolor="white"];
+        math_foundations_matrix_multiplication [label="행렬 곱셈", fillcolor="#4A90D9", fontcolor="white"];
+        math_foundations_transpose [label="전치 (Transpose)", fillcolor="#4A90D9", fontcolor="white"];
+        math_foundations_linear_transformation [label="선형 변환", fillcolor="#4A90D9", fontcolor="white"];
+        math_foundations_eigenvalue [label="고유값/고유벡터", fillcolor="#4A90D9", fontcolor="white"];
+        math_foundations_cosine_similarity [label="코사인 유사도", fillcolor="#4A90D9", fontcolor="white"];
+    }
+
+    subgraph cluster_math_foundations_probability {
+        label="확률/통계";
+        style=rounded;
+        bgcolor="#fafafa";
+        math_foundations_probability_basics [label="확률 기초", fillcolor="#4AD94A", fontcolor="white"];
+        math_foundations_conditional_probability [label="조건부 확률", fillcolor="#4AD94A", fontcolor="white"];
+        math_foundations_bayes_theorem [label="베이즈 정리", fillcolor="#4AD94A", fontcolor="white"];
+        math_foundations_expectation [label="기댓값", fillcolor="#4AD94A", fontcolor="white"];
+        math_foundations_variance [label="분산과 표준편차", fillcolor="#4AD94A", fontcolor="white"];
+        math_foundations_maximum_likelihood [label="최대 우도 추정 (MLE)", fillcolor="#4AD94A", fontcolor="white"];
+    }
+
+    subgraph cluster_math_foundations_calculus {
+        label="미적분";
+        style=rounded;
+        bgcolor="#fafafa";
+        math_foundations_derivative [label="미분 (Derivative)", fillcolor="#D94A4A", fontcolor="white"];
+        math_foundations_partial_derivative [label="편미분", fillcolor="#D94A4A", fontcolor="white"];
+        math_foundations_chain_rule [label="연쇄 법칙 (Chain Rule)", fillcolor="#D94A4A", fontcolor="white"];
+        math_foundations_gradient [label="그래디언트 (Gradient)", fillcolor="#D94A4A", fontcolor="white"];
+    }
+
+    // Edges
+    math_foundations_vector -> math_foundations_dot_product;
+    math_foundations_vector -> math_foundations_vector_norm;
+    math_foundations_vector -> math_foundations_matrix;
+    math_foundations_matrix -> math_foundations_matrix_multiplication;
+    math_foundations_dot_product -> math_foundations_matrix_multiplication;
+    math_foundations_matrix -> math_foundations_transpose;
+    math_foundations_matrix_multiplication -> math_foundations_linear_transformation;
+    math_foundations_linear_transformation -> math_foundations_eigenvalue;
+    math_foundations_derivative -> math_foundations_partial_derivative;
+    math_foundations_derivative -> math_foundations_chain_rule;
+    math_foundations_partial_derivative -> math_foundations_gradient;
+    math_foundations_vector -> math_foundations_gradient;
+    math_foundations_probability_basics -> math_foundations_conditional_probability;
+    math_foundations_conditional_probability -> math_foundations_bayes_theorem;
+    math_foundations_probability_basics -> math_foundations_expectation;
+    math_foundations_expectation -> math_foundations_variance;
+    math_foundations_bayes_theorem -> math_foundations_maximum_likelihood;
+    math_foundations_gradient -> math_foundations_maximum_likelihood;
+    math_foundations_dot_product -> math_foundations_cosine_similarity;
+    math_foundations_vector_norm -> math_foundations_cosine_similarity;
+}

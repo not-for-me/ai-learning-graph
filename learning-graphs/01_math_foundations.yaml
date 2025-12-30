@@ -1,0 +1,623 @@
+# 01. 수학적 기초 (Math Foundations)
+# 딥러닝/ML의 기반이 되는 수학 개념들
+
+domain:
+  id: math_foundations
+  name: "수학적 기초"
+  description: "선형대수, 미적분, 확률/통계 - DL 이해의 토대"
+
+# =============================================================================
+# 노드 정의
+# =============================================================================
+nodes:
+  # ---------------------------------------------------------------------------
+  # 선형대수 (Linear Algebra)
+  # ---------------------------------------------------------------------------
+  - id: vector
+    name: "벡터"
+    category: linear_algebra
+    depth: 0  # 최초 진입점 (선수지식 없음)
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites: []
+    
+    leads_to:
+      - matrix
+      - dot_product
+      - vector_norm
+    
+    core_concepts:
+      - "벡터의 정의와 기하학적 의미"
+      - "벡터 연산 (덧셈, 스칼라 곱)"
+      - "n차원 공간에서의 벡터"
+    
+    quiz:
+      - question: "3차원 벡터 [1,2,3]과 [4,5,6]의 합은?"
+        answer: "[5,7,9]"
+        type: calculation
+      - question: "벡터를 스칼라 2로 곱하면 기하학적으로 어떻게 변하나요?"
+        answer: "같은 방향으로 길이가 2배가 됨"
+        type: conceptual
+      - question: "ML에서 데이터 포인트 하나를 벡터로 표현하는 이유는?"
+        answer: "여러 특성(feature)을 하나의 수학적 객체로 다룰 수 있고, 벡터 연산으로 유사도/거리 계산 가능"
+        type: application
+    
+    resources:
+      - type: video
+        title: "3Blue1Brown - Vectors"
+        url: "https://www.youtube.com/watch?v=fNk_zzaMoSs"
+      - type: book
+        title: "Linear Algebra Done Right - Ch.1"
+
+  - id: dot_product
+    name: "내적 (Dot Product)"
+    category: linear_algebra
+    depth: 1
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - vector
+    
+    leads_to:
+      - matrix_multiplication
+      - cosine_similarity
+      - attention_score  # transformer로 연결
+    
+    core_concepts:
+      - "내적의 정의와 계산"
+      - "내적의 기하학적 의미 (투영)"
+      - "내적과 각도의 관계"
+    
+    quiz:
+      - question: "[1,2,3]·[4,5,6]의 값은?"
+        answer: "32 (1*4 + 2*5 + 3*6)"
+        type: calculation
+      - question: "두 벡터의 내적이 0이면 기하학적으로 무엇을 의미하나요?"
+        answer: "두 벡터가 직교(수직)함"
+        type: conceptual
+      - question: "임베딩 벡터 간 유사도를 내적으로 계산하는 이유는?"
+        answer: "같은 방향을 가리킬수록 내적 값이 크고, 이는 의미적 유사성을 반영"
+        type: application
+
+  - id: vector_norm
+    name: "벡터 노름 (Norm)"
+    category: linear_algebra
+    depth: 1
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - vector
+    
+    leads_to:
+      - cosine_similarity
+      - regularization  # deep_learning으로 연결
+    
+    core_concepts:
+      - "L1, L2 노름의 정의"
+      - "노름의 기하학적 의미 (길이)"
+      - "단위 벡터 (정규화)"
+    
+    quiz:
+      - question: "벡터 [3,4]의 L2 노름은?"
+        answer: "5 (√(9+16))"
+        type: calculation
+      - question: "L1 노름과 L2 노름의 차이는?"
+        answer: "L1은 절대값의 합, L2는 제곱합의 제곱근. L1은 sparse solution 유도"
+        type: conceptual
+      - question: "왜 신경망에서 가중치에 L2 노름 패널티를 추가하나요?"
+        answer: "가중치가 너무 커지는 것을 방지하여 과적합 억제 (weight decay)"
+        type: application
+
+  - id: matrix
+    name: "행렬 (Matrix)"
+    category: linear_algebra
+    depth: 1
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - vector
+    
+    leads_to:
+      - matrix_multiplication
+      - transpose
+      - linear_transformation
+    
+    core_concepts:
+      - "행렬의 정의와 표기법"
+      - "행렬의 기본 연산"
+      - "특수 행렬 (단위행렬, 대각행렬, 대칭행렬)"
+    
+    quiz:
+      - question: "2x3 행렬과 3x4 행렬을 곱하면 결과 행렬의 크기는?"
+        answer: "2x4"
+        type: calculation
+      - question: "단위행렬(Identity Matrix)의 역할은?"
+        answer: "어떤 행렬에 곱해도 원래 행렬 유지 (곱셈의 항등원)"
+        type: conceptual
+      - question: "신경망에서 가중치를 행렬로 표현하는 이유는?"
+        answer: "여러 입력에서 여러 출력으로의 선형 변환을 한 번에 표현/계산 가능"
+        type: application
+
+  - id: matrix_multiplication
+    name: "행렬 곱셈"
+    category: linear_algebra
+    depth: 2
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - matrix
+      - dot_product
+    
+    leads_to:
+      - linear_transformation
+      - batch_processing  # deep_learning
+    
+    core_concepts:
+      - "행렬 곱셈의 정의와 계산"
+      - "곱셈 가능 조건 (차원 호환)"
+      - "행렬 곱셈의 비교환성"
+    
+    quiz:
+      - question: "AB와 BA가 일반적으로 같지 않은 이유는?"
+        answer: "행렬 곱셈은 교환법칙이 성립하지 않음 (순서에 따라 결과 다름)"
+        type: conceptual
+      - question: "왜 GPU가 행렬 곱셈에 효율적인가요?"
+        answer: "행렬 곱셈은 병렬화 가능한 동일한 연산의 반복이고, GPU는 많은 코어로 병렬 처리에 최적화"
+        type: application
+      - question: "(3x4) @ (4x2) @ (2x5) 연산 결과의 shape은?"
+        answer: "(3x5)"
+        type: calculation
+
+  - id: transpose
+    name: "전치 (Transpose)"
+    category: linear_algebra
+    depth: 2
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - matrix
+    
+    leads_to:
+      - attention_mechanism  # transformer
+    
+    core_concepts:
+      - "전치의 정의 (행↔열 교환)"
+      - "전치의 성질"
+      - "(AB)^T = B^T A^T"
+    
+    quiz:
+      - question: "2x3 행렬을 전치하면 크기는?"
+        answer: "3x2"
+        type: calculation
+      - question: "Attention에서 Q와 K^T를 곱하는 이유는?"
+        answer: "각 Query와 모든 Key 간의 유사도를 한 번에 계산하기 위해 (결과: seq_len x seq_len)"
+        type: application
+
+  - id: linear_transformation
+    name: "선형 변환"
+    category: linear_algebra
+    depth: 3
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - matrix_multiplication
+    
+    leads_to:
+      - neural_network_layer  # deep_learning
+      - projection  # transformer의 Q, K, V projection
+    
+    core_concepts:
+      - "선형 변환의 정의"
+      - "행렬은 선형 변환을 표현"
+      - "변환의 합성 = 행렬의 곱"
+    
+    quiz:
+      - question: "선형 변환이 만족해야 하는 두 가지 조건은?"
+        answer: "가산성 f(x+y)=f(x)+f(y), 동차성 f(cx)=cf(x)"
+        type: conceptual
+      - question: "신경망의 Linear layer가 Wx+b에서 b를 더하면 엄밀히 선형변환인가요?"
+        answer: "아니오, affine 변환. 순수 선형변환은 원점을 보존해야 함"
+        type: conceptual
+      - question: "왜 선형 변환만으로는 XOR 문제를 풀 수 없나요?"
+        answer: "선형 변환의 합성도 선형이므로, 선형 분리 불가능한 문제 해결 불가"
+        type: application
+
+  - id: eigenvalue
+    name: "고유값/고유벡터"
+    category: linear_algebra
+    depth: 3
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - linear_transformation
+    
+    leads_to:
+      - pca
+      - covariance_matrix
+    
+    core_concepts:
+      - "Av = λv의 의미"
+      - "고유값 분해"
+      - "주요 방향 추출"
+    
+    quiz:
+      - question: "고유벡터의 기하학적 의미는?"
+        answer: "선형 변환 시 방향이 바뀌지 않고 크기만 변하는 벡터"
+        type: conceptual
+      - question: "PCA에서 고유벡터가 중요한 이유는?"
+        answer: "데이터의 분산이 최대인 방향(주성분)을 찾아줌"
+        type: application
+
+  # ---------------------------------------------------------------------------
+  # 미적분 (Calculus)
+  # ---------------------------------------------------------------------------
+  - id: derivative
+    name: "미분 (Derivative)"
+    category: calculus
+    depth: 0
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites: []
+    
+    leads_to:
+      - partial_derivative
+      - chain_rule
+    
+    core_concepts:
+      - "순간 변화율로서의 미분"
+      - "기본 미분 공식"
+      - "미분의 기하학적 의미 (접선의 기울기)"
+    
+    quiz:
+      - question: "f(x) = x³의 도함수는?"
+        answer: "f'(x) = 3x²"
+        type: calculation
+      - question: "미분값이 0인 점의 의미는?"
+        answer: "극값 (극대, 극소) 또는 변곡점의 후보"
+        type: conceptual
+      - question: "왜 손실함수를 미분해야 하나요?"
+        answer: "손실을 줄이는 방향(gradient의 반대)을 알기 위해"
+        type: application
+
+  - id: partial_derivative
+    name: "편미분"
+    category: calculus
+    depth: 1
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - derivative
+    
+    leads_to:
+      - gradient
+    
+    core_concepts:
+      - "다변수 함수에서 한 변수에 대한 미분"
+      - "다른 변수는 상수 취급"
+      - "편미분 표기법 (∂)"
+    
+    quiz:
+      - question: "f(x,y) = x²y + y³에서 ∂f/∂x는?"
+        answer: "2xy"
+        type: calculation
+      - question: "∂f/∂y는?"
+        answer: "x² + 3y²"
+        type: calculation
+      - question: "신경망에서 각 가중치에 대해 편미분하는 이유는?"
+        answer: "각 가중치가 손실에 미치는 영향을 개별적으로 파악하기 위해"
+        type: application
+
+  - id: chain_rule
+    name: "연쇄 법칙 (Chain Rule)"
+    category: calculus
+    depth: 1
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - derivative
+    
+    leads_to:
+      - backpropagation  # deep_learning
+    
+    core_concepts:
+      - "합성함수의 미분"
+      - "df/dx = df/du × du/dx"
+      - "여러 단계의 연쇄"
+    
+    quiz:
+      - question: "f(g(x))를 x에 대해 미분하면?"
+        answer: "f'(g(x)) × g'(x)"
+        type: calculation
+      - question: "chain rule이 역전파의 핵심인 이유는?"
+        answer: "신경망은 함수의 합성이고, 각 층의 gradient를 연쇄적으로 곱해 전파"
+        type: application
+      - question: "y = (x² + 1)³의 dy/dx는?"
+        answer: "3(x² + 1)² × 2x = 6x(x² + 1)²"
+        type: calculation
+
+  - id: gradient
+    name: "그래디언트 (Gradient)"
+    category: calculus
+    depth: 2
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - partial_derivative
+      - vector
+    
+    leads_to:
+      - gradient_descent  # deep_learning
+    
+    core_concepts:
+      - "편미분들의 벡터"
+      - "가장 가파른 증가 방향"
+      - "∇f = [∂f/∂x₁, ∂f/∂x₂, ...]"
+    
+    quiz:
+      - question: "f(x,y) = x² + y²의 gradient는?"
+        answer: "∇f = [2x, 2y]"
+        type: calculation
+      - question: "gradient가 가리키는 방향의 의미는?"
+        answer: "함수값이 가장 빠르게 증가하는 방향"
+        type: conceptual
+      - question: "왜 gradient의 반대 방향으로 이동하나요?"
+        answer: "손실을 최소화하려면 증가 방향의 반대로 가야 함"
+        type: application
+
+  # ---------------------------------------------------------------------------
+  # 확률/통계 (Probability & Statistics)
+  # ---------------------------------------------------------------------------
+  - id: probability_basics
+    name: "확률 기초"
+    category: probability
+    depth: 0
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites: []
+    
+    leads_to:
+      - conditional_probability
+      - expectation
+    
+    core_concepts:
+      - "확률의 정의와 공리"
+      - "확률 분포"
+      - "이산 vs 연속 확률변수"
+    
+    quiz:
+      - question: "모든 확률의 합이 1인 이유는?"
+        answer: "전체 사건 중 하나는 반드시 발생하므로"
+        type: conceptual
+      - question: "신경망 출력에 softmax를 쓰는 이유는?"
+        answer: "출력을 확률 분포로 만들기 위해 (합=1, 각 값 ≥0)"
+        type: application
+
+  - id: conditional_probability
+    name: "조건부 확률"
+    category: probability
+    depth: 1
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - probability_basics
+    
+    leads_to:
+      - bayes_theorem
+    
+    core_concepts:
+      - "P(A|B)의 정의"
+      - "P(A|B) = P(A∩B)/P(B)"
+      - "독립 사건"
+    
+    quiz:
+      - question: "P(A|B)와 P(B|A)가 일반적으로 같지 않은 이유는?"
+        answer: "조건이 다르면 분모(조건 사건의 확률)가 다름"
+        type: conceptual
+      - question: "언어 모델에서 P(next_token|previous_tokens)의 의미는?"
+        answer: "이전 토큰들이 주어졌을 때 다음 토큰의 확률"
+        type: application
+
+  - id: bayes_theorem
+    name: "베이즈 정리"
+    category: probability
+    depth: 2
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - conditional_probability
+    
+    leads_to:
+      - maximum_likelihood
+    
+    core_concepts:
+      - "P(A|B) = P(B|A)P(A)/P(B)"
+      - "사전/사후 확률"
+      - "우도(likelihood)"
+    
+    quiz:
+      - question: "베이즈 정리에서 P(A)를 무엇이라 부르나요?"
+        answer: "사전 확률 (prior)"
+        type: conceptual
+      - question: "LLM이 문맥을 보고 단어 확률을 업데이트하는 것을 베이즈 관점에서 설명하면?"
+        answer: "새로운 토큰(evidence)을 보고 사전 분포를 사후 분포로 업데이트"
+        type: application
+
+  - id: expectation
+    name: "기댓값"
+    category: probability
+    depth: 1
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - probability_basics
+    
+    leads_to:
+      - variance
+      - cross_entropy  # deep_learning으로 연결
+    
+    core_concepts:
+      - "E[X] = Σ x·P(x)"
+      - "가중 평균으로서의 기댓값"
+      - "선형성: E[aX+b] = aE[X]+b"
+    
+    quiz:
+      - question: "주사위 기댓값은?"
+        answer: "3.5"
+        type: calculation
+      - question: "손실 함수의 기댓값을 최소화한다는 의미는?"
+        answer: "전체 데이터 분포에서 평균적으로 손실이 최소가 되도록"
+        type: application
+
+  - id: variance
+    name: "분산과 표준편차"
+    category: probability
+    depth: 2
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - expectation
+    
+    leads_to:
+      - batch_normalization  # deep_learning
+    
+    core_concepts:
+      - "Var(X) = E[(X-μ)²]"
+      - "퍼짐의 정도"
+      - "표준편차 = √분산"
+    
+    quiz:
+      - question: "분산이 0이면 데이터가 어떤 상태인가요?"
+        answer: "모든 값이 동일함 (퍼짐 없음)"
+        type: conceptual
+      - question: "Batch Normalization에서 분산으로 나누는 이유는?"
+        answer: "스케일을 정규화하여 학습 안정화"
+        type: application
+
+  - id: maximum_likelihood
+    name: "최대 우도 추정 (MLE)"
+    category: probability
+    depth: 3
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - bayes_theorem
+      - gradient  # 최적화를 위해
+    
+    leads_to:
+      - cross_entropy  # deep_learning
+      - language_model_training  # llm
+    
+    core_concepts:
+      - "데이터가 주어졌을 때 파라미터 추정"
+      - "log-likelihood 최대화"
+      - "MLE와 cross-entropy의 관계"
+    
+    quiz:
+      - question: "왜 likelihood 대신 log-likelihood를 최적화하나요?"
+        answer: "곱이 합으로 바뀌어 계산 안정적, gradient 계산 용이"
+        type: conceptual
+      - question: "LLM 학습이 사실상 MLE인 이유는?"
+        answer: "데이터(텍스트)가 주어졌을 때 이를 가장 잘 설명하는 모델 파라미터를 찾음"
+        type: application
+
+  - id: cosine_similarity
+    name: "코사인 유사도"
+    category: linear_algebra
+    depth: 2
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - dot_product
+      - vector_norm
+    
+    leads_to:
+      - embedding_similarity  # llm
+      - attention_score  # transformer
+    
+    core_concepts:
+      - "cos(θ) = (a·b)/(||a||||b||)"
+      - "방향 기반 유사도 (-1 ~ 1)"
+      - "크기 무관, 방향만 비교"
+    
+    quiz:
+      - question: "두 벡터의 코사인 유사도가 1이면?"
+        answer: "완전히 같은 방향 (크기 무관)"
+        type: conceptual
+      - question: "임베딩에서 유클리드 거리 대신 코사인 유사도를 쓰는 경우의 장점은?"
+        answer: "벡터 크기(magnitude) 차이에 영향받지 않고 의미적 방향만 비교"
+        type: application
+
+# =============================================================================
+# 카테고리별 노드 그룹
+# =============================================================================
+categories:
+  linear_algebra:
+    name: "선형대수"
+    color: "#4A90D9"
+    nodes: [vector, dot_product, vector_norm, matrix, matrix_multiplication, 
+            transpose, linear_transformation, eigenvalue, cosine_similarity]
+    
+  calculus:
+    name: "미적분"
+    color: "#D94A4A"
+    nodes: [derivative, partial_derivative, chain_rule, gradient]
+    
+  probability:
+    name: "확률/통계"
+    color: "#4AD94A"
+    nodes: [probability_basics, conditional_probability, bayes_theorem, 
+            expectation, variance, maximum_likelihood]
+
+# =============================================================================
+# 도메인 간 연결점 (다른 도메인과 연결되는 노드들)
+# =============================================================================
+cross_domain_connections:
+  to_deep_learning:
+    - from: gradient
+      to: gradient_descent
+      notes: "gradient → 경사하강법"
+    - from: chain_rule
+      to: backpropagation
+      notes: "chain rule → 역전파"
+    - from: linear_transformation
+      to: neural_network_layer
+      notes: "선형변환 → 신경망 층"
+    - from: variance
+      to: batch_normalization
+      notes: "분산 → 배치 정규화"
+    - from: maximum_likelihood
+      to: cross_entropy
+      notes: "MLE → cross-entropy loss"
+    - from: vector_norm
+      to: regularization
+      notes: "노름 → 정규화"
+      
+  to_transformer:
+    - from: dot_product
+      to: attention_score
+      notes: "내적 → attention score"
+    - from: transpose
+      to: attention_mechanism
+      notes: "전치 → Q·K^T"
+    - from: cosine_similarity
+      to: attention_score
+      notes: "유사도 → scaled attention"

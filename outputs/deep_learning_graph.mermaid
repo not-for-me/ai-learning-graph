@@ -1,0 +1,140 @@
+flowchart TD
+
+    %% Style definitions
+    classDef deep_learning_nn_basics fill:#FF6B6B,stroke:#333,stroke-width:1px,color:#fff
+    classDef deep_learning_learning fill:#4ECDC4,stroke:#333,stroke-width:1px,color:#fff
+    classDef deep_learning_regularization fill:#45B7D1,stroke:#333,stroke-width:1px,color:#fff
+    classDef deep_learning_problems fill:#96CEB4,stroke:#333,stroke-width:1px,color:#fff
+    classDef deep_learning_cnn fill:#FFEAA7,stroke:#333,stroke-width:1px,color:#fff
+    classDef deep_learning_rnn fill:#DDA0DD,stroke:#333,stroke-width:1px,color:#fff
+    classDef external fill:#gray,stroke:#333,stroke-width:1px,color:#fff,stroke-dasharray: 5 5
+
+    deep_learning_loss_function["손실 함수"]
+    deep_learning_perceptron["퍼셉트론"]
+    deep_learning_overfitting["과적합 (Overfitting)"]
+    deep_learning_cross_entropy["Cross-Entropy Loss"]
+    deep_learning_gradient_descent["경사하강법"]
+    deep_learning_activation_function["활성화 함수"]
+    deep_learning_neural_network_layer["신경망 층 (Layer)"]
+    deep_learning_regularization["정규화 (Regularization)"]
+    deep_learning_convolution["합성곱 (Convolution)"]
+    deep_learning_learning_rate["학습률 (Learning Rate)"]
+    deep_learning_sgd["Stochastic Gradient Descent"]
+    deep_learning_backpropagation["역전파 (Backpropagation)"]
+    deep_learning_relu["ReLU"]
+    deep_learning_sigmoid["Sigmoid"]
+    deep_learning_softmax["Softmax"]
+    deep_learning_mlp["다층 퍼셉트론 (MLP)"]
+    deep_learning_dropout["Dropout"]
+    deep_learning_batch_normalization["Batch Normalization"]
+    deep_learning_rnn["순환 신경망 (RNN)"]
+    deep_learning_pooling["Pooling"]
+    deep_learning_momentum["Momentum"]
+    deep_learning_adam["Adam Optimizer"]
+    deep_learning_computational_graph["계산 그래프"]
+    deep_learning_vanishing_gradient["기울기 소실 문제"]
+    deep_learning_layer_normalization["Layer Normalization"]
+    deep_learning_lstm["LSTM"]
+    deep_learning_cnn_architecture["CNN 아키텍처"]
+    deep_learning_adamw["AdamW"]
+    deep_learning_residual_connection["잔차 연결 (Residual Connection)"]
+    deep_learning_seq2seq["Sequence-to-Sequence"]
+    deep_learning_resnet["ResNet"]
+
+    %% External dependencies
+    math_foundations_probability_basics["확률 기초<br/><small>(수학적 기초)</small>"]
+    math_foundations_variance["분산과 표준편차<br/><small>(수학적 기초)</small>"]
+    math_foundations_maximum_likelihood["최대 우도 추정 (MLE)<br/><small>(수학적 기초)</small>"]
+    math_foundations_vector_norm["벡터 노름 (Norm)<br/><small>(수학적 기초)</small>"]
+    math_foundations_chain_rule["연쇄 법칙 (Chain Rule)<br/><small>(수학적 기초)</small>"]
+    math_foundations_gradient["그래디언트 (Gradient)<br/><small>(수학적 기초)</small>"]
+    math_foundations_linear_transformation["선형 변환<br/><small>(수학적 기초)</small>"]
+
+    %% Edges
+    math_foundations_linear_transformation -.-> deep_learning_perceptron
+    deep_learning_perceptron --> deep_learning_activation_function
+    deep_learning_activation_function --> deep_learning_relu
+    deep_learning_activation_function --> deep_learning_sigmoid
+    math_foundations_probability_basics -.-> deep_learning_sigmoid
+    deep_learning_activation_function --> deep_learning_softmax
+    math_foundations_probability_basics -.-> deep_learning_softmax
+    deep_learning_perceptron --> deep_learning_neural_network_layer
+    math_foundations_linear_transformation -.-> deep_learning_neural_network_layer
+    deep_learning_neural_network_layer --> deep_learning_mlp
+    deep_learning_activation_function --> deep_learning_mlp
+    deep_learning_loss_function --> deep_learning_cross_entropy
+    deep_learning_softmax --> deep_learning_cross_entropy
+    math_foundations_maximum_likelihood -.-> deep_learning_cross_entropy
+    deep_learning_loss_function --> deep_learning_gradient_descent
+    math_foundations_gradient -.-> deep_learning_gradient_descent
+    deep_learning_gradient_descent --> deep_learning_learning_rate
+    deep_learning_gradient_descent --> deep_learning_sgd
+    deep_learning_sgd --> deep_learning_momentum
+    deep_learning_momentum --> deep_learning_adam
+    deep_learning_learning_rate --> deep_learning_adam
+    deep_learning_adam --> deep_learning_adamw
+    deep_learning_regularization --> deep_learning_adamw
+    deep_learning_gradient_descent --> deep_learning_backpropagation
+    deep_learning_mlp --> deep_learning_backpropagation
+    math_foundations_chain_rule -.-> deep_learning_backpropagation
+    deep_learning_backpropagation --> deep_learning_computational_graph
+    deep_learning_overfitting --> deep_learning_regularization
+    math_foundations_vector_norm -.-> deep_learning_regularization
+    deep_learning_regularization --> deep_learning_dropout
+    deep_learning_mlp --> deep_learning_dropout
+    deep_learning_mlp --> deep_learning_batch_normalization
+    math_foundations_variance -.-> deep_learning_batch_normalization
+    deep_learning_batch_normalization --> deep_learning_layer_normalization
+    deep_learning_backpropagation --> deep_learning_vanishing_gradient
+    deep_learning_sigmoid --> deep_learning_vanishing_gradient
+    deep_learning_vanishing_gradient --> deep_learning_residual_connection
+    deep_learning_neural_network_layer --> deep_learning_convolution
+    deep_learning_convolution --> deep_learning_pooling
+    deep_learning_convolution --> deep_learning_cnn_architecture
+    deep_learning_pooling --> deep_learning_cnn_architecture
+    deep_learning_cnn_architecture --> deep_learning_resnet
+    deep_learning_residual_connection --> deep_learning_resnet
+    deep_learning_mlp --> deep_learning_rnn
+    deep_learning_rnn --> deep_learning_lstm
+    deep_learning_vanishing_gradient --> deep_learning_lstm
+    deep_learning_lstm --> deep_learning_seq2seq
+
+    %% Apply styles
+    class deep_learning_perceptron deep_learning_nn_basics
+    class deep_learning_activation_function deep_learning_nn_basics
+    class deep_learning_relu deep_learning_nn_basics
+    class deep_learning_sigmoid deep_learning_nn_basics
+    class deep_learning_softmax deep_learning_nn_basics
+    class deep_learning_neural_network_layer deep_learning_nn_basics
+    class deep_learning_mlp deep_learning_nn_basics
+    class deep_learning_loss_function deep_learning_learning
+    class deep_learning_cross_entropy deep_learning_learning
+    class deep_learning_gradient_descent deep_learning_learning
+    class deep_learning_learning_rate deep_learning_learning
+    class deep_learning_sgd deep_learning_learning
+    class deep_learning_momentum deep_learning_learning
+    class deep_learning_adam deep_learning_learning
+    class deep_learning_adamw deep_learning_learning
+    class deep_learning_backpropagation deep_learning_learning
+    class deep_learning_computational_graph deep_learning_learning
+    class deep_learning_overfitting deep_learning_regularization
+    class deep_learning_regularization deep_learning_regularization
+    class deep_learning_dropout deep_learning_regularization
+    class deep_learning_batch_normalization deep_learning_regularization
+    class deep_learning_layer_normalization deep_learning_regularization
+    class deep_learning_vanishing_gradient deep_learning_problems
+    class deep_learning_residual_connection deep_learning_problems
+    class deep_learning_convolution deep_learning_cnn
+    class deep_learning_pooling deep_learning_cnn
+    class deep_learning_cnn_architecture deep_learning_cnn
+    class deep_learning_resnet deep_learning_cnn
+    class deep_learning_rnn deep_learning_rnn
+    class deep_learning_lstm deep_learning_rnn
+    class deep_learning_seq2seq deep_learning_rnn
+    class math_foundations_probability_basics external
+    class math_foundations_variance external
+    class math_foundations_maximum_likelihood external
+    class math_foundations_vector_norm external
+    class math_foundations_chain_rule external
+    class math_foundations_gradient external
+    class math_foundations_linear_transformation external

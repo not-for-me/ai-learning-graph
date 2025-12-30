@@ -1,0 +1,1067 @@
+# 04. Large Language Models (LLM)
+# LLM 학습, 추론, 프롬프팅, Fine-tuning 등
+
+domain:
+  id: llm
+  name: "Large Language Models"
+  description: "LLM 학습/추론, 프롬프팅, Fine-tuning, RLHF, 스케일링 법칙"
+
+# =============================================================================
+# 노드 정의
+# =============================================================================
+nodes:
+  # ---------------------------------------------------------------------------
+  # LLM 기초 아키텍처
+  # ---------------------------------------------------------------------------
+  - id: gpt_architecture
+    name: "GPT 아키텍처"
+    category: architecture
+    depth: 0
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites: []
+    external_prerequisites:
+      - domain: transformer
+        node: transformer_decoder
+      - domain: transformer
+        node: causal_attention
+    
+    leads_to:
+      - autoregressive_generation
+      - pretraining
+    
+    core_concepts:
+      - "Decoder-only Transformer"
+      - "Causal (unidirectional) attention"
+      - "GPT-1 → GPT-2 → GPT-3 → GPT-4 진화"
+    
+    quiz:
+      - question: "GPT가 decoder-only를 선택한 이유는?"
+        answer: "텍스트 생성에 특화, 왼쪽→오른쪽 자연스러운 생성"
+        type: conceptual
+      - question: "GPT-3의 파라미터 수는?"
+        answer: "175B (1750억)"
+        type: knowledge
+      - question: "GPT와 BERT의 핵심 차이는?"
+        answer: "GPT는 단방향(생성), BERT는 양방향(이해)"
+        type: conceptual
+
+  - id: bert_architecture
+    name: "BERT 아키텍처"
+    category: architecture
+    depth: 0
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites: []
+    external_prerequisites:
+      - domain: transformer
+        node: transformer_encoder
+    
+    leads_to:
+      - masked_language_modeling
+      - sentence_embeddings
+    
+    core_concepts:
+      - "Encoder-only Transformer"
+      - "양방향 컨텍스트"
+      - "MLM + NSP 사전학습"
+    
+    quiz:
+      - question: "BERT가 양방향인 이유의 장점은?"
+        answer: "앞뒤 문맥을 모두 보고 단어 의미 파악, 이해 태스크에 유리"
+        type: conceptual
+      - question: "BERT가 생성 태스크에 적합하지 않은 이유는?"
+        answer: "양방향이라 autoregressive 생성 불가, 미래 정보를 볼 수 있음"
+        type: application
+
+  - id: t5_architecture
+    name: "T5 아키텍처"
+    category: architecture
+    depth: 0
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites: []
+    external_prerequisites:
+      - domain: transformer
+        node: encoder_decoder
+    
+    leads_to:
+      - text_to_text
+    
+    core_concepts:
+      - "Encoder-Decoder Transformer"
+      - "Text-to-Text 프레임워크"
+      - "모든 태스크를 생성으로 통일"
+    
+    quiz:
+      - question: "T5의 'Text-to-Text' 의미는?"
+        answer: "분류, QA, 요약 등 모든 태스크를 텍스트 입력→텍스트 출력으로 통일"
+        type: conceptual
+      - question: "T5에서 분류 태스크를 어떻게 표현하나요?"
+        answer: "입력: 'classify: ...' → 출력: 'positive' 또는 'negative'"
+        type: application
+
+  # ---------------------------------------------------------------------------
+  # 토크나이제이션 & 임베딩
+  # ---------------------------------------------------------------------------
+  - id: tokenization
+    name: "토크나이제이션"
+    category: preprocessing
+    depth: 0
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites: []
+    
+    leads_to:
+      - bpe
+      - vocabulary
+    
+    core_concepts:
+      - "텍스트를 토큰 단위로 분할"
+      - "subword 토크나이제이션"
+      - "special tokens ([CLS], [SEP], <|endoftext|>)"
+    
+    quiz:
+      - question: "word-level 대신 subword를 쓰는 이유는?"
+        answer: "OOV 문제 완화, vocabulary 크기 제어, 형태소 정보 활용"
+        type: conceptual
+      - question: "'unhappiness'가 subword로 어떻게 분할될 수 있나요?"
+        answer: "'un', 'happiness' 또는 'un', 'happy', 'ness'"
+        type: application
+
+  - id: bpe
+    name: "BPE (Byte Pair Encoding)"
+    category: preprocessing
+    depth: 1
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - tokenization
+    
+    leads_to:
+      - embedding_layer
+    
+    core_concepts:
+      - "빈도 기반 병합"
+      - "character → subword → word 구축"
+      - "GPT, RoBERTa 등에서 사용"
+    
+    quiz:
+      - question: "BPE 알고리즘의 핵심 단계는?"
+        answer: "가장 빈번한 연속 바이트/문자 쌍을 반복적으로 병합"
+        type: conceptual
+      - question: "BPE vocabulary 크기의 일반적인 범위는?"
+        answer: "30K ~ 50K (GPT-2: 50257)"
+        type: knowledge
+      - question: "SentencePiece와 BPE의 관계는?"
+        answer: "SentencePiece는 BPE를 포함하는 라이브러리, 언어 무관 전처리"
+        type: knowledge
+
+  - id: embedding_layer
+    name: "임베딩 레이어"
+    category: preprocessing
+    depth: 2
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - bpe
+    external_prerequisites:
+      - domain: math_foundations
+        node: vector
+    
+    leads_to:
+      - sentence_embeddings
+    
+    core_concepts:
+      - "토큰 ID → 벡터"
+      - "학습 가능한 lookup table"
+      - "token embedding + position embedding"
+    
+    quiz:
+      - question: "vocab_size=50000, d_model=768일 때 embedding 파라미터 수는?"
+        answer: "50000 × 768 = 38.4M"
+        type: calculation
+      - question: "embedding이 학습 가능한 이유는?"
+        answer: "역전파로 의미적으로 유사한 토큰이 가까운 벡터를 갖도록 학습"
+        type: conceptual
+
+  - id: rotary_embedding
+    name: "RoPE (Rotary Position Embedding)"
+    category: preprocessing
+    depth: 3
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - embedding_layer
+    external_prerequisites:
+      - domain: transformer
+        node: positional_encoding
+    
+    leads_to:
+      - context_length_extension
+    
+    core_concepts:
+      - "상대적 위치를 회전으로 인코딩"
+      - "attention 계산에 위치 정보 주입"
+      - "길이 일반화에 유리"
+    
+    quiz:
+      - question: "RoPE가 sinusoidal PE보다 좋은 점은?"
+        answer: "상대적 위치 정보 보존, 더 긴 시퀀스로 일반화 용이"
+        type: conceptual
+      - question: "RoPE를 사용하는 대표 모델은?"
+        answer: "LLaMA, GPT-NeoX, PaLM"
+        type: knowledge
+
+  # ---------------------------------------------------------------------------
+  # 사전학습 (Pretraining)
+  # ---------------------------------------------------------------------------
+  - id: pretraining
+    name: "사전학습 (Pretraining)"
+    category: training
+    depth: 1
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - gpt_architecture
+    external_prerequisites:
+      - domain: transformer
+        node: transformer_training
+    
+    leads_to:
+      - next_token_prediction
+      - masked_language_modeling
+      - scaling_laws
+    
+    core_concepts:
+      - "대규모 unlabeled 데이터로 학습"
+      - "일반적인 언어 지식 습득"
+      - "downstream task의 기반"
+    
+    quiz:
+      - question: "pretraining이 중요한 이유는?"
+        answer: "레이블 없는 대규모 데이터로 일반 지식 학습, 전이 학습의 기반"
+        type: conceptual
+      - question: "GPT-3 pretraining 데이터 양은 대략?"
+        answer: "~300B tokens (Common Crawl, WebText, Books, Wikipedia)"
+        type: knowledge
+
+  - id: next_token_prediction
+    name: "Next Token Prediction"
+    category: training
+    depth: 2
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - pretraining
+    external_prerequisites:
+      - domain: deep_learning
+        node: cross_entropy
+    
+    leads_to:
+      - autoregressive_generation
+    
+    core_concepts:
+      - "P(x_t | x_1, ..., x_{t-1}) 최대화"
+      - "Causal language modeling"
+      - "Cross-entropy loss"
+    
+    quiz:
+      - question: "next token prediction의 학습 목표는?"
+        answer: "이전 토큰들이 주어졌을 때 다음 토큰의 확률 최대화"
+        type: conceptual
+      - question: "이 방식으로 어떻게 '이해'가 가능한가요?"
+        answer: "다음 단어를 잘 예측하려면 문법, 의미, 세계 지식이 필요"
+        type: application
+
+  - id: masked_language_modeling
+    name: "Masked Language Modeling (MLM)"
+    category: training
+    depth: 2
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - bert_architecture
+      - pretraining
+    
+    leads_to:
+      - sentence_embeddings
+    
+    core_concepts:
+      - "일부 토큰을 [MASK]로 가리고 예측"
+      - "양방향 컨텍스트 활용"
+      - "보통 15% 마스킹"
+    
+    quiz:
+      - question: "MLM에서 15% 마스킹 중 실제 [MASK] 비율은?"
+        answer: "80% [MASK], 10% 랜덤 토큰, 10% 원본 유지"
+        type: knowledge
+      - question: "MLM이 양방향 학습을 가능하게 하는 원리는?"
+        answer: "마스킹으로 정답을 숨기므로 앞뒤 문맥 모두 참조 가능"
+        type: conceptual
+
+  - id: scaling_laws
+    name: "스케일링 법칙"
+    category: training
+    depth: 3
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - pretraining
+    
+    leads_to:
+      - chinchilla_scaling
+    
+    core_concepts:
+      - "모델 크기, 데이터, 컴퓨팅과 성능의 관계"
+      - "Power law 관계"
+      - "Kaplan et al., Hoffmann et al. 연구"
+    
+    quiz:
+      - question: "스케일링 법칙의 핵심 발견은?"
+        answer: "성능이 모델 크기, 데이터, 컴퓨팅의 power law로 예측 가능"
+        type: conceptual
+      - question: "Chinchilla 논문의 주장은?"
+        answer: "기존 LLM은 under-trained, 모델 크기보다 데이터 양 늘려야"
+        type: knowledge
+
+  - id: chinchilla_scaling
+    name: "Chinchilla 스케일링"
+    category: training
+    depth: 4
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - scaling_laws
+    
+    leads_to: []
+    
+    core_concepts:
+      - "compute-optimal training"
+      - "토큰 수 ≈ 20 × 파라미터 수"
+      - "LLaMA 등에 영향"
+    
+    quiz:
+      - question: "70B 모델의 Chinchilla-optimal 토큰 수는?"
+        answer: "약 1.4T tokens (70B × 20)"
+        type: calculation
+      - question: "Chinchilla가 Gopher보다 작지만 성능이 좋은 이유는?"
+        answer: "같은 compute로 더 작은 모델을 더 많은 데이터로 학습"
+        type: application
+
+  # ---------------------------------------------------------------------------
+  # 추론 & 생성
+  # ---------------------------------------------------------------------------
+  - id: autoregressive_generation
+    name: "자기회귀 생성"
+    category: inference
+    depth: 2
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - next_token_prediction
+    external_prerequisites:
+      - domain: transformer
+        node: causal_attention
+    
+    leads_to:
+      - sampling_strategies
+      - kv_cache
+    
+    core_concepts:
+      - "한 토큰씩 순차 생성"
+      - "이전 출력이 다음 입력"
+      - "EOS까지 반복"
+    
+    quiz:
+      - question: "autoregressive의 의미는?"
+        answer: "이전 자신의 출력을 다음 입력으로 사용"
+        type: conceptual
+      - question: "1000 토큰 생성 시 forward pass 횟수는?"
+        answer: "1000번 (토큰당 1회)"
+        type: calculation
+      - question: "이 방식의 단점은?"
+        answer: "병렬화 불가, 긴 생성에 느림"
+        type: application
+
+  - id: sampling_strategies
+    name: "샘플링 전략"
+    category: inference
+    depth: 3
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - autoregressive_generation
+    external_prerequisites:
+      - domain: deep_learning
+        node: softmax
+    
+    leads_to:
+      - temperature_sampling
+    
+    core_concepts:
+      - "Greedy vs Sampling"
+      - "확률 분포에서 토큰 선택"
+      - "창의성 vs 일관성 트레이드오프"
+    
+    quiz:
+      - question: "greedy decoding의 문제점은?"
+        answer: "다양성 부족, 반복적인 출력, local optima"
+        type: conceptual
+      - question: "beam search의 아이디어는?"
+        answer: "top-k 후보를 유지하며 탐색, greedy보다 나은 시퀀스 발견"
+        type: knowledge
+
+  - id: temperature_sampling
+    name: "Temperature 샘플링"
+    category: inference
+    depth: 4
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - sampling_strategies
+    
+    leads_to:
+      - top_k_top_p
+    
+    core_concepts:
+      - "softmax(logits / T)"
+      - "T↑: 균등 분포 (창의적)"
+      - "T↓: 뾰족 분포 (결정적)"
+    
+    quiz:
+      - question: "temperature=0의 효과는?"
+        answer: "greedy decoding과 동일 (가장 높은 확률 토큰 선택)"
+        type: conceptual
+      - question: "temperature를 높이면 어떤 출력이 나오나요?"
+        answer: "더 다양하고 예측 불가능, 하지만 품질 저하 가능"
+        type: application
+
+  - id: top_k_top_p
+    name: "Top-k / Top-p (Nucleus) Sampling"
+    category: inference
+    depth: 4
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - temperature_sampling
+    
+    leads_to: []
+    
+    core_concepts:
+      - "Top-k: 상위 k개만 고려"
+      - "Top-p: 누적 확률 p까지만"
+      - "temperature와 조합"
+    
+    quiz:
+      - question: "top-p=0.9의 의미는?"
+        answer: "누적 확률이 90%가 될 때까지의 토큰들만 샘플링 후보"
+        type: conceptual
+      - question: "top-k보다 top-p가 좋은 이유는?"
+        answer: "확률 분포에 따라 후보 수가 적응적으로 조절됨"
+        type: application
+
+  - id: kv_cache
+    name: "KV Cache"
+    category: inference
+    depth: 3
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - autoregressive_generation
+    external_prerequisites:
+      - domain: transformer
+        node: attention_complexity
+    
+    leads_to:
+      - inference_optimization
+    
+    core_concepts:
+      - "이전 토큰의 K, V를 캐싱"
+      - "중복 계산 방지"
+      - "메모리 vs 속도 트레이드오프"
+    
+    quiz:
+      - question: "KV cache가 필요한 이유는?"
+        answer: "autoregressive 생성에서 이전 K, V를 매번 재계산하면 비효율"
+        type: conceptual
+      - question: "시퀀스 길이 증가 시 KV cache 메모리는?"
+        answer: "선형 증가 (O(n))"
+        type: knowledge
+
+  - id: flash_attention
+    name: "Flash Attention"
+    category: inference
+    depth: 4
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - kv_cache
+    external_prerequisites:
+      - domain: transformer
+        node: efficient_attention
+    
+    leads_to: []
+    
+    core_concepts:
+      - "IO-aware attention 알고리즘"
+      - "HBM ↔ SRAM 최적화"
+      - "tiling으로 메모리 효율화"
+    
+    quiz:
+      - question: "Flash Attention의 핵심 통찰은?"
+        answer: "attention 계산 자체보다 메모리 IO가 병목, 이를 최적화"
+        type: conceptual
+      - question: "Flash Attention의 메모리 복잡도는?"
+        answer: "O(n) (표준 attention의 O(n²)에서 개선)"
+        type: knowledge
+
+  # ---------------------------------------------------------------------------
+  # Fine-tuning & Alignment
+  # ---------------------------------------------------------------------------
+  - id: finetuning
+    name: "Fine-tuning 기초"
+    category: finetuning
+    depth: 1
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - pretraining
+    
+    leads_to:
+      - instruction_tuning
+      - peft
+    
+    core_concepts:
+      - "pretrained 모델을 특정 태스크에 적응"
+      - "작은 학습률로 추가 학습"
+      - "catastrophic forgetting 주의"
+    
+    quiz:
+      - question: "fine-tuning 시 학습률이 pretraining보다 작은 이유는?"
+        answer: "이미 좋은 representation을 가진 상태, 크게 바꾸면 망가짐"
+        type: conceptual
+      - question: "full fine-tuning의 단점은?"
+        answer: "모든 파라미터 저장 필요, 태스크마다 전체 모델 복사"
+        type: application
+
+  - id: instruction_tuning
+    name: "Instruction Tuning"
+    category: finetuning
+    depth: 2
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - finetuning
+    
+    leads_to:
+      - rlhf
+      - chat_format
+    
+    core_concepts:
+      - "지시문-응답 쌍으로 학습"
+      - "zero-shot 태스크 수행 능력 향상"
+      - "FLAN, Alpaca 등"
+    
+    quiz:
+      - question: "instruction tuning의 목표는?"
+        answer: "자연어 지시를 따르는 능력 학습"
+        type: conceptual
+      - question: "instruction tuning 데이터 예시는?"
+        answer: "'다음 문장을 요약해줘: ...' → '요약: ...'"
+        type: application
+
+  - id: chat_format
+    name: "Chat Format & System Prompt"
+    category: finetuning
+    depth: 3
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - instruction_tuning
+    
+    leads_to:
+      - prompting_techniques
+    
+    core_concepts:
+      - "role: system, user, assistant"
+      - "multi-turn 대화 포맷"
+      - "system prompt로 행동 가이드"
+    
+    quiz:
+      - question: "system prompt의 역할은?"
+        answer: "모델의 페르소나, 제약 조건, 행동 지침 설정"
+        type: conceptual
+      - question: "ChatML 포맷 예시는?"
+        answer: "<|im_start|>system\\n...<|im_end|>\\n<|im_start|>user\\n..."
+        type: knowledge
+
+  - id: rlhf
+    name: "RLHF"
+    category: alignment
+    depth: 3
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - instruction_tuning
+    
+    leads_to:
+      - reward_model
+      - ppo
+      - dpo
+    
+    core_concepts:
+      - "인간 피드백으로 강화학습"
+      - "helpful, harmless, honest 정렬"
+      - "ChatGPT, Claude의 핵심 기술"
+    
+    quiz:
+      - question: "RLHF의 3단계는?"
+        answer: "1) SFT, 2) Reward Model 학습, 3) RL로 정책 최적화"
+        type: knowledge
+      - question: "instruction tuning만으로 부족한 이유는?"
+        answer: "단순 모방은 선호도/안전성 학습에 한계, 비교 피드백 필요"
+        type: conceptual
+
+  - id: reward_model
+    name: "Reward Model"
+    category: alignment
+    depth: 4
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - rlhf
+    
+    leads_to:
+      - ppo
+    
+    core_concepts:
+      - "응답 품질 점수화"
+      - "인간 비교 데이터로 학습"
+      - "Bradley-Terry 모델"
+    
+    quiz:
+      - question: "reward model 학습 데이터 형태는?"
+        answer: "(prompt, response_A, response_B, preference)"
+        type: knowledge
+      - question: "reward model의 출력은?"
+        answer: "응답에 대한 스칼라 점수"
+        type: conceptual
+
+  - id: ppo
+    name: "PPO (Proximal Policy Optimization)"
+    category: alignment
+    depth: 4
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - reward_model
+    
+    leads_to: []
+    
+    core_concepts:
+      - "정책 업데이트를 제한하여 안정화"
+      - "clipped objective"
+      - "KL penalty로 base model에서 멀어지지 않게"
+    
+    quiz:
+      - question: "PPO에서 KL penalty의 역할은?"
+        answer: "original model에서 너무 벗어나 품질 저하되는 것 방지"
+        type: conceptual
+      - question: "PPO의 'proximal' 의미는?"
+        answer: "이전 정책과 가깝게 (근접하게) 업데이트"
+        type: knowledge
+
+  - id: dpo
+    name: "DPO (Direct Preference Optimization)"
+    category: alignment
+    depth: 4
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - rlhf
+    
+    leads_to: []
+    
+    core_concepts:
+      - "reward model 없이 직접 최적화"
+      - "선호 데이터로 직접 policy 학습"
+      - "PPO보다 단순하고 안정적"
+    
+    quiz:
+      - question: "DPO가 RLHF보다 간단한 이유는?"
+        answer: "별도 reward model과 RL 루프 없이 supervised 방식으로 학습"
+        type: conceptual
+      - question: "DPO loss의 핵심 아이디어는?"
+        answer: "선호 응답의 log prob을 비선호 대비 높이는 것"
+        type: conceptual
+
+  - id: peft
+    name: "PEFT (Parameter-Efficient Fine-Tuning)"
+    category: finetuning
+    depth: 2
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - finetuning
+    
+    leads_to:
+      - lora
+      - adapter
+    
+    core_concepts:
+      - "일부 파라미터만 학습"
+      - "메모리/저장 효율"
+      - "multi-task 지원 용이"
+    
+    quiz:
+      - question: "PEFT의 장점은?"
+        answer: "적은 메모리, 빠른 학습, 태스크별 작은 모듈만 저장"
+        type: conceptual
+      - question: "대표적인 PEFT 기법들은?"
+        answer: "LoRA, Adapter, Prefix Tuning, Prompt Tuning"
+        type: knowledge
+
+  - id: lora
+    name: "LoRA"
+    category: finetuning
+    depth: 3
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - peft
+    
+    leads_to:
+      - qlora
+    
+    core_concepts:
+      - "Low-Rank Adaptation"
+      - "W + BA (B, A는 저랭크)"
+      - "원본 가중치 동결"
+    
+    quiz:
+      - question: "LoRA의 핵심 가정은?"
+        answer: "fine-tuning 업데이트가 저랭크(low-rank) 구조를 가짐"
+        type: conceptual
+      - question: "rank r=8, d=4096일 때 LoRA 파라미터 수는?"
+        answer: "2 × 4096 × 8 = 65,536 (원본 4096² = 16M의 0.4%)"
+        type: calculation
+      - question: "inference 시 LoRA의 장점은?"
+        answer: "W' = W + BA로 병합하면 추가 latency 없음"
+        type: application
+
+  - id: qlora
+    name: "QLoRA"
+    category: finetuning
+    depth: 4
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - lora
+      - quantization
+    
+    leads_to: []
+    
+    core_concepts:
+      - "4-bit 양자화 + LoRA"
+      - "NF4 데이터 타입"
+      - "single GPU로 65B 모델 fine-tuning"
+    
+    quiz:
+      - question: "QLoRA가 가능하게 한 것은?"
+        answer: "소비자 GPU로 대형 모델 fine-tuning"
+        type: application
+      - question: "QLoRA의 base model 정밀도는?"
+        answer: "4-bit (NF4)"
+        type: knowledge
+
+  - id: quantization
+    name: "양자화 (Quantization)"
+    category: optimization
+    depth: 3
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - gpt_architecture
+    
+    leads_to:
+      - qlora
+      - inference_optimization
+    
+    core_concepts:
+      - "FP32/FP16 → INT8/INT4"
+      - "메모리/속도 vs 정확도 트레이드오프"
+      - "PTQ vs QAT"
+    
+    quiz:
+      - question: "8-bit 양자화의 메모리 절약은?"
+        answer: "FP16 대비 50% 감소"
+        type: calculation
+      - question: "PTQ vs QAT의 차이는?"
+        answer: "PTQ: 학습 후 양자화, QAT: 양자화를 고려하며 학습"
+        type: knowledge
+
+  # ---------------------------------------------------------------------------
+  # 프롬프팅
+  # ---------------------------------------------------------------------------
+  - id: prompting_techniques
+    name: "프롬프팅 기법"
+    category: prompting
+    depth: 2
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - chat_format
+    
+    leads_to:
+      - few_shot_prompting
+      - chain_of_thought
+    
+    core_concepts:
+      - "입력 설계로 출력 품질 향상"
+      - "zero-shot, few-shot, CoT"
+      - "프롬프트 엔지니어링"
+    
+    quiz:
+      - question: "좋은 프롬프트의 요소는?"
+        answer: "명확한 지시, 맥락 제공, 출력 형식 지정, 예시 포함"
+        type: conceptual
+
+  - id: few_shot_prompting
+    name: "Few-shot Prompting"
+    category: prompting
+    depth: 3
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - prompting_techniques
+    
+    leads_to:
+      - chain_of_thought
+    
+    core_concepts:
+      - "예시를 통한 in-context learning"
+      - "학습 없이 태스크 적응"
+      - "예시 수와 품질의 영향"
+    
+    quiz:
+      - question: "few-shot이 zero-shot보다 좋은 이유는?"
+        answer: "예시가 출력 형식과 태스크 이해를 명확히 해줌"
+        type: conceptual
+      - question: "few-shot의 한계는?"
+        answer: "context window 제한, 예시 선택/순서에 민감"
+        type: application
+
+  - id: chain_of_thought
+    name: "Chain-of-Thought (CoT)"
+    category: prompting
+    depth: 4
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - few_shot_prompting
+    
+    leads_to:
+      - reasoning_techniques  # agent로 연결
+    
+    core_concepts:
+      - "단계별 추론 유도"
+      - "'Let's think step by step'"
+      - "복잡한 문제 해결력 향상"
+    
+    quiz:
+      - question: "CoT가 수학 문제에서 효과적인 이유는?"
+        answer: "중간 단계를 명시적으로 생성하여 오류 감소"
+        type: conceptual
+      - question: "Zero-shot CoT의 트리거 문구는?"
+        answer: "'Let's think step by step' 또는 '단계별로 생각해보자'"
+        type: knowledge
+      - question: "CoT의 한계는?"
+        answer: "추론 단계가 틀릴 수 있음, 더 많은 토큰 소비"
+        type: application
+
+  # ---------------------------------------------------------------------------
+  # 컨텍스트 & 메모리
+  # ---------------------------------------------------------------------------
+  - id: context_length_extension
+    name: "Context Length 확장"
+    category: context
+    depth: 4
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - rotary_embedding
+      - kv_cache
+    
+    leads_to:
+      - rag  # agent로 연결
+    
+    core_concepts:
+      - "positional encoding 외삽"
+      - "ALiBi, YaRN 등"
+      - "메모리/속도 비용"
+    
+    quiz:
+      - question: "context를 늘리는 것의 도전은?"
+        answer: "O(n²) attention 비용, position encoding 일반화, 메모리"
+        type: conceptual
+      - question: "ALiBi의 접근법은?"
+        answer: "positional embedding 대신 attention에 거리 기반 bias 추가"
+        type: knowledge
+
+  - id: sentence_embeddings
+    name: "문장/문서 임베딩"
+    category: context
+    depth: 2
+    mastery: 0
+    last_reviewed: null
+    
+    prerequisites:
+      - embedding_layer
+      - bert_architecture
+    
+    leads_to:
+      - semantic_search  # agent로 연결
+    
+    core_concepts:
+      - "텍스트를 고정 크기 벡터로"
+      - "의미적 유사도 계산"
+      - "Sentence-BERT, OpenAI embeddings"
+    
+    quiz:
+      - question: "sentence embedding의 활용 예는?"
+        answer: "의미 검색, 클러스터링, 유사 문서 찾기"
+        type: application
+      - question: "BERT [CLS] 토큰으로 sentence embedding이 좋지 않은 이유는?"
+        answer: "유사도 계산에 최적화되지 않음, fine-tuning 필요"
+        type: conceptual
+
+# =============================================================================
+# 카테고리별 노드 그룹
+# =============================================================================
+categories:
+  architecture:
+    name: "아키텍처"
+    color: "#E17055"
+    nodes: [gpt_architecture, bert_architecture, t5_architecture]
+    
+  preprocessing:
+    name: "전처리"
+    color: "#00B894"
+    nodes: [tokenization, bpe, embedding_layer, rotary_embedding]
+    
+  training:
+    name: "학습"
+    color: "#0984E3"
+    nodes: [pretraining, next_token_prediction, masked_language_modeling,
+            scaling_laws, chinchilla_scaling]
+    
+  inference:
+    name: "추론"
+    color: "#6C5CE7"
+    nodes: [autoregressive_generation, sampling_strategies, temperature_sampling,
+            top_k_top_p, kv_cache, flash_attention]
+    
+  finetuning:
+    name: "Fine-tuning"
+    color: "#FDCB6E"
+    nodes: [finetuning, instruction_tuning, chat_format, peft, lora, qlora]
+    
+  alignment:
+    name: "정렬"
+    color: "#E84393"
+    nodes: [rlhf, reward_model, ppo, dpo]
+    
+  prompting:
+    name: "프롬프팅"
+    color: "#00CEC9"
+    nodes: [prompting_techniques, few_shot_prompting, chain_of_thought]
+    
+  optimization:
+    name: "최적화"
+    color: "#636E72"
+    nodes: [quantization]
+    
+  context:
+    name: "컨텍스트"
+    color: "#A29BFE"
+    nodes: [context_length_extension, sentence_embeddings]
+
+# =============================================================================
+# 도메인 간 연결점
+# =============================================================================
+cross_domain_connections:
+  from_transformer:
+    - from: transformer_decoder
+      to: gpt_architecture
+    - from: transformer_encoder
+      to: bert_architecture
+    - from: encoder_decoder
+      to: t5_architecture
+    - from: causal_attention
+      to: autoregressive_generation
+    - from: positional_encoding
+      to: rotary_embedding
+    - from: attention_complexity
+      to: kv_cache
+    - from: efficient_attention
+      to: flash_attention
+    - from: transformer_training
+      to: pretraining
+      
+  from_deep_learning:
+    - from: cross_entropy
+      to: next_token_prediction
+    - from: softmax
+      to: sampling_strategies
+      
+  from_math_foundations:
+    - from: vector
+      to: embedding_layer
+      
+  to_agent:
+    - from: chain_of_thought
+      to: reasoning_techniques
+      notes: "CoT → Agent 추론"
+    - from: sentence_embeddings
+      to: semantic_search
+      notes: "임베딩 → RAG 검색"
+    - from: context_length_extension
+      to: rag
+      notes: "컨텍스트 한계 → RAG로 보완"
+    - from: chat_format
+      to: agent_prompting
+      notes: "채팅 포맷 → Agent 프롬프트"
