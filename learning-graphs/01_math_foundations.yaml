@@ -287,6 +287,24 @@ nodes:
       - question: "왜 손실함수를 미분해야 하나요?"
         answer: "손실을 줄이는 방향(gradient의 반대)을 알기 위해"
         type: application
+      - question: "함수가 연속이면 항상 미분 가능한가요? 반례가 있다면?"
+        answer: "아니오. f(x) = |x|는 x=0에서 연속이지만 미분 불가능 (좌미분 ≠ 우미분)"
+        type: conceptual
+      - question: "f(x) = x³에서 f'(0) = 0이지만 극값이 아닌 이유는?"
+        answer: "x=0 전후로 f'(x)의 부호가 바뀌지 않음 (항상 양수). 극값이려면 증가→감소 또는 감소→증가 전환 필요"
+        type: conceptual
+      - question: "(af(x) + bg(x))'를 f'(x), g'(x)로 표현하면?"
+        answer: "af'(x) + bg'(x). 미분 연산자는 선형성을 만족함"
+        type: calculation
+      - question: "ReLU 활성화 함수 f(x)=max(0,x)는 x=0에서 미분 불가능한데, 왜 gradient descent가 작동하나요?"
+        answer: "실제로는 x=0 정확히 떨어질 확률이 거의 없고, subgradient(0 또는 1)를 사용하여 학습 가능"
+        type: application
+      - question: "손실함수 L(w)에서 gradient가 매우 작은 지역(plateau)이 학습에 문제가 되는 이유는?"
+        answer: "gradient ≈ 0이면 가중치 업데이트량이 미미해져 학습이 매우 느려짐 (vanishing gradient 문제의 일종)"
+        type: application
+      - question: "신경망에서 '미분 가능한 활성화 함수'를 쓰는 이유는?"
+        answer: "역전파(backpropagation)가 chain rule을 사용하는데, 미분 불가능하면 gradient 계산 불가"
+        type: application
 
   - id: partial_derivative
     name: "편미분"

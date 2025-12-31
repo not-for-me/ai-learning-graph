@@ -11,6 +11,7 @@ Learning all AI technologies from scratch is time-prohibitive. This project addr
 2. Enabling rapid self-assessment through quizzes at each node
 3. Focusing revision efforts on forgotten or misunderstood concepts
 4. Maintaining mastery tracking to optimize learning path
+5. **Capturing deep-dive questions from actual learning sessions for review**
 
 ### Use Case
 
@@ -19,6 +20,7 @@ Users interact with the graph to:
 - Identify knowledge gaps through quiz failures
 - Follow optimal learning paths based on prerequisite relationships
 - Track mastery levels over time
+- **Document clarifying questions that emerge during study for spaced repetition**
 
 ## Technical Architecture
 
@@ -30,9 +32,9 @@ Users interact with the graph to:
 - **Type Checking**: Python type hints (potentially mypy or pyright)
 - **Data Format**: YAML for graph definitions
 - **Visualization**: Mermaid diagrams, Graphviz (DOT → PNG)
+- **Review System**: Markdown-based FAQ documents
 
 ### Project Structure
-
 ```
 ai-learning-graph/
 ├── learning-graphs/          # YAML graph definitions
@@ -42,6 +44,13 @@ ai-learning-graph/
 │   ├── 03_transformer.yaml
 │   ├── 04_llm.yaml
 │   └── 05_agent.yaml
+├── reviews/                  # Learning session review questions
+│   ├── 01_math_foundations_faq.md
+│   ├── 02_deep_learning_faq.md
+│   ├── 03_transformer_faq.md
+│   ├── 04_llm_faq.md
+│   ├── 05_agent_faq.md
+│   └── README.md            # Review system guide
 ├── visualize.py             # Core parser and visualization generators
 ├── main.py                  # CLI entry point
 ├── pyproject.toml           # Project config & dependencies
@@ -111,6 +120,54 @@ categories:
   - `full_graph.{mermaid,dot,png}` - Complete graph
   - `{domain}_graph.{mermaid,dot,png}` - Per-domain graphs
 - Prints statistics (node/edge counts)
+
+#### 4. Review System (`reviews/`)
+
+**Purpose**: Capture deep-dive questions and insights from actual learning sessions that go beyond the predefined quizzes in YAML files.
+
+**Structure**:
+- One FAQ file per domain (matches YAML domain structure)
+- Date-stamped sections for chronological tracking
+- Links to source conversations/materials
+- Cross-references to related nodes in the graph
+- Confidence levels for spaced repetition
+
+**Workflow**:
+1. During study, when encountering unclear concepts, document questions
+2. After clarification (via Claude, papers, videos), record answers in domain FAQ
+3. Include metadata: date, related node IDs, confidence level, source links
+4. Review periodically based on confidence levels
+
+**FAQ Document Template**:
+```markdown
+# [Domain Name] - Review Questions
+
+> Questions and insights from actual learning sessions
+
+## YYYY-MM-DD: [Topic/Session Name]
+
+### Q: [Question that emerged during study]
+
+**Context**: [What you were studying when this question arose]
+**Source**: [Link to conversation, paper, video, etc.]
+
+**Answer**: 
+- [Key insight 1]
+- [Key insight 2]
+- [Key insight 3]
+
+**Related nodes**: 
+- `domain:node_id` - [Brief connection explanation]
+- `domain:node_id` - [Brief connection explanation]
+
+**Confidence**: ⭐⭐⭐ (3/3 - can teach others) | ⭐⭐ (2/3 - understood) | ⭐ (1/3 - learning)
+
+**Review history**:
+- YYYY-MM-DD: First learned
+- YYYY-MM-DD: Reviewed, confidence ⭐ → ⭐⭐
+
+---
+```
 
 ## Graph Semantics
 
@@ -186,6 +243,37 @@ Nodes have `mastery` field (0-3):
 - **External Nodes**: Show with dashed borders in domain graphs
 - **Meta Graph**: Keep simple (domain-level only) for high-level overview
 
+### When Adding Review Questions
+
+1. **Identify the domain**: Match with existing domain files
+2. **Create date-stamped section**: Use ISO format (YYYY-MM-DD)
+3. **Write clear question**: What specifically was unclear?
+4. **Provide context**: What were you studying? Why did this question arise?
+5. **Document answer thoroughly**: Include multiple perspectives if relevant
+6. **Link to nodes**: Reference related concepts in graph using `domain:node_id` format
+7. **Set confidence level**: Honest self-assessment (1-3 stars)
+8. **Add source**: Link to conversations, papers, videos for future reference
+
+### When to Use Reviews vs YAML Quizzes
+
+**YAML Quizzes (`quiz:` field)**:
+- Standard verification questions for each concept
+- Test core understanding required to proceed
+- Designed for repeated use (spaced repetition)
+- Should be relatively stable
+
+**Review FAQs (`reviews/` folder)**:
+- Specific questions that arose during your learning
+- Edge cases, nuances, or connections between concepts
+- Personal learning journey documentation
+- May evolve as understanding deepens
+
+### Review Maintenance
+
+- **Weekly**: Add new questions from study sessions
+- **Monthly**: Review low-confidence (⭐) questions, update confidence
+- **Quarterly**: Archive fully mastered (⭐⭐⭐) questions to separate file if desired
+
 ## Common Tasks
 
 ### Generate All Outputs
@@ -208,12 +296,34 @@ python main.py --yaml-dir ./learning-graphs --output-dir ./graph-outputs
 - **Graphviz**: Use `.dot` files or `.png` images
 - **Future**: Neo4j, Obsidian graph view
 
+### Document Learning Session Questions
+```bash
+# Example workflow
+cd reviews/
+
+# While studying transformers and encounter confusion
+echo "## $(date +%Y-%m-%d): Attention Mechanism Deep Dive" >> 03_transformer_faq.md
+echo "" >> 03_transformer_faq.md
+echo "### Q: Why is softmax applied to attention scores?" >> 03_transformer_faq.md
+# ... then manually fill in context, answer, related nodes, etc.
+```
+
+### Review Past Questions
+```bash
+# Search for specific topic across all FAQs
+grep -r "gradient" reviews/*.md
+
+# Find all low-confidence questions
+grep -r "⭐ (" reviews/*.md
+```
+
 ## Known Limitations
 
 1. **Manual Mastery Updates**: No automated quiz system yet
 2. **No Progress Tracking**: `graph_meta.yaml` progress fields unused
 3. **Static Visualization**: No interactive graph exploration
 4. **No Spaced Repetition Logic**: Settings defined but not implemented
+5. **Manual Review Documentation**: No automated extraction from study sessions
 
 ## Future Enhancements
 
@@ -223,6 +333,9 @@ python main.py --yaml-dir ./learning-graphs --output-dir ./graph-outputs
 - [ ] Export to Anki flashcards
 - [ ] Git-based progress tracking
 - [ ] Recommendation system for next concepts to study
+- [ ] **Automated review question extraction from study sessions**
+- [ ] **CLI tool to add review questions interactively**
+- [ ] **Confidence-based review scheduler**
 
 ## Important Context for Agents
 
@@ -232,9 +345,12 @@ When working on this project:
 3. **Unique node IDs**: Always namespace with `domain:`
 4. **Quiz quality**: Questions should test deep understanding, not rote memorization
 5. **Realistic resources**: Only add resources you can verify exist
+6. **Review questions**: Should capture real learning moments, not manufactured examples
+7. **Link reviews to graph**: Always reference related node IDs for traceability
 
 This is a **personal learning tool**, so optimize for:
 - Fast self-assessment
 - Clear prerequisite chains
 - Minimal friction in tracking progress
 - Flexible enough to adapt as learning progresses
+- **Capturing authentic learning experiences for review**

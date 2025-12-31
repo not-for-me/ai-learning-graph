@@ -10,6 +10,7 @@ Learning AI from scratch is overwhelming. This project helps you:
 - **Follow the right path**: Prerequisites are explicit, no guessing what to learn next
 - **Track progress**: Visual mastery tracking across 100+ concepts
 - **Optimize time**: Study what you don't know, skip what you've mastered
+- **Capture insights**: Document questions from real learning sessions for review
 
 ## How It Works
 
@@ -17,9 +18,9 @@ Learning AI from scratch is overwhelming. This project helps you:
 2. **Prerequisites as edges**: Arrows show dependencies (learn A before B)
 3. **Self-assessment quizzes**: Each node has 2-3 questions to verify understanding
 4. **Mastery levels**: Track your progress from 0 (unlearned) to 3 (mastered)
+5. **Review system**: Document deep-dive questions from your actual learning sessions
 
 ## Project Structure
-
 ```
 ai-learning-graph/
 ├── learning-graphs/          # YAML files defining concepts and relationships
@@ -29,6 +30,13 @@ ai-learning-graph/
 │   ├── 03_transformer.yaml
 │   ├── 04_llm.yaml
 │   └── 05_agent.yaml
+├── reviews/                  # Learning session Q&A documentation
+│   ├── 01_math_foundations_faq.md
+│   ├── 02_deep_learning_faq.md
+│   ├── 03_transformer_faq.md
+│   ├── 04_llm_faq.md
+│   ├── 05_agent_faq.md
+│   └── README.md            # Review system usage guide
 ├── visualize.py             # Graph parser and visualization generators
 ├── main.py                  # CLI tool to generate outputs
 └── graph-outputs/           # Generated diagrams (Mermaid, DOT, PNG)
@@ -152,22 +160,62 @@ Each concept in the YAML files looks like:
 
 ## Tracking Your Progress
 
-### Manual Method (Current)
+### 1. Mastery Levels (YAML)
+
+Track whether you've learned each concept:
 
 1. Study a concept and complete the quiz
 2. Edit the YAML file:
-   ```yaml
+```yaml
    mastery: 2  # 0→1→2→3
    last_reviewed: "2025-12-30"
-   ```
+```
 3. Regenerate graphs to see updated progress
 
-### Future: Interactive CLI (Planned)
+### 2. Review Questions (Markdown FAQs)
 
+Document questions that arise during deep study:
+
+**When to use**:
+- A concept is unclear after reading the core material
+- You discover an interesting edge case
+- You make a connection between concepts not obvious in the graph
+- You get a question answered by Claude/mentor/paper
+
+**How to use**:
+Please refer to [reviews/README.md](reviews/README.md)
+
+**Review workflow**:
+1. **Weekly**: Add new questions from study sessions
+2. **Monthly**: Re-read low-confidence (⭐) questions, test yourself
+3. **Update confidence**: When you can explain to others → ⭐⭐⭐
+
+### Future: Interactive CLI (Planned)
 ```bash
 python study.py --domain math_foundations
 # Interactive quiz, automatic mastery updates
 ```
+
+## Two-Layer Learning System
+
+This project uses a **two-layer approach** to maximize retention:
+
+### Layer 1: Structured Quizzes (YAML)
+- **Purpose**: Verify you meet minimum requirements to proceed
+- **Location**: `quiz:` field in each node
+- **Questions**: Standard, repeatable, essential understanding
+- **Example**: "What is the purpose of the learning rate in gradient descent?"
+
+### Layer 2: Deep-Dive FAQs (Markdown)
+- **Purpose**: Capture nuances, edge cases, and personal insights
+- **Location**: `reviews/` folder
+- **Questions**: Specific to your learning journey
+- **Example**: "Why does Adam optimizer work better than SGD for transformers?"
+
+**Why both?**
+- YAML quizzes are **breadth**: Cover all concepts systematically
+- Markdown FAQs are **depth**: Document where you went deep or struggled
+- Together they create comprehensive mastery tracking
 
 ## Customization
 
@@ -205,6 +253,25 @@ nodes:
 3. Add domain dependencies
 4. Regenerate graphs
 
+## Best Practices
+
+### For YAML Graphs
+- Keep quizzes focused on core concepts
+- 2-3 questions per node is enough
+- Questions should be relatively timeless
+
+### For Review FAQs
+- Write questions immediately after learning sessions
+- Include enough context for your future self (6 months later)
+- Link to original sources (conversations, papers, videos)
+- Be honest with confidence levels
+- Don't just copy-paste answers; rephrase in your own words
+
+### Spaced Repetition Strategy
+1. **New concept** (⭐): Review after 1 day, 3 days, 1 week
+2. **Understood** (⭐⭐): Review after 2 weeks, 1 month
+3. **Mastered** (⭐⭐⭐): Review after 3 months, 6 months
+
 ## Development
 
 ### Tech Stack
@@ -240,8 +307,10 @@ ruff format .
 - [x] Mermaid & Graphviz generation
 - [x] Math foundations domain
 - [x] Deep learning, Transformer, LLM, Agent domains
+- [x] **Review FAQ system**
 - [ ] Interactive quiz CLI
 - [ ] Spaced repetition scheduler
+- [ ] **Automated review question extraction**
 - [ ] Web UI for graph exploration
 - [ ] Export to Anki/Obsidian
 - [ ] Progress analytics & recommendations
@@ -268,4 +337,4 @@ Inspired by:
 
 ---
 
-**Happy Learning!** Start with `01_math_foundations.yaml` and work your way up to building AI agents.
+**Happy Learning!** Start with `01_math_foundations.yaml` and document your journey in `reviews/`.
