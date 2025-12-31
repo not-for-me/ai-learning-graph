@@ -114,8 +114,8 @@
 
 **Answer**: 
 - **수학적 정의**:
-  - Local minimum: ∇f=0, Hessian > 0 (모든 방향 위로 볼록)
-  - Saddle point: ∇f=0, Hessian 혼합 (어떤 방향 올라가고 어떤 방향 내려감)
+  - Local minimum: ∇f=0, Hessian ($H$)이 **양의 정부호(Positive Definite, $H \succ 0$)** (모든 방향 위로 볼록)
+  - Saddle point: ∇f=0, Hessian의 고유값(eigenvalue)이 양수와 음수가 섞여 있음
 - **실전에서 구분 불가능**:
   - 유한 정밀도: gradient=1e-8이 0인가?
   - 고차원: 100만 파라미터 중 일부는 min, 일부는 saddle
@@ -132,6 +132,19 @@
 
 **Review history**:
 - 2026-01-01: 이론과 실전의 간극 완전 이해, Goodfellow 논문 언급
+- **추가 제언**: 향후 2주 후 복습 시, 실제 PyTorch의 `torch.autograd.functional.hessian`을 사용해 간단한 함수의 saddle point를 직접 계산해 볼 것
+
+---
+
+## 🚀 심화 학습 및 확장 계획 (Next Steps)
+
+### 1. Hessian Matrix & 2차 최적화
+- **과제**: `math_foundations` 도메인에 `hessian_matrix` 노드를 추가하거나 `gradient` 노드의 심화 개념으로 확장.
+- **이유**: Saddle point 판정 및 Newton's Method 등 2차 최적화 알고리즘 이해를 위한 필수 관문.
+
+### 2. 이론-코드 매핑 검증
+- **검증 대상**: `torch.nn.functional.relu`의 $x=0$에서의 실제 기울기 반환값 확인.
+- **방법**: `x = torch.tensor([0.0], requires_grad=True)`에 대해 직접 backward를 수행하여 `subgradient` 구현체 확인.
 
 ---
 
