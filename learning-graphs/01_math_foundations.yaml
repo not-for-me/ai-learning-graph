@@ -18,7 +18,7 @@ nodes:
     category: linear_algebra
     depth: 0  # 최초 진입점 (선수지식 없음)
     mastery: 0
-    last_reviewed: null
+    last_reviewed: "2026-01-04"
     
     prerequisites: []
     
@@ -55,7 +55,7 @@ nodes:
     category: linear_algebra
     depth: 1
     mastery: 0
-    last_reviewed: null
+    last_reviewed: "2026-01-04"
     
     prerequisites:
       - vector
@@ -116,7 +116,7 @@ nodes:
     category: linear_algebra
     depth: 1
     mastery: 0
-    last_reviewed: null
+    last_reviewed: "2026-01-04"
     
     prerequisites:
       - vector
@@ -147,7 +147,7 @@ nodes:
     category: linear_algebra
     depth: 2
     mastery: 0
-    last_reviewed: null
+    last_reviewed: "2026-01-04"
     
     prerequisites:
       - matrix
@@ -178,7 +178,7 @@ nodes:
     category: linear_algebra
     depth: 2
     mastery: 0
-    last_reviewed: null
+    last_reviewed: "2026-01-04"
     
     prerequisites:
       - matrix
