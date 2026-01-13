@@ -6,15 +6,21 @@ flowchart LR
     transformer[("Transformer 아키텍처")]
     llm[("Large Language Models")]
     agent[("AI Agents")]
+    practical_tools[("실무 도구")]
 
     %% Domain relationships
+    agent --> practical_tools
     deep_learning --> llm
+    deep_learning --> practical_tools
     deep_learning --> transformer
     llm --> agent
+    llm --> practical_tools
     math_foundations --> deep_learning
     math_foundations --> llm
+    math_foundations --> practical_tools
     math_foundations --> transformer
     transformer --> llm
+    transformer --> practical_tools
 
     %% Styles
     style math_foundations fill:#E17055,stroke:#333,stroke-width:2px,color:#fff
@@ -22,3 +28,4 @@ flowchart LR
     style transformer fill:#0984E3,stroke:#333,stroke-width:2px,color:#fff
     style llm fill:#6C5CE7,stroke:#333,stroke-width:2px,color:#fff
     style agent fill:#FDCB6E,stroke:#333,stroke-width:2px,color:#fff
+    style practical_tools fill:#E17055,stroke:#333,stroke-width:2px,color:#fff

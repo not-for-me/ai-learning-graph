@@ -48,16 +48,16 @@ flowchart TD
     llm_chinchilla_scaling["Chinchilla 스케일링"]
 
     %% External dependencies
-    deep_learning_cross_entropy["Cross-Entropy Loss<br/><small>(딥러닝 기초)</small>"]
-    deep_learning_softmax["Softmax<br/><small>(딥러닝 기초)</small>"]
-    transformer_transformer_encoder["Transformer Encoder<br/><small>(Transformer 아키텍처)</small>"]
     transformer_transformer_decoder["Transformer Decoder<br/><small>(Transformer 아키텍처)</small>"]
-    transformer_encoder_decoder["Encoder-Decoder 구조<br/><small>(Transformer 아키텍처)</small>"]
-    transformer_positional_encoding["Positional Encoding<br/><small>(Transformer 아키텍처)</small>"]
-    transformer_causal_attention["Causal (Masked) Attention<br/><small>(Transformer 아키텍처)</small>"]
-    math_foundations_vector["벡터<br/><small>(수학적 기초)</small>"]
-    transformer_attention_complexity["Attention 복잡도<br/><small>(Transformer 아키텍처)</small>"]
     transformer_transformer_training["Transformer 학습 기법<br/><small>(Transformer 아키텍처)</small>"]
+    math_foundations_vector["벡터<br/><small>(수학적 기초)</small>"]
+    deep_learning_softmax["Softmax<br/><small>(딥러닝 기초)</small>"]
+    transformer_attention_complexity["Attention 복잡도<br/><small>(Transformer 아키텍처)</small>"]
+    transformer_transformer_encoder["Transformer Encoder<br/><small>(Transformer 아키텍처)</small>"]
+    transformer_encoder_decoder["Encoder-Decoder 구조<br/><small>(Transformer 아키텍처)</small>"]
+    transformer_causal_attention["Causal (Masked) Attention<br/><small>(Transformer 아키텍처)</small>"]
+    deep_learning_cross_entropy["Cross-Entropy Loss<br/><small>(딥러닝 기초)</small>"]
+    transformer_positional_encoding["Positional Encoding<br/><small>(Transformer 아키텍처)</small>"]
     transformer_efficient_attention["효율적인 Attention 변형<br/><small>(Transformer 아키텍처)</small>"]
 
     %% Edges
@@ -143,14 +143,14 @@ flowchart TD
     class llm_chain_of_thought llm_prompting
     class llm_context_length_extension llm_context
     class llm_sentence_embeddings llm_context
-    class deep_learning_cross_entropy external
-    class deep_learning_softmax external
-    class transformer_transformer_encoder external
     class transformer_transformer_decoder external
-    class transformer_encoder_decoder external
-    class transformer_positional_encoding external
-    class transformer_causal_attention external
-    class math_foundations_vector external
-    class transformer_attention_complexity external
     class transformer_transformer_training external
+    class math_foundations_vector external
+    class deep_learning_softmax external
+    class transformer_attention_complexity external
+    class transformer_transformer_encoder external
+    class transformer_encoder_decoder external
+    class transformer_causal_attention external
+    class deep_learning_cross_entropy external
+    class transformer_positional_encoding external
     class transformer_efficient_attention external

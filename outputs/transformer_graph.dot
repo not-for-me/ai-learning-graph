@@ -6,6 +6,24 @@ digraph transformer {
     labelloc=t;
     fontsize=20;
 
+    subgraph cluster_transformer_architecture {
+        label="Transformer 구조";
+        style=rounded;
+        bgcolor="#fafafa";
+        transformer_positional_encoding [label="Positional Encoding", fillcolor="#5F27CD", fontcolor="white"];
+        transformer_feed_forward [label="Feed-Forward Network", fillcolor="#5F27CD", fontcolor="white"];
+        transformer_transformer_encoder [label="Transformer Encoder", fillcolor="#5F27CD", fontcolor="white"];
+        transformer_transformer_decoder [label="Transformer Decoder", fillcolor="#5F27CD", fontcolor="white"];
+        transformer_encoder_decoder [label="Encoder-Decoder 구조", fillcolor="#5F27CD", fontcolor="white"];
+    }
+
+    subgraph cluster_transformer_training {
+        label="학습 기법";
+        style=rounded;
+        bgcolor="#fafafa";
+        transformer_transformer_training [label="Transformer 학습 기법", fillcolor="#54A0FF", fontcolor="white"];
+    }
+
     subgraph cluster_transformer_efficiency {
         label="효율성";
         style=rounded;
@@ -28,34 +46,16 @@ digraph transformer {
         transformer_causal_attention [label="Causal (Masked) Attention", fillcolor="#FF9F43", fontcolor="white"];
     }
 
-    subgraph cluster_transformer_training {
-        label="학습 기법";
-        style=rounded;
-        bgcolor="#fafafa";
-        transformer_transformer_training [label="Transformer 학습 기법", fillcolor="#54A0FF", fontcolor="white"];
-    }
-
-    subgraph cluster_transformer_architecture {
-        label="Transformer 구조";
-        style=rounded;
-        bgcolor="#fafafa";
-        transformer_positional_encoding [label="Positional Encoding", fillcolor="#5F27CD", fontcolor="white"];
-        transformer_feed_forward [label="Feed-Forward Network", fillcolor="#5F27CD", fontcolor="white"];
-        transformer_transformer_encoder [label="Transformer Encoder", fillcolor="#5F27CD", fontcolor="white"];
-        transformer_transformer_decoder [label="Transformer Decoder", fillcolor="#5F27CD", fontcolor="white"];
-        transformer_encoder_decoder [label="Encoder-Decoder 구조", fillcolor="#5F27CD", fontcolor="white"];
-    }
-
     // External dependencies
+    math_foundations_cosine_similarity [label="코사인 유사도\n(수학적 기초)", fillcolor="#cccccc", style="rounded,filled,dashed"];
+    deep_learning_layer_normalization [label="Layer Normalization\n(딥러닝 기초)", fillcolor="#cccccc", style="rounded,filled,dashed"];
     deep_learning_softmax [label="Softmax\n(딥러닝 기초)", fillcolor="#cccccc", style="rounded,filled,dashed"];
     deep_learning_seq2seq [label="Sequence-to-Sequence\n(딥러닝 기초)", fillcolor="#cccccc", style="rounded,filled,dashed"];
     deep_learning_mlp [label="다층 퍼셉트론 (MLP)\n(딥러닝 기초)", fillcolor="#cccccc", style="rounded,filled,dashed"];
-    math_foundations_dot_product [label="내적 (Dot Product)\n(수학적 기초)", fillcolor="#cccccc", style="rounded,filled,dashed"];
-    deep_learning_layer_normalization [label="Layer Normalization\n(딥러닝 기초)", fillcolor="#cccccc", style="rounded,filled,dashed"];
-    deep_learning_adamw [label="AdamW\n(딥러닝 기초)", fillcolor="#cccccc", style="rounded,filled,dashed"];
     deep_learning_residual_connection [label="잔차 연결 (Residual Connection)\n(딥러닝 기초)", fillcolor="#cccccc", style="rounded,filled,dashed"];
-    math_foundations_cosine_similarity [label="코사인 유사도\n(수학적 기초)", fillcolor="#cccccc", style="rounded,filled,dashed"];
     math_foundations_linear_transformation [label="선형 변환\n(수학적 기초)", fillcolor="#cccccc", style="rounded,filled,dashed"];
+    deep_learning_adamw [label="AdamW\n(딥러닝 기초)", fillcolor="#cccccc", style="rounded,filled,dashed"];
+    math_foundations_dot_product [label="내적 (Dot Product)\n(수학적 기초)", fillcolor="#cccccc", style="rounded,filled,dashed"];
 
     // Edges
     deep_learning_seq2seq -> transformer_attention_intuition [style=dashed, color="#999999"];

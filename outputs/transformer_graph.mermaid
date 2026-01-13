@@ -25,15 +25,15 @@ flowchart TD
     transformer_encoder_decoder["Encoder-Decoder 구조"]
 
     %% External dependencies
+    math_foundations_cosine_similarity["코사인 유사도<br/><small>(수학적 기초)</small>"]
+    deep_learning_layer_normalization["Layer Normalization<br/><small>(딥러닝 기초)</small>"]
     deep_learning_softmax["Softmax<br/><small>(딥러닝 기초)</small>"]
     deep_learning_seq2seq["Sequence-to-Sequence<br/><small>(딥러닝 기초)</small>"]
     deep_learning_mlp["다층 퍼셉트론 (MLP)<br/><small>(딥러닝 기초)</small>"]
-    math_foundations_dot_product["내적 (Dot Product)<br/><small>(수학적 기초)</small>"]
-    deep_learning_layer_normalization["Layer Normalization<br/><small>(딥러닝 기초)</small>"]
-    deep_learning_adamw["AdamW<br/><small>(딥러닝 기초)</small>"]
     deep_learning_residual_connection["잔차 연결 (Residual Connection)<br/><small>(딥러닝 기초)</small>"]
-    math_foundations_cosine_similarity["코사인 유사도<br/><small>(수학적 기초)</small>"]
     math_foundations_linear_transformation["선형 변환<br/><small>(수학적 기초)</small>"]
+    deep_learning_adamw["AdamW<br/><small>(딥러닝 기초)</small>"]
+    math_foundations_dot_product["내적 (Dot Product)<br/><small>(수학적 기초)</small>"]
 
     %% Edges
     deep_learning_seq2seq -.-> transformer_attention_intuition
@@ -86,12 +86,12 @@ flowchart TD
     class transformer_attention_complexity transformer_efficiency
     class transformer_efficient_attention transformer_efficiency
     class transformer_transformer_training transformer_training
+    class math_foundations_cosine_similarity external
+    class deep_learning_layer_normalization external
     class deep_learning_softmax external
     class deep_learning_seq2seq external
     class deep_learning_mlp external
-    class math_foundations_dot_product external
-    class deep_learning_layer_normalization external
-    class deep_learning_adamw external
     class deep_learning_residual_connection external
-    class math_foundations_cosine_similarity external
     class math_foundations_linear_transformation external
+    class deep_learning_adamw external
+    class math_foundations_dot_product external

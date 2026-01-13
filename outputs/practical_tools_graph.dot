@@ -1,0 +1,102 @@
+digraph practical_tools {
+    rankdir=TB;
+    node [shape=box, style="rounded,filled", fontname="Arial"];
+    edge [fontname="Arial"];
+    label="실무 도구";
+    labelloc=t;
+    fontsize=20;
+
+    subgraph cluster_practical_tools_huggingface {
+        label="HuggingFace";
+        style=rounded;
+        bgcolor="#fafafa";
+        practical_tools_hf_transformers_intro [label="HuggingFace Transformers 소개", fillcolor="#FFD21E", fontcolor="white"];
+        practical_tools_hf_pipeline [label="Pipeline API", fillcolor="#FFD21E", fontcolor="white"];
+        practical_tools_hf_tokenizer [label="Tokenizer 사용법", fillcolor="#FFD21E", fontcolor="white"];
+        practical_tools_hf_model_loading [label="모델 로드 및 추론", fillcolor="#FFD21E", fontcolor="white"];
+        practical_tools_hf_embeddings [label="임베딩 추출 및 유사도", fillcolor="#FFD21E", fontcolor="white"];
+        practical_tools_hf_datasets [label="Datasets 라이브러리", fillcolor="#FFD21E", fontcolor="white"];
+        practical_tools_hf_data_collator [label="DataCollator와 동적 패딩", fillcolor="#FFD21E", fontcolor="white"];
+        practical_tools_hf_dataloader [label="PyTorch DataLoader 통합", fillcolor="#FFD21E", fontcolor="white"];
+        practical_tools_hf_training_loop [label="Full Training Loop 구현", fillcolor="#FFD21E", fontcolor="white"];
+        practical_tools_hf_optimizer_scheduler [label="Optimizer와 Scheduler 설정", fillcolor="#FFD21E", fontcolor="white"];
+        practical_tools_hf_evaluation [label="평가 루프 구현", fillcolor="#FFD21E", fontcolor="white"];
+        practical_tools_hf_trainer_api [label="Trainer API", fillcolor="#FFD21E", fontcolor="white"];
+        practical_tools_hf_accelerate [label="Accelerate 분산 학습", fillcolor="#FFD21E", fontcolor="white"];
+    }
+
+    subgraph cluster_practical_tools_other_tools {
+        label="기타 도구";
+        style=rounded;
+        bgcolor="#fafafa";
+        practical_tools_ollama_intro [label="Ollama 소개", fillcolor="#4ECDC4", fontcolor="white"];
+        practical_tools_llamaindex_intro [label="LlamaIndex 소개", fillcolor="#4ECDC4", fontcolor="white"];
+    }
+
+    subgraph cluster_practical_tools_architecture_understanding {
+        label="아키텍처 이해";
+        style=rounded;
+        bgcolor="#fafafa";
+        practical_tools_encoder_decoder_comparison [label="인코더 vs 디코더 모델 비교", fillcolor="#FF6B6B", fontcolor="white"];
+        practical_tools_cross_attention_understanding [label="Cross-Attention 이해", fillcolor="#FF6B6B", fontcolor="white"];
+    }
+
+    // External dependencies
+    llm_sentence_embeddings [label="문장/문서 임베딩\n(Large Language Models)", fillcolor="#cccccc", style="rounded,filled,dashed"];
+    transformer_transformer_decoder [label="Transformer Decoder\n(Transformer 아키텍처)", fillcolor="#cccccc", style="rounded,filled,dashed"];
+    llm_gpt_architecture [label="GPT 아키텍처\n(Large Language Models)", fillcolor="#cccccc", style="rounded,filled,dashed"];
+    llm_next_token_prediction [label="Next Token Prediction\n(Large Language Models)", fillcolor="#cccccc", style="rounded,filled,dashed"];
+    llm_quantization [label="양자화 (Quantization)\n(Large Language Models)", fillcolor="#cccccc", style="rounded,filled,dashed"];
+    agent_rag [label="RAG 개요\n(AI Agents)", fillcolor="#cccccc", style="rounded,filled,dashed"];
+    math_foundations_dot_product [label="내적 (Dot Product)\n(수학적 기초)", fillcolor="#cccccc", style="rounded,filled,dashed"];
+    deep_learning_backpropagation [label="역전파 (Backpropagation)\n(딥러닝 기초)", fillcolor="#cccccc", style="rounded,filled,dashed"];
+    transformer_transformer_encoder [label="Transformer Encoder\n(Transformer 아키텍처)", fillcolor="#cccccc", style="rounded,filled,dashed"];
+    llm_bpe [label="BPE (Byte Pair Encoding)\n(Large Language Models)", fillcolor="#cccccc", style="rounded,filled,dashed"];
+    deep_learning_learning_rate [label="학습률 (Learning Rate)\n(딥러닝 기초)", fillcolor="#cccccc", style="rounded,filled,dashed"];
+    llm_masked_language_modeling [label="Masked Language Modeling (MLM)\n(Large Language Models)", fillcolor="#cccccc", style="rounded,filled,dashed"];
+    llm_bert_architecture [label="BERT 아키텍처\n(Large Language Models)", fillcolor="#cccccc", style="rounded,filled,dashed"];
+    deep_learning_gradient_descent [label="경사하강법\n(딥러닝 기초)", fillcolor="#cccccc", style="rounded,filled,dashed"];
+    transformer_cross_attention [label="Cross-Attention\n(Transformer 아키텍처)", fillcolor="#cccccc", style="rounded,filled,dashed"];
+    deep_learning_adamw [label="AdamW\n(딥러닝 기초)", fillcolor="#cccccc", style="rounded,filled,dashed"];
+    llm_tokenization [label="토크나이제이션\n(Large Language Models)", fillcolor="#cccccc", style="rounded,filled,dashed"];
+
+    // Edges
+    transformer_transformer_encoder -> practical_tools_hf_transformers_intro [style=dashed, color="#999999"];
+    transformer_transformer_decoder -> practical_tools_hf_transformers_intro [style=dashed, color="#999999"];
+    practical_tools_hf_transformers_intro -> practical_tools_hf_pipeline;
+    practical_tools_hf_transformers_intro -> practical_tools_hf_tokenizer;
+    llm_tokenization -> practical_tools_hf_tokenizer [style=dashed, color="#999999"];
+    llm_bpe -> practical_tools_hf_tokenizer [style=dashed, color="#999999"];
+    practical_tools_hf_transformers_intro -> practical_tools_hf_model_loading;
+    llm_bert_architecture -> practical_tools_hf_model_loading [style=dashed, color="#999999"];
+    llm_gpt_architecture -> practical_tools_hf_model_loading [style=dashed, color="#999999"];
+    practical_tools_hf_model_loading -> practical_tools_hf_embeddings;
+    practical_tools_hf_tokenizer -> practical_tools_hf_embeddings;
+    math_foundations_dot_product -> practical_tools_hf_embeddings [style=dashed, color="#999999"];
+    llm_sentence_embeddings -> practical_tools_hf_embeddings [style=dashed, color="#999999"];
+    practical_tools_hf_transformers_intro -> practical_tools_hf_datasets;
+    practical_tools_hf_datasets -> practical_tools_hf_data_collator;
+    practical_tools_hf_tokenizer -> practical_tools_hf_data_collator;
+    practical_tools_hf_data_collator -> practical_tools_hf_dataloader;
+    deep_learning_mini_batch -> practical_tools_hf_dataloader [style=dashed, color="#999999"];
+    practical_tools_hf_model_loading -> practical_tools_hf_training_loop;
+    practical_tools_hf_dataloader -> practical_tools_hf_training_loop;
+    deep_learning_backpropagation -> practical_tools_hf_training_loop [style=dashed, color="#999999"];
+    deep_learning_adamw -> practical_tools_hf_training_loop [style=dashed, color="#999999"];
+    deep_learning_gradient_descent -> practical_tools_hf_training_loop [style=dashed, color="#999999"];
+    practical_tools_hf_model_loading -> practical_tools_hf_optimizer_scheduler;
+    deep_learning_adamw -> practical_tools_hf_optimizer_scheduler [style=dashed, color="#999999"];
+    deep_learning_learning_rate -> practical_tools_hf_optimizer_scheduler [style=dashed, color="#999999"];
+    practical_tools_hf_training_loop -> practical_tools_hf_evaluation;
+    practical_tools_hf_evaluation -> practical_tools_hf_trainer_api;
+    practical_tools_hf_training_loop -> practical_tools_hf_accelerate;
+    practical_tools_hf_model_loading -> practical_tools_encoder_decoder_comparison;
+    llm_bert_architecture -> practical_tools_encoder_decoder_comparison [style=dashed, color="#999999"];
+    llm_gpt_architecture -> practical_tools_encoder_decoder_comparison [style=dashed, color="#999999"];
+    llm_masked_language_modeling -> practical_tools_encoder_decoder_comparison [style=dashed, color="#999999"];
+    llm_next_token_prediction -> practical_tools_encoder_decoder_comparison [style=dashed, color="#999999"];
+    practical_tools_encoder_decoder_comparison -> practical_tools_cross_attention_understanding;
+    transformer_cross_attention -> practical_tools_cross_attention_understanding [style=dashed, color="#999999"];
+    llm_quantization -> practical_tools_ollama_intro [style=dashed, color="#999999"];
+    agent_rag -> practical_tools_llamaindex_intro [style=dashed, color="#999999"];
+}

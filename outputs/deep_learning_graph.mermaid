@@ -42,13 +42,13 @@ flowchart TD
     deep_learning_resnet["ResNet"]
 
     %% External dependencies
-    math_foundations_probability_basics["확률 기초<br/><small>(수학적 기초)</small>"]
-    math_foundations_variance["분산과 표준편차<br/><small>(수학적 기초)</small>"]
     math_foundations_maximum_likelihood["최대 우도 추정 (MLE)<br/><small>(수학적 기초)</small>"]
+    math_foundations_probability_basics["확률 기초<br/><small>(수학적 기초)</small>"]
     math_foundations_vector_norm["벡터 노름 (Norm)<br/><small>(수학적 기초)</small>"]
-    math_foundations_chain_rule["연쇄 법칙 (Chain Rule)<br/><small>(수학적 기초)</small>"]
     math_foundations_gradient["그래디언트 (Gradient)<br/><small>(수학적 기초)</small>"]
     math_foundations_linear_transformation["선형 변환<br/><small>(수학적 기초)</small>"]
+    math_foundations_variance["분산과 표준편차<br/><small>(수학적 기초)</small>"]
+    math_foundations_chain_rule["연쇄 법칙 (Chain Rule)<br/><small>(수학적 기초)</small>"]
 
     %% Edges
     math_foundations_linear_transformation -.-> deep_learning_perceptron
@@ -131,10 +131,10 @@ flowchart TD
     class deep_learning_rnn deep_learning_rnn
     class deep_learning_lstm deep_learning_rnn
     class deep_learning_seq2seq deep_learning_rnn
-    class math_foundations_probability_basics external
-    class math_foundations_variance external
     class math_foundations_maximum_likelihood external
+    class math_foundations_probability_basics external
     class math_foundations_vector_norm external
-    class math_foundations_chain_rule external
     class math_foundations_gradient external
     class math_foundations_linear_transformation external
+    class math_foundations_variance external
+    class math_foundations_chain_rule external

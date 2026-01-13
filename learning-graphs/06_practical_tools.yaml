@@ -1,0 +1,627 @@
+# 06. Practical Tools
+# AI 엔지니어링 실무 도구 (HuggingFace, Ollama, LlamaIndex 등)
+
+domain:
+  id: practical_tools
+  name: "실무 도구"
+  description: "HuggingFace, Ollama, LlamaIndex 등 AI 엔지니어링 실무 도구"
+
+# =============================================================================
+# 노드 정의
+# =============================================================================
+nodes:
+  # ---------------------------------------------------------------------------
+  # HuggingFace Transformers 기초
+  # ---------------------------------------------------------------------------
+  - id: hf_transformers_intro
+    name: "HuggingFace Transformers 소개"
+    category: huggingface
+    depth: 0
+    mastery: 1
+    last_reviewed: "2026-01-10"
+
+    prerequisites: []
+    external_prerequisites:
+      - domain: transformer
+        node: transformer_encoder
+      - domain: transformer
+        node: transformer_decoder
+
+    leads_to:
+      - hf_pipeline
+      - hf_tokenizer
+      - hf_model_loading
+
+    core_concepts:
+      - "오픈소스 AI 모델의 GitHub"
+      - "Model Hub: 수십만 개의 사전학습된 모델"
+      - "Transformers 라이브러리: 몇 줄 코드로 모델 로드/사용"
+
+    quiz:
+      - question: "HuggingFace Hub의 주요 역할은?"
+        answer: "사전학습된 모델(BERT, GPT, LLaMA 등)을 다운로드하고 공유하는 저장소"
+        type: conceptual
+      - question: "Transformers 라이브러리의 장점은?"
+        answer: "PyTorch/TensorFlow 모델을 몇 줄 코드로 로드하고 inference 또는 fine-tuning 가능"
+        type: application
+
+  - id: hf_pipeline
+    name: "Pipeline API"
+    category: huggingface
+    depth: 1
+    mastery: 1
+    last_reviewed: "2026-01-10"
+
+    prerequisites:
+      - hf_transformers_intro
+
+    leads_to:
+      - hf_tokenizer
+      - hf_model_loading
+
+    core_concepts:
+      - "고수준 추상화 API"
+      - "task별 간편한 인터페이스"
+      - "내부적으로 모델 다운로드, 토크나이징, forward pass 처리"
+
+    quiz:
+      - question: "pipeline('sentiment-analysis')가 내부적으로 하는 일은?"
+        answer: "모델 다운로드, 토크나이징, forward pass를 자동으로 처리하여 감성 분류 결과 반환"
+        type: conceptual
+      - question: "pipeline API의 장점과 한계는?"
+        answer: "장점: 빠른 프로토타이핑, 한계: 세부 제어 어려움"
+        type: application
+
+  - id: hf_tokenizer
+    name: "Tokenizer 사용법"
+    category: huggingface
+    depth: 1
+    mastery: 1
+    last_reviewed: "2026-01-13"
+
+    prerequisites:
+      - hf_transformers_intro
+    external_prerequisites:
+      - domain: llm
+        node: tokenization
+      - domain: llm
+        node: bpe
+
+    leads_to:
+      - hf_data_collator
+      - hf_model_loading
+
+    core_concepts:
+      - "AutoTokenizer.from_pretrained()"
+      - "input_ids, attention_mask 반환"
+      - "truncation, padding, return_tensors 옵션"
+
+    quiz:
+      - question: "tokenizer의 return_tensors='pt' 옵션의 의미는?"
+        answer: "PyTorch 텐서 형태로 반환 (모델에 바로 입력 가능)"
+        type: knowledge
+      - question: "attention_mask의 역할은?"
+        answer: "패딩 토큰(0)과 실제 토큰(1)을 구분하여 모델이 패딩을 무시하게 함"
+        type: conceptual
+      - question: "두 문장을 토큰화할 때 어떻게 구분하나요?"
+        answer: "[SEP] 토큰으로 구분, token_type_ids로 첫번째/두번째 문장 표시"
+        type: application
+
+  - id: hf_model_loading
+    name: "모델 로드 및 추론"
+    category: huggingface
+    depth: 1
+    mastery: 1
+    last_reviewed: "2026-01-10"
+
+    prerequisites:
+      - hf_transformers_intro
+    external_prerequisites:
+      - domain: llm
+        node: bert_architecture
+      - domain: llm
+        node: gpt_architecture
+
+    leads_to:
+      - hf_embeddings
+      - hf_training_loop
+
+    core_concepts:
+      - "AutoModel.from_pretrained()"
+      - "AutoModelForSequenceClassification 등 task별 모델"
+      - "outputs.last_hidden_state 확인"
+
+    quiz:
+      - question: "AutoModelForSequenceClassification의 역할은?"
+        answer: "사전학습된 BERT 위에 분류 헤드(classification head)를 추가한 모델 로드"
+        type: conceptual
+      - question: "outputs.last_hidden_state.shape이 [batch, seq_len, 768]인 의미는?"
+        answer: "배치 크기, 시퀀스 길이, 각 토큰의 768차원 임베딩 벡터"
+        type: knowledge
+      - question: "labels를 model에 전달하면 추가로 얻을 수 있는 것은?"
+        answer: "outputs.loss - 자동으로 계산된 cross-entropy loss"
+        type: application
+
+  - id: hf_embeddings
+    name: "임베딩 추출 및 유사도"
+    category: huggingface
+    depth: 2
+    mastery: 1
+    last_reviewed: "2026-01-10"
+
+    prerequisites:
+      - hf_model_loading
+      - hf_tokenizer
+    external_prerequisites:
+      - domain: math_foundations
+        node: dot_product
+      - domain: llm
+        node: sentence_embeddings
+
+    leads_to: []
+
+    core_concepts:
+      - "sentence-transformers 모델 활용"
+      - "mean pooling으로 문장 임베딩 생성"
+      - "dot product로 의미적 유사도 측정"
+
+    quiz:
+      - question: "mean pooling이란?"
+        answer: "모든 토큰 임베딩의 평균을 취해 문장 전체를 하나의 벡터로 표현"
+        type: conceptual
+      - question: "dot product가 의미적 유사도를 측정하는 원리는?"
+        answer: "비슷한 의미의 문장은 임베딩 벡터 방향이 비슷하여 내적값이 큼"
+        type: application
+      - question: "'AI is fascinating'과 'I love machine learning'의 유사도가 높은 이유는?"
+        answer: "두 문장 모두 AI/ML 도메인의 긍정적 내용이라 임베딩 공간에서 가까움"
+        type: application
+
+  # ---------------------------------------------------------------------------
+  # HuggingFace 데이터 처리
+  # ---------------------------------------------------------------------------
+  - id: hf_datasets
+    name: "Datasets 라이브러리"
+    category: huggingface
+    depth: 1
+    mastery: 1
+    last_reviewed: "2026-01-13"
+
+    prerequisites:
+      - hf_transformers_intro
+
+    leads_to:
+      - hf_data_collator
+      - hf_dataloader
+
+    core_concepts:
+      - "load_dataset()로 표준 데이터셋 로드"
+      - "dataset.map()으로 전처리 적용"
+      - "batched=True로 배치 처리 속도 향상"
+
+    quiz:
+      - question: "load_dataset('glue', 'mrpc')의 의미는?"
+        answer: "GLUE 벤치마크의 MRPC(문장 유사도) 데이터셋 로드"
+        type: knowledge
+      - question: "dataset.map(fn, batched=True)의 장점은?"
+        answer: "배치 단위로 처리하여 속도 향상"
+        type: application
+      - question: "set_format('torch')의 역할은?"
+        answer: "데이터셋 반환 형식을 PyTorch 텐서로 설정"
+        type: knowledge
+
+  - id: hf_data_collator
+    name: "DataCollator와 동적 패딩"
+    category: huggingface
+    depth: 2
+    mastery: 1
+    last_reviewed: "2026-01-13"
+
+    prerequisites:
+      - hf_datasets
+      - hf_tokenizer
+
+    leads_to:
+      - hf_dataloader
+
+    core_concepts:
+      - "DataCollatorWithPadding 사용"
+      - "배치 내 최대 길이에 맞춰 동적 패딩"
+      - "GPU 효율적 처리를 위한 동일 길이 보장"
+
+    quiz:
+      - question: "동적 패딩(dynamic padding)의 장점은?"
+        answer: "배치마다 필요한 만큼만 패딩하여 불필요한 연산 감소"
+        type: conceptual
+      - question: "DataCollator가 collate_fn으로 전달되는 이유는?"
+        answer: "DataLoader가 배치를 만들 때 샘플들을 어떻게 합칠지 정의"
+        type: application
+
+  - id: hf_dataloader
+    name: "PyTorch DataLoader 통합"
+    category: huggingface
+    depth: 2
+    mastery: 1
+    last_reviewed: "2026-01-13"
+
+    prerequisites:
+      - hf_data_collator
+    external_prerequisites:
+      - domain: deep_learning
+        node: mini_batch
+
+    leads_to:
+      - hf_training_loop
+
+    core_concepts:
+      - "torch.utils.data.DataLoader 사용"
+      - "shuffle, batch_size, collate_fn 설정"
+      - "학습용은 shuffle=True, 평가용은 shuffle=False"
+
+    quiz:
+      - question: "학습 DataLoader에서 shuffle=True가 중요한 이유는?"
+        answer: "매 에폭마다 데이터 순서를 섞어 과적합 방지"
+        type: conceptual
+      - question: "배치에서 얻을 수 있는 키들은?"
+        answer: "input_ids, attention_mask, token_type_ids, labels"
+        type: knowledge
+
+  # ---------------------------------------------------------------------------
+  # HuggingFace 학습 루프
+  # ---------------------------------------------------------------------------
+  - id: hf_training_loop
+    name: "Full Training Loop 구현"
+    category: huggingface
+    depth: 3
+    mastery: 1
+    last_reviewed: "2026-01-13"
+
+    prerequisites:
+      - hf_model_loading
+      - hf_dataloader
+    external_prerequisites:
+      - domain: deep_learning
+        node: backpropagation
+      - domain: deep_learning
+        node: adamw
+      - domain: deep_learning
+        node: gradient_descent
+
+    leads_to:
+      - hf_evaluation
+      - hf_accelerate
+
+    core_concepts:
+      - "model.train() 모드 설정"
+      - "Forward → Loss → Backward → Optimizer Step → Scheduler Step → Zero Grad"
+      - "batch.to(device)로 GPU 이동"
+
+    quiz:
+      - question: "학습 루프의 올바른 순서는?"
+        answer: "Forward Pass → Loss 계산 → Backward Pass → Optimizer Step → Scheduler Step → Zero Grad"
+        type: knowledge
+      - question: "optimizer.zero_grad()를 마지막에 하는 이유는?"
+        answer: "다음 배치의 gradient가 현재 gradient에 누적되지 않도록 초기화"
+        type: conceptual
+      - question: "loss.backward()가 하는 일은?"
+        answer: "역전파를 통해 각 파라미터에 대한 gradient 계산"
+        type: conceptual
+      - question: "lr_scheduler.step()의 역할은?"
+        answer: "Learning Rate를 스케줄에 따라 조정 (예: linear decay)"
+        type: application
+
+  - id: hf_optimizer_scheduler
+    name: "Optimizer와 Scheduler 설정"
+    category: huggingface
+    depth: 2
+    mastery: 1
+    last_reviewed: "2026-01-13"
+
+    prerequisites:
+      - hf_model_loading
+    external_prerequisites:
+      - domain: deep_learning
+        node: adamw
+      - domain: deep_learning
+        node: learning_rate
+
+    leads_to:
+      - hf_training_loop
+
+    core_concepts:
+      - "AdamW optimizer 사용 (weight decay 적용)"
+      - "get_scheduler()로 LR 스케줄러 생성"
+      - "Linear decay: 시작 LR에서 0까지 점진적 감소"
+
+    quiz:
+      - question: "AdamW에서 weight decay의 역할은?"
+        answer: "큰 가중치에 패널티를 줘서 과적합 방지 (정규화 효과)"
+        type: conceptual
+      - question: "num_training_steps 계산 방법은?"
+        answer: "num_epochs × len(train_dataloader)"
+        type: calculation
+      - question: "Linear scheduler의 동작은?"
+        answer: "초기 LR에서 0까지 선형적으로 감소"
+        type: knowledge
+
+  - id: hf_evaluation
+    name: "평가 루프 구현"
+    category: huggingface
+    depth: 3
+    mastery: 1
+    last_reviewed: "2026-01-13"
+
+    prerequisites:
+      - hf_training_loop
+
+    leads_to:
+      - hf_trainer_api
+
+    core_concepts:
+      - "model.eval() 모드 전환"
+      - "torch.no_grad()로 gradient 계산 비활성화"
+      - "evaluate 라이브러리로 메트릭 계산"
+
+    quiz:
+      - question: "model.eval()이 바꾸는 것은?"
+        answer: "Dropout 비활성화, BatchNorm이 학습된 통계 사용"
+        type: conceptual
+      - question: "torch.no_grad()의 효과는?"
+        answer: "gradient 계산 OFF로 메모리 절약 및 속도 향상"
+        type: application
+      - question: "torch.argmax(logits, dim=-1)의 역할은?"
+        answer: "가장 높은 점수의 클래스 인덱스를 예측값으로 선택"
+        type: knowledge
+
+  - id: hf_trainer_api
+    name: "Trainer API"
+    category: huggingface
+    depth: 4
+    mastery: 0
+    last_reviewed: null
+
+    prerequisites:
+      - hf_evaluation
+
+    leads_to: []
+
+    core_concepts:
+      - "고수준 학습 API"
+      - "TrainingArguments로 설정"
+      - "trainer.train()으로 간편한 학습"
+
+    quiz:
+      - question: "Trainer API의 장점은?"
+        answer: "적은 코드로 학습 가능, 분산 학습/체크포인트 자동 처리"
+        type: conceptual
+      - question: "직접 학습 루프 구현 대비 Trainer의 단점은?"
+        answer: "커스텀 로직 추가가 제한적, 내부 동작이 블랙박스"
+        type: application
+
+  - id: hf_accelerate
+    name: "Accelerate 분산 학습"
+    category: huggingface
+    depth: 4
+    mastery: 1
+    last_reviewed: "2026-01-13"
+
+    prerequisites:
+      - hf_training_loop
+
+    leads_to: []
+
+    core_concepts:
+      - "accelerator.prepare()로 분산 학습 준비"
+      - "device 이동 자동 처리"
+      - "accelerator.backward(loss)로 gradient 동기화"
+
+    quiz:
+      - question: "accelerator.prepare()가 하는 일은?"
+        answer: "model, optimizer, dataloader를 분산 학습용으로 래핑"
+        type: conceptual
+      - question: "Accelerate 사용 시 삭제해야 하는 코드는?"
+        answer: "model.to(device), batch.to(device) - prepare()가 자동 처리"
+        type: knowledge
+      - question: "loss.backward() 대신 accelerator.backward(loss)를 쓰는 이유는?"
+        answer: "분산 환경에서 gradient를 올바르게 동기화하기 위해"
+        type: application
+
+  # ---------------------------------------------------------------------------
+  # 인코더/디코더 모델 이해
+  # ---------------------------------------------------------------------------
+  - id: encoder_decoder_comparison
+    name: "인코더 vs 디코더 모델 비교"
+    category: architecture_understanding
+    depth: 2
+    mastery: 1
+    last_reviewed: "2026-01-10"
+
+    prerequisites:
+      - hf_model_loading
+    external_prerequisites:
+      - domain: llm
+        node: bert_architecture
+      - domain: llm
+        node: gpt_architecture
+      - domain: llm
+        node: masked_language_modeling
+      - domain: llm
+        node: next_token_prediction
+
+    leads_to:
+      - cross_attention_understanding
+
+    core_concepts:
+      - "인코더(BERT): 양방향 컨텍스트, MLM 학습, 이해 태스크에 강점"
+      - "디코더(GPT): 단방향(causal), 다음 토큰 예측, 생성 태스크에 강점"
+      - "규모가 충분히 크면 디코더도 이해 능력 획득"
+
+    quiz:
+      - question: "BERT가 양방향인 것의 장점은?"
+        answer: "[MASK] 위치 예측 시 앞뒤 문맥을 동시에 보고 의미 파악"
+        type: conceptual
+      - question: "GPT가 이해 능력도 갖게 되는 이유는?"
+        answer: "다음 토큰을 잘 예측하려면 문법, 의미, 세계 지식이 필요"
+        type: conceptual
+      - question: "디코더의 causal masking이란?"
+        answer: "attention 계산 시 미래 토큰의 score를 -∞로 설정하여 참조 불가하게 함"
+        type: knowledge
+
+  - id: cross_attention_understanding
+    name: "Cross-Attention 이해"
+    category: architecture_understanding
+    depth: 3
+    mastery: 1
+    last_reviewed: "2026-01-10"
+
+    prerequisites:
+      - encoder_decoder_comparison
+    external_prerequisites:
+      - domain: transformer
+        node: cross_attention
+
+    leads_to: []
+
+    core_concepts:
+      - "Q는 디코더, K/V는 인코더에서 옴"
+      - "디코더가 인코더 출력의 어느 부분에 주의를 기울일지 결정"
+      - "번역 시 '사랑해'를 생성할 때 원문의 'love'에 집중"
+
+    quiz:
+      - question: "Cross-attention에서 Q, K, V의 출처는?"
+        answer: "Q: 디코더(현재 생성 중인 상태), K/V: 인코더 출력"
+        type: knowledge
+      - question: "'인코더 출력만 사용한다'는 설명이 부정확한 이유는?"
+        answer: "K, V만 인코더에서 오고, Q는 디코더에서 와야 어디에 주의할지 결정 가능"
+        type: conceptual
+
+  # ---------------------------------------------------------------------------
+  # 기타 도구 소개
+  # ---------------------------------------------------------------------------
+  - id: ollama_intro
+    name: "Ollama 소개"
+    category: other_tools
+    depth: 0
+    mastery: 1
+    last_reviewed: "2026-01-10"
+
+    prerequisites: []
+    external_prerequisites:
+      - domain: llm
+        node: quantization
+
+    leads_to: []
+
+    core_concepts:
+      - "로컬에서 LLM을 실행하는 가장 쉬운 방법"
+      - "LLaMA, Mistral 등을 커맨드 한 줄로 실행"
+      - "양자화 적용으로 일반 노트북에서도 7B~13B 모델 구동"
+
+    quiz:
+      - question: "Ollama의 주요 용도는?"
+        answer: "API 비용 없이 로컬에서 LLM 실험, 프롬프트 엔지니어링, RAG 테스트"
+        type: application
+      - question: "Ollama가 일반 노트북에서 돌아가는 이유는?"
+        answer: "모델 양자화(quantization)로 메모리 요구량 감소"
+        type: conceptual
+
+  - id: llamaindex_intro
+    name: "LlamaIndex 소개"
+    category: other_tools
+    depth: 0
+    mastery: 1
+    last_reviewed: "2026-01-10"
+
+    prerequisites: []
+    external_prerequisites:
+      - domain: agent
+        node: rag
+
+    leads_to: []
+
+    core_concepts:
+      - "LLM과 외부 데이터를 연결하는 프레임워크"
+      - "RAG 파이프라인 구축이 핵심 용도"
+      - "문서 청킹, 임베딩, 벡터 DB, 검색 전체 흐름 추상화"
+
+    quiz:
+      - question: "LlamaIndex의 핵심 용도는?"
+        answer: "RAG(Retrieval-Augmented Generation) 파이프라인 구축"
+        type: conceptual
+      - question: "LlamaIndex가 처리하는 전체 흐름은?"
+        answer: "문서 청킹 → 임베딩 변환 → 벡터 DB 저장 → 쿼리 시 관련 문서 검색 → LLM 컨텍스트로 전달"
+        type: knowledge
+
+# =============================================================================
+# 카테고리별 노드 그룹
+# =============================================================================
+categories:
+  huggingface:
+    name: "HuggingFace"
+    color: "#FFD21E"
+    nodes: [hf_transformers_intro, hf_pipeline, hf_tokenizer, hf_model_loading,
+            hf_embeddings, hf_datasets, hf_data_collator, hf_dataloader,
+            hf_training_loop, hf_optimizer_scheduler, hf_evaluation,
+            hf_trainer_api, hf_accelerate]
+
+  architecture_understanding:
+    name: "아키텍처 이해"
+    color: "#FF6B6B"
+    nodes: [encoder_decoder_comparison, cross_attention_understanding]
+
+  other_tools:
+    name: "기타 도구"
+    color: "#4ECDC4"
+    nodes: [ollama_intro, llamaindex_intro]
+
+# =============================================================================
+# 도메인 간 연결점
+# =============================================================================
+cross_domain_connections:
+  from_transformer:
+    - from: transformer_encoder
+      to: hf_transformers_intro
+      notes: "Transformer 이론 → HuggingFace로 실습"
+    - from: transformer_decoder
+      to: hf_transformers_intro
+      notes: "Transformer 이론 → HuggingFace로 실습"
+    - from: cross_attention
+      to: cross_attention_understanding
+      notes: "Cross-attention 이론 → 실제 이해"
+
+  from_llm:
+    - from: tokenization
+      to: hf_tokenizer
+      notes: "토크나이제이션 이론 → HuggingFace 토크나이저"
+    - from: bert_architecture
+      to: encoder_decoder_comparison
+      notes: "BERT → 인코더 모델 이해"
+    - from: gpt_architecture
+      to: encoder_decoder_comparison
+      notes: "GPT → 디코더 모델 이해"
+    - from: sentence_embeddings
+      to: hf_embeddings
+      notes: "임베딩 이론 → 실습"
+    - from: quantization
+      to: ollama_intro
+      notes: "양자화 → Ollama 구동 원리"
+
+  from_deep_learning:
+    - from: adamw
+      to: hf_optimizer_scheduler
+      notes: "AdamW → HuggingFace 학습"
+    - from: backpropagation
+      to: hf_training_loop
+      notes: "역전파 → 학습 루프"
+    - from: gradient_descent
+      to: hf_training_loop
+      notes: "경사하강법 → 학습 루프"
+
+  from_math_foundations:
+    - from: dot_product
+      to: hf_embeddings
+      notes: "내적 → 유사도 측정"
+
+  from_agent:
+    - from: rag
+      to: llamaindex_intro
+      notes: "RAG → LlamaIndex"

@@ -45,6 +45,13 @@ domains:
     estimated_hours: 40
     priority: 5
 
+  - id: practical_tools
+    name: "실무 도구"
+    file: "06_practical_tools.yaml"
+    description: "HuggingFace, Ollama, LlamaIndex 등 AI 엔지니어링 실무 도구"
+    estimated_hours: 30
+    priority: 6  # 이론과 병행하며 학습
+
 # =============================================================================
 # 도메인 간 의존성 그래프
 # =============================================================================
@@ -87,26 +94,57 @@ domain_dependencies:
     strength: moderate
     notes: "학습 기법(optimizer, regularization) 공유"
 
+  # 실무 도구와의 연결
+  - from: transformer
+    to: practical_tools
+    type: reference
+    strength: moderate
+    notes: "Transformer 이론 학습 후 HuggingFace로 실습"
+
+  - from: llm
+    to: practical_tools
+    type: reference
+    strength: moderate
+    notes: "LLM 이론 학습과 HuggingFace 실습 병행"
+
+  - from: deep_learning
+    to: practical_tools
+    type: reference
+    strength: moderate
+    notes: "학습 알고리즘 이론 → HuggingFace 학습 루프"
+
+  - from: practical_tools
+    to: agent
+    type: prerequisite
+    strength: moderate
+    notes: "HuggingFace 익숙해진 후 LlamaIndex/RAG 실습"
+
 # =============================================================================
 # 학습 경로 (Learning Paths)
 # =============================================================================
 learning_paths:
   - id: full_path
     name: "Full AI Engineer Path"
-    description: "처음부터 끝까지 전체 경로"
-    domains: [math_foundations, deep_learning, transformer, llm, agent]
-    
+    description: "처음부터 끝까지 전체 경로 (이론 + 실습)"
+    domains: [math_foundations, deep_learning, transformer, llm, agent, practical_tools]
+
   - id: quick_path
     name: "빠른 실무 경로"
     description: "수학 기초가 어느정도 있다고 가정, 핵심만"
-    domains: [deep_learning, transformer, llm, agent]
+    domains: [deep_learning, transformer, llm, agent, practical_tools]
     skip_if_mastered: [math_foundations]
-    
+
   - id: llm_focus
     name: "LLM 집중 경로"
     description: "DL 기초가 있다고 가정, LLM/Agent 집중"
-    domains: [transformer, llm, agent]
+    domains: [transformer, llm, agent, practical_tools]
     skip_if_mastered: [math_foundations, deep_learning]
+
+  - id: hands_on_path
+    name: "실습 병행 경로"
+    description: "이론과 HuggingFace 실습을 병행하며 학습"
+    domains: [deep_learning, practical_tools, transformer, practical_tools, llm, practical_tools, agent]
+    notes: "각 이론 도메인 학습 후 practical_tools에서 관련 실습"
 
 # =============================================================================
 # 전체 학습 진행 상태
@@ -146,6 +184,12 @@ progress:
       mastered_nodes: 0
       total_nodes: 0
       last_reviewed: null
+
+    practical_tools:
+      status: in_progress
+      mastered_nodes: 15
+      total_nodes: 17
+      last_reviewed: "2026-01-13"
 
 # =============================================================================
 # 설정

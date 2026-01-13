@@ -1,0 +1,121 @@
+flowchart TD
+
+    %% Style definitions
+    classDef practical_tools_huggingface fill:#FFD21E,stroke:#333,stroke-width:1px,color:#fff
+    classDef practical_tools_architecture_understanding fill:#FF6B6B,stroke:#333,stroke-width:1px,color:#fff
+    classDef practical_tools_other_tools fill:#4ECDC4,stroke:#333,stroke-width:1px,color:#fff
+    classDef external fill:#gray,stroke:#333,stroke-width:1px,color:#fff,stroke-dasharray: 5 5
+
+    practical_tools_hf_transformers_intro["HuggingFace Transformers 소개"]
+    practical_tools_ollama_intro["Ollama 소개"]
+    practical_tools_llamaindex_intro["LlamaIndex 소개"]
+    practical_tools_hf_pipeline["Pipeline API"]
+    practical_tools_hf_tokenizer["Tokenizer 사용법"]
+    practical_tools_hf_model_loading["모델 로드 및 추론"]
+    practical_tools_hf_datasets["Datasets 라이브러리"]
+    practical_tools_encoder_decoder_comparison["인코더 vs 디코더 모델 비교"]
+    practical_tools_hf_embeddings["임베딩 추출 및 유사도"]
+    practical_tools_hf_data_collator["DataCollator와 동적 패딩"]
+    practical_tools_hf_dataloader["PyTorch DataLoader 통합"]
+    practical_tools_hf_optimizer_scheduler["Optimizer와 Scheduler 설정"]
+    practical_tools_cross_attention_understanding["Cross-Attention 이해"]
+    practical_tools_hf_training_loop["Full Training Loop 구현"]
+    practical_tools_hf_evaluation["평가 루프 구현"]
+    practical_tools_hf_trainer_api["Trainer API"]
+    practical_tools_hf_accelerate["Accelerate 분산 학습"]
+
+    %% External dependencies
+    llm_sentence_embeddings["문장/문서 임베딩<br/><small>(Large Language Models)</small>"]
+    transformer_transformer_decoder["Transformer Decoder<br/><small>(Transformer 아키텍처)</small>"]
+    llm_gpt_architecture["GPT 아키텍처<br/><small>(Large Language Models)</small>"]
+    llm_next_token_prediction["Next Token Prediction<br/><small>(Large Language Models)</small>"]
+    llm_quantization["양자화 (Quantization)<br/><small>(Large Language Models)</small>"]
+    agent_rag["RAG 개요<br/><small>(AI Agents)</small>"]
+    math_foundations_dot_product["내적 (Dot Product)<br/><small>(수학적 기초)</small>"]
+    deep_learning_backpropagation["역전파 (Backpropagation)<br/><small>(딥러닝 기초)</small>"]
+    transformer_transformer_encoder["Transformer Encoder<br/><small>(Transformer 아키텍처)</small>"]
+    llm_bpe["BPE (Byte Pair Encoding)<br/><small>(Large Language Models)</small>"]
+    deep_learning_learning_rate["학습률 (Learning Rate)<br/><small>(딥러닝 기초)</small>"]
+    llm_masked_language_modeling["Masked Language Modeling (MLM)<br/><small>(Large Language Models)</small>"]
+    llm_bert_architecture["BERT 아키텍처<br/><small>(Large Language Models)</small>"]
+    deep_learning_gradient_descent["경사하강법<br/><small>(딥러닝 기초)</small>"]
+    transformer_cross_attention["Cross-Attention<br/><small>(Transformer 아키텍처)</small>"]
+    deep_learning_adamw["AdamW<br/><small>(딥러닝 기초)</small>"]
+    llm_tokenization["토크나이제이션<br/><small>(Large Language Models)</small>"]
+
+    %% Edges
+    transformer_transformer_encoder -.-> practical_tools_hf_transformers_intro
+    transformer_transformer_decoder -.-> practical_tools_hf_transformers_intro
+    practical_tools_hf_transformers_intro --> practical_tools_hf_pipeline
+    practical_tools_hf_transformers_intro --> practical_tools_hf_tokenizer
+    llm_tokenization -.-> practical_tools_hf_tokenizer
+    llm_bpe -.-> practical_tools_hf_tokenizer
+    practical_tools_hf_transformers_intro --> practical_tools_hf_model_loading
+    llm_bert_architecture -.-> practical_tools_hf_model_loading
+    llm_gpt_architecture -.-> practical_tools_hf_model_loading
+    practical_tools_hf_model_loading --> practical_tools_hf_embeddings
+    practical_tools_hf_tokenizer --> practical_tools_hf_embeddings
+    math_foundations_dot_product -.-> practical_tools_hf_embeddings
+    llm_sentence_embeddings -.-> practical_tools_hf_embeddings
+    practical_tools_hf_transformers_intro --> practical_tools_hf_datasets
+    practical_tools_hf_datasets --> practical_tools_hf_data_collator
+    practical_tools_hf_tokenizer --> practical_tools_hf_data_collator
+    practical_tools_hf_data_collator --> practical_tools_hf_dataloader
+    deep_learning_mini_batch -.-> practical_tools_hf_dataloader
+    practical_tools_hf_model_loading --> practical_tools_hf_training_loop
+    practical_tools_hf_dataloader --> practical_tools_hf_training_loop
+    deep_learning_backpropagation -.-> practical_tools_hf_training_loop
+    deep_learning_adamw -.-> practical_tools_hf_training_loop
+    deep_learning_gradient_descent -.-> practical_tools_hf_training_loop
+    practical_tools_hf_model_loading --> practical_tools_hf_optimizer_scheduler
+    deep_learning_adamw -.-> practical_tools_hf_optimizer_scheduler
+    deep_learning_learning_rate -.-> practical_tools_hf_optimizer_scheduler
+    practical_tools_hf_training_loop --> practical_tools_hf_evaluation
+    practical_tools_hf_evaluation --> practical_tools_hf_trainer_api
+    practical_tools_hf_training_loop --> practical_tools_hf_accelerate
+    practical_tools_hf_model_loading --> practical_tools_encoder_decoder_comparison
+    llm_bert_architecture -.-> practical_tools_encoder_decoder_comparison
+    llm_gpt_architecture -.-> practical_tools_encoder_decoder_comparison
+    llm_masked_language_modeling -.-> practical_tools_encoder_decoder_comparison
+    llm_next_token_prediction -.-> practical_tools_encoder_decoder_comparison
+    practical_tools_encoder_decoder_comparison --> practical_tools_cross_attention_understanding
+    transformer_cross_attention -.-> practical_tools_cross_attention_understanding
+    llm_quantization -.-> practical_tools_ollama_intro
+    agent_rag -.-> practical_tools_llamaindex_intro
+
+    %% Apply styles
+    class practical_tools_hf_transformers_intro practical_tools_huggingface
+    class practical_tools_hf_pipeline practical_tools_huggingface
+    class practical_tools_hf_tokenizer practical_tools_huggingface
+    class practical_tools_hf_model_loading practical_tools_huggingface
+    class practical_tools_hf_embeddings practical_tools_huggingface
+    class practical_tools_hf_datasets practical_tools_huggingface
+    class practical_tools_hf_data_collator practical_tools_huggingface
+    class practical_tools_hf_dataloader practical_tools_huggingface
+    class practical_tools_hf_training_loop practical_tools_huggingface
+    class practical_tools_hf_optimizer_scheduler practical_tools_huggingface
+    class practical_tools_hf_evaluation practical_tools_huggingface
+    class practical_tools_hf_trainer_api practical_tools_huggingface
+    class practical_tools_hf_accelerate practical_tools_huggingface
+    class practical_tools_encoder_decoder_comparison practical_tools_architecture_understanding
+    class practical_tools_cross_attention_understanding practical_tools_architecture_understanding
+    class practical_tools_ollama_intro practical_tools_other_tools
+    class practical_tools_llamaindex_intro practical_tools_other_tools
+    class llm_sentence_embeddings external
+    class transformer_transformer_decoder external
+    class deep_learning_mini_batch external
+    class llm_gpt_architecture external
+    class llm_next_token_prediction external
+    class llm_quantization external
+    class agent_rag external
+    class math_foundations_dot_product external
+    class deep_learning_backpropagation external
+    class transformer_transformer_encoder external
+    class llm_bpe external
+    class deep_learning_learning_rate external
+    class llm_masked_language_modeling external
+    class llm_bert_architecture external
+    class deep_learning_gradient_descent external
+    class transformer_cross_attention external
+    class deep_learning_adamw external
+    class llm_tokenization external

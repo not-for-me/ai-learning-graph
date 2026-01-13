@@ -31,6 +31,9 @@ flowchart TD
     classDef agent_multi_agent fill:#FFEAA7,stroke:#333,stroke-width:1px,color:#fff
     classDef agent_frameworks fill:#74B9FF,stroke:#333,stroke-width:1px,color:#fff
     classDef agent_applications fill:#A29BFE,stroke:#333,stroke-width:1px,color:#fff
+    classDef practical_tools_huggingface fill:#FFD21E,stroke:#333,stroke-width:1px,color:#fff
+    classDef practical_tools_architecture_understanding fill:#FF6B6B,stroke:#333,stroke-width:1px,color:#fff
+    classDef practical_tools_other_tools fill:#4ECDC4,stroke:#333,stroke-width:1px,color:#fff
 
     subgraph math_foundations[수학적 기초]
         math_foundations_vector["벡터"]
@@ -180,6 +183,26 @@ flowchart TD
         agent_coordination_patterns["조율 패턴"]
         agent_complex_workflows["복잡한 워크플로우 구축"]
         agent_production_deployment["프로덕션 배포"]
+    end
+
+    subgraph practical_tools[실무 도구]
+        practical_tools_hf_transformers_intro["HuggingFace Transformers 소개"]
+        practical_tools_ollama_intro["Ollama 소개"]
+        practical_tools_llamaindex_intro["LlamaIndex 소개"]
+        practical_tools_hf_pipeline["Pipeline API"]
+        practical_tools_hf_tokenizer["Tokenizer 사용법"]
+        practical_tools_hf_model_loading["모델 로드 및 추론"]
+        practical_tools_hf_datasets["Datasets 라이브러리"]
+        practical_tools_hf_embeddings["임베딩 추출 및 유사도"]
+        practical_tools_hf_data_collator["DataCollator와 동적 패딩"]
+        practical_tools_hf_dataloader["PyTorch DataLoader 통합"]
+        practical_tools_hf_optimizer_scheduler["Optimizer와 Scheduler 설정"]
+        practical_tools_encoder_decoder_comparison["인코더 vs 디코더 모델 비교"]
+        practical_tools_hf_training_loop["Full Training Loop 구현"]
+        practical_tools_hf_evaluation["평가 루프 구현"]
+        practical_tools_cross_attention_understanding["Cross-Attention 이해"]
+        practical_tools_hf_trainer_api["Trainer API"]
+        practical_tools_hf_accelerate["Accelerate 분산 학습"]
     end
 
     %% Edges
@@ -383,6 +406,44 @@ flowchart TD
     agent_agentic_rag --> agent_research_agent
     agent_planning_strategies --> agent_research_agent
     agent_complex_workflows --> agent_production_deployment
+    transformer_transformer_encoder -.-> practical_tools_hf_transformers_intro
+    transformer_transformer_decoder -.-> practical_tools_hf_transformers_intro
+    practical_tools_hf_transformers_intro --> practical_tools_hf_pipeline
+    practical_tools_hf_transformers_intro --> practical_tools_hf_tokenizer
+    llm_tokenization -.-> practical_tools_hf_tokenizer
+    llm_bpe -.-> practical_tools_hf_tokenizer
+    practical_tools_hf_transformers_intro --> practical_tools_hf_model_loading
+    llm_bert_architecture -.-> practical_tools_hf_model_loading
+    llm_gpt_architecture -.-> practical_tools_hf_model_loading
+    practical_tools_hf_model_loading --> practical_tools_hf_embeddings
+    practical_tools_hf_tokenizer --> practical_tools_hf_embeddings
+    math_foundations_dot_product -.-> practical_tools_hf_embeddings
+    llm_sentence_embeddings -.-> practical_tools_hf_embeddings
+    practical_tools_hf_transformers_intro --> practical_tools_hf_datasets
+    practical_tools_hf_datasets --> practical_tools_hf_data_collator
+    practical_tools_hf_tokenizer --> practical_tools_hf_data_collator
+    practical_tools_hf_data_collator --> practical_tools_hf_dataloader
+    deep_learning_mini_batch -.-> practical_tools_hf_dataloader
+    practical_tools_hf_model_loading --> practical_tools_hf_training_loop
+    practical_tools_hf_dataloader --> practical_tools_hf_training_loop
+    deep_learning_backpropagation -.-> practical_tools_hf_training_loop
+    deep_learning_adamw -.-> practical_tools_hf_training_loop
+    deep_learning_gradient_descent -.-> practical_tools_hf_training_loop
+    practical_tools_hf_model_loading --> practical_tools_hf_optimizer_scheduler
+    deep_learning_adamw -.-> practical_tools_hf_optimizer_scheduler
+    deep_learning_learning_rate -.-> practical_tools_hf_optimizer_scheduler
+    practical_tools_hf_training_loop --> practical_tools_hf_evaluation
+    practical_tools_hf_evaluation --> practical_tools_hf_trainer_api
+    practical_tools_hf_training_loop --> practical_tools_hf_accelerate
+    practical_tools_hf_model_loading --> practical_tools_encoder_decoder_comparison
+    llm_bert_architecture -.-> practical_tools_encoder_decoder_comparison
+    llm_gpt_architecture -.-> practical_tools_encoder_decoder_comparison
+    llm_masked_language_modeling -.-> practical_tools_encoder_decoder_comparison
+    llm_next_token_prediction -.-> practical_tools_encoder_decoder_comparison
+    practical_tools_encoder_decoder_comparison --> practical_tools_cross_attention_understanding
+    transformer_cross_attention -.-> practical_tools_cross_attention_understanding
+    llm_quantization -.-> practical_tools_ollama_intro
+    agent_rag -.-> practical_tools_llamaindex_intro
 
     %% Apply styles
     class math_foundations_vector math_foundations_linear_algebra
@@ -520,3 +581,20 @@ flowchart TD
     class agent_data_analysis_agent agent_applications
     class agent_research_agent agent_applications
     class agent_production_deployment agent_applications
+    class practical_tools_hf_transformers_intro practical_tools_huggingface
+    class practical_tools_hf_pipeline practical_tools_huggingface
+    class practical_tools_hf_tokenizer practical_tools_huggingface
+    class practical_tools_hf_model_loading practical_tools_huggingface
+    class practical_tools_hf_embeddings practical_tools_huggingface
+    class practical_tools_hf_datasets practical_tools_huggingface
+    class practical_tools_hf_data_collator practical_tools_huggingface
+    class practical_tools_hf_dataloader practical_tools_huggingface
+    class practical_tools_hf_training_loop practical_tools_huggingface
+    class practical_tools_hf_optimizer_scheduler practical_tools_huggingface
+    class practical_tools_hf_evaluation practical_tools_huggingface
+    class practical_tools_hf_trainer_api practical_tools_huggingface
+    class practical_tools_hf_accelerate practical_tools_huggingface
+    class practical_tools_encoder_decoder_comparison practical_tools_architecture_understanding
+    class practical_tools_cross_attention_understanding practical_tools_architecture_understanding
+    class practical_tools_ollama_intro practical_tools_other_tools
+    class practical_tools_llamaindex_intro practical_tools_other_tools

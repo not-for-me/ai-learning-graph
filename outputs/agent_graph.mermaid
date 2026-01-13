@@ -48,10 +48,10 @@ flowchart TD
     agent_production_deployment["프로덕션 배포"]
 
     %% External dependencies
-    llm_context_length_extension["Context Length 확장<br/><small>(Large Language Models)</small>"]
     llm_sentence_embeddings["문장/문서 임베딩<br/><small>(Large Language Models)</small>"]
     llm_chain_of_thought["Chain-of-Thought (CoT)<br/><small>(Large Language Models)</small>"]
     llm_chat_format["Chat Format & System Prompt<br/><small>(Large Language Models)</small>"]
+    llm_context_length_extension["Context Length 확장<br/><small>(Large Language Models)</small>"]
 
     %% Edges
     llm_chat_format -.-> agent_agent_fundamentals
@@ -146,7 +146,7 @@ flowchart TD
     class agent_data_analysis_agent agent_applications
     class agent_research_agent agent_applications
     class agent_production_deployment agent_applications
-    class llm_context_length_extension external
     class llm_sentence_embeddings external
     class llm_chain_of_thought external
     class llm_chat_format external
+    class llm_context_length_extension external

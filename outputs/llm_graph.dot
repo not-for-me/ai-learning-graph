@@ -6,34 +6,6 @@ digraph llm {
     labelloc=t;
     fontsize=20;
 
-    subgraph cluster_llm_architecture {
-        label="아키텍처";
-        style=rounded;
-        bgcolor="#fafafa";
-        llm_gpt_architecture [label="GPT 아키텍처", fillcolor="#E17055", fontcolor="white"];
-        llm_bert_architecture [label="BERT 아키텍처", fillcolor="#E17055", fontcolor="white"];
-        llm_t5_architecture [label="T5 아키텍처", fillcolor="#E17055", fontcolor="white"];
-    }
-
-    subgraph cluster_llm_preprocessing {
-        label="전처리";
-        style=rounded;
-        bgcolor="#fafafa";
-        llm_tokenization [label="토크나이제이션", fillcolor="#00B894", fontcolor="white"];
-        llm_bpe [label="BPE (Byte Pair Encoding)", fillcolor="#00B894", fontcolor="white"];
-        llm_embedding_layer [label="임베딩 레이어", fillcolor="#00B894", fontcolor="white"];
-        llm_rotary_embedding [label="RoPE (Rotary Position Embedding)", fillcolor="#00B894", fontcolor="white"];
-    }
-
-    subgraph cluster_llm_prompting {
-        label="프롬프팅";
-        style=rounded;
-        bgcolor="#fafafa";
-        llm_prompting_techniques [label="프롬프팅 기법", fillcolor="#00CEC9", fontcolor="white"];
-        llm_few_shot_prompting [label="Few-shot Prompting", fillcolor="#00CEC9", fontcolor="white"];
-        llm_chain_of_thought [label="Chain-of-Thought (CoT)", fillcolor="#00CEC9", fontcolor="white"];
-    }
-
     subgraph cluster_llm_training {
         label="학습";
         style=rounded;
@@ -43,6 +15,16 @@ digraph llm {
         llm_masked_language_modeling [label="Masked Language Modeling (MLM)", fillcolor="#0984E3", fontcolor="white"];
         llm_scaling_laws [label="스케일링 법칙", fillcolor="#0984E3", fontcolor="white"];
         llm_chinchilla_scaling [label="Chinchilla 스케일링", fillcolor="#0984E3", fontcolor="white"];
+    }
+
+    subgraph cluster_llm_alignment {
+        label="정렬";
+        style=rounded;
+        bgcolor="#fafafa";
+        llm_rlhf [label="RLHF", fillcolor="#E84393", fontcolor="white"];
+        llm_reward_model [label="Reward Model", fillcolor="#E84393", fontcolor="white"];
+        llm_ppo [label="PPO (Proximal Policy Optimization)", fillcolor="#E84393", fontcolor="white"];
+        llm_dpo [label="DPO (Direct Preference Optimization)", fillcolor="#E84393", fontcolor="white"];
     }
 
     subgraph cluster_llm_finetuning {
@@ -55,6 +37,46 @@ digraph llm {
         llm_peft [label="PEFT (Parameter-Efficient Fine-Tuning)", fillcolor="#FDCB6E", fontcolor="white"];
         llm_lora [label="LoRA", fillcolor="#FDCB6E", fontcolor="white"];
         llm_qlora [label="QLoRA", fillcolor="#FDCB6E", fontcolor="white"];
+    }
+
+    subgraph cluster_llm_preprocessing {
+        label="전처리";
+        style=rounded;
+        bgcolor="#fafafa";
+        llm_tokenization [label="토크나이제이션", fillcolor="#00B894", fontcolor="white"];
+        llm_bpe [label="BPE (Byte Pair Encoding)", fillcolor="#00B894", fontcolor="white"];
+        llm_embedding_layer [label="임베딩 레이어", fillcolor="#00B894", fontcolor="white"];
+        llm_rotary_embedding [label="RoPE (Rotary Position Embedding)", fillcolor="#00B894", fontcolor="white"];
+    }
+
+    subgraph cluster_llm_architecture {
+        label="아키텍처";
+        style=rounded;
+        bgcolor="#fafafa";
+        llm_gpt_architecture [label="GPT 아키텍처", fillcolor="#E17055", fontcolor="white"];
+        llm_bert_architecture [label="BERT 아키텍처", fillcolor="#E17055", fontcolor="white"];
+        llm_t5_architecture [label="T5 아키텍처", fillcolor="#E17055", fontcolor="white"];
+    }
+
+    subgraph cluster_llm_prompting {
+        label="프롬프팅";
+        style=rounded;
+        bgcolor="#fafafa";
+        llm_prompting_techniques [label="프롬프팅 기법", fillcolor="#00CEC9", fontcolor="white"];
+        llm_few_shot_prompting [label="Few-shot Prompting", fillcolor="#00CEC9", fontcolor="white"];
+        llm_chain_of_thought [label="Chain-of-Thought (CoT)", fillcolor="#00CEC9", fontcolor="white"];
+    }
+
+    subgraph cluster_llm_inference {
+        label="추론";
+        style=rounded;
+        bgcolor="#fafafa";
+        llm_autoregressive_generation [label="자기회귀 생성", fillcolor="#6C5CE7", fontcolor="white"];
+        llm_sampling_strategies [label="샘플링 전략", fillcolor="#6C5CE7", fontcolor="white"];
+        llm_temperature_sampling [label="Temperature 샘플링", fillcolor="#6C5CE7", fontcolor="white"];
+        llm_top_k_top_p [label="Top-k / Top-p (Nucleus) Sampling", fillcolor="#6C5CE7", fontcolor="white"];
+        llm_kv_cache [label="KV Cache", fillcolor="#6C5CE7", fontcolor="white"];
+        llm_flash_attention [label="Flash Attention", fillcolor="#6C5CE7", fontcolor="white"];
     }
 
     subgraph cluster_llm_optimization {
@@ -72,39 +94,17 @@ digraph llm {
         llm_sentence_embeddings [label="문장/문서 임베딩", fillcolor="#A29BFE", fontcolor="white"];
     }
 
-    subgraph cluster_llm_inference {
-        label="추론";
-        style=rounded;
-        bgcolor="#fafafa";
-        llm_autoregressive_generation [label="자기회귀 생성", fillcolor="#6C5CE7", fontcolor="white"];
-        llm_sampling_strategies [label="샘플링 전략", fillcolor="#6C5CE7", fontcolor="white"];
-        llm_temperature_sampling [label="Temperature 샘플링", fillcolor="#6C5CE7", fontcolor="white"];
-        llm_top_k_top_p [label="Top-k / Top-p (Nucleus) Sampling", fillcolor="#6C5CE7", fontcolor="white"];
-        llm_kv_cache [label="KV Cache", fillcolor="#6C5CE7", fontcolor="white"];
-        llm_flash_attention [label="Flash Attention", fillcolor="#6C5CE7", fontcolor="white"];
-    }
-
-    subgraph cluster_llm_alignment {
-        label="정렬";
-        style=rounded;
-        bgcolor="#fafafa";
-        llm_rlhf [label="RLHF", fillcolor="#E84393", fontcolor="white"];
-        llm_reward_model [label="Reward Model", fillcolor="#E84393", fontcolor="white"];
-        llm_ppo [label="PPO (Proximal Policy Optimization)", fillcolor="#E84393", fontcolor="white"];
-        llm_dpo [label="DPO (Direct Preference Optimization)", fillcolor="#E84393", fontcolor="white"];
-    }
-
     // External dependencies
-    deep_learning_cross_entropy [label="Cross-Entropy Loss\n(딥러닝 기초)", fillcolor="#cccccc", style="rounded,filled,dashed"];
-    deep_learning_softmax [label="Softmax\n(딥러닝 기초)", fillcolor="#cccccc", style="rounded,filled,dashed"];
-    transformer_transformer_encoder [label="Transformer Encoder\n(Transformer 아키텍처)", fillcolor="#cccccc", style="rounded,filled,dashed"];
     transformer_transformer_decoder [label="Transformer Decoder\n(Transformer 아키텍처)", fillcolor="#cccccc", style="rounded,filled,dashed"];
-    transformer_encoder_decoder [label="Encoder-Decoder 구조\n(Transformer 아키텍처)", fillcolor="#cccccc", style="rounded,filled,dashed"];
-    transformer_positional_encoding [label="Positional Encoding\n(Transformer 아키텍처)", fillcolor="#cccccc", style="rounded,filled,dashed"];
-    transformer_causal_attention [label="Causal (Masked) Attention\n(Transformer 아키텍처)", fillcolor="#cccccc", style="rounded,filled,dashed"];
-    math_foundations_vector [label="벡터\n(수학적 기초)", fillcolor="#cccccc", style="rounded,filled,dashed"];
-    transformer_attention_complexity [label="Attention 복잡도\n(Transformer 아키텍처)", fillcolor="#cccccc", style="rounded,filled,dashed"];
     transformer_transformer_training [label="Transformer 학습 기법\n(Transformer 아키텍처)", fillcolor="#cccccc", style="rounded,filled,dashed"];
+    math_foundations_vector [label="벡터\n(수학적 기초)", fillcolor="#cccccc", style="rounded,filled,dashed"];
+    deep_learning_softmax [label="Softmax\n(딥러닝 기초)", fillcolor="#cccccc", style="rounded,filled,dashed"];
+    transformer_attention_complexity [label="Attention 복잡도\n(Transformer 아키텍처)", fillcolor="#cccccc", style="rounded,filled,dashed"];
+    transformer_transformer_encoder [label="Transformer Encoder\n(Transformer 아키텍처)", fillcolor="#cccccc", style="rounded,filled,dashed"];
+    transformer_encoder_decoder [label="Encoder-Decoder 구조\n(Transformer 아키텍처)", fillcolor="#cccccc", style="rounded,filled,dashed"];
+    transformer_causal_attention [label="Causal (Masked) Attention\n(Transformer 아키텍처)", fillcolor="#cccccc", style="rounded,filled,dashed"];
+    deep_learning_cross_entropy [label="Cross-Entropy Loss\n(딥러닝 기초)", fillcolor="#cccccc", style="rounded,filled,dashed"];
+    transformer_positional_encoding [label="Positional Encoding\n(Transformer 아키텍처)", fillcolor="#cccccc", style="rounded,filled,dashed"];
     transformer_efficient_attention [label="효율적인 Attention 변형\n(Transformer 아키텍처)", fillcolor="#cccccc", style="rounded,filled,dashed"];
 
     // Edges

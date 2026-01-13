@@ -21,6 +21,16 @@ digraph math_foundations {
         math_foundations_cosine_similarity [label="코사인 유사도", fillcolor="#4A90D9", fontcolor="white"];
     }
 
+    subgraph cluster_math_foundations_calculus {
+        label="미적분";
+        style=rounded;
+        bgcolor="#fafafa";
+        math_foundations_derivative [label="미분 (Derivative)", fillcolor="#D94A4A", fontcolor="white"];
+        math_foundations_partial_derivative [label="편미분", fillcolor="#D94A4A", fontcolor="white"];
+        math_foundations_chain_rule [label="연쇄 법칙 (Chain Rule)", fillcolor="#D94A4A", fontcolor="white"];
+        math_foundations_gradient [label="그래디언트 (Gradient)", fillcolor="#D94A4A", fontcolor="white"];
+    }
+
     subgraph cluster_math_foundations_probability {
         label="확률/통계";
         style=rounded;
@@ -31,16 +41,6 @@ digraph math_foundations {
         math_foundations_expectation [label="기댓값", fillcolor="#4AD94A", fontcolor="white"];
         math_foundations_variance [label="분산과 표준편차", fillcolor="#4AD94A", fontcolor="white"];
         math_foundations_maximum_likelihood [label="최대 우도 추정 (MLE)", fillcolor="#4AD94A", fontcolor="white"];
-    }
-
-    subgraph cluster_math_foundations_calculus {
-        label="미적분";
-        style=rounded;
-        bgcolor="#fafafa";
-        math_foundations_derivative [label="미분 (Derivative)", fillcolor="#D94A4A", fontcolor="white"];
-        math_foundations_partial_derivative [label="편미분", fillcolor="#D94A4A", fontcolor="white"];
-        math_foundations_chain_rule [label="연쇄 법칙 (Chain Rule)", fillcolor="#D94A4A", fontcolor="white"];
-        math_foundations_gradient [label="그래디언트 (Gradient)", fillcolor="#D94A4A", fontcolor="white"];
     }
 
     // Edges

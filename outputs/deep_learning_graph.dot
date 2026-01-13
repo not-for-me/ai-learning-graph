@@ -36,14 +36,6 @@ digraph deep_learning {
         deep_learning_seq2seq [label="Sequence-to-Sequence", fillcolor="#DDA0DD", fontcolor="white"];
     }
 
-    subgraph cluster_deep_learning_problems {
-        label="문제와 해결책";
-        style=rounded;
-        bgcolor="#fafafa";
-        deep_learning_vanishing_gradient [label="기울기 소실 문제", fillcolor="#96CEB4", fontcolor="white"];
-        deep_learning_residual_connection [label="잔차 연결 (Residual Connection)", fillcolor="#96CEB4", fontcolor="white"];
-    }
-
     subgraph cluster_deep_learning_learning {
         label="학습 알고리즘";
         style=rounded;
@@ -73,14 +65,22 @@ digraph deep_learning {
         deep_learning_mlp [label="다층 퍼셉트론 (MLP)", fillcolor="#FF6B6B", fontcolor="white"];
     }
 
+    subgraph cluster_deep_learning_problems {
+        label="문제와 해결책";
+        style=rounded;
+        bgcolor="#fafafa";
+        deep_learning_vanishing_gradient [label="기울기 소실 문제", fillcolor="#96CEB4", fontcolor="white"];
+        deep_learning_residual_connection [label="잔차 연결 (Residual Connection)", fillcolor="#96CEB4", fontcolor="white"];
+    }
+
     // External dependencies
-    math_foundations_probability_basics [label="확률 기초\n(수학적 기초)", fillcolor="#cccccc", style="rounded,filled,dashed"];
-    math_foundations_variance [label="분산과 표준편차\n(수학적 기초)", fillcolor="#cccccc", style="rounded,filled,dashed"];
     math_foundations_maximum_likelihood [label="최대 우도 추정 (MLE)\n(수학적 기초)", fillcolor="#cccccc", style="rounded,filled,dashed"];
+    math_foundations_probability_basics [label="확률 기초\n(수학적 기초)", fillcolor="#cccccc", style="rounded,filled,dashed"];
     math_foundations_vector_norm [label="벡터 노름 (Norm)\n(수학적 기초)", fillcolor="#cccccc", style="rounded,filled,dashed"];
-    math_foundations_chain_rule [label="연쇄 법칙 (Chain Rule)\n(수학적 기초)", fillcolor="#cccccc", style="rounded,filled,dashed"];
     math_foundations_gradient [label="그래디언트 (Gradient)\n(수학적 기초)", fillcolor="#cccccc", style="rounded,filled,dashed"];
     math_foundations_linear_transformation [label="선형 변환\n(수학적 기초)", fillcolor="#cccccc", style="rounded,filled,dashed"];
+    math_foundations_variance [label="분산과 표준편차\n(수학적 기초)", fillcolor="#cccccc", style="rounded,filled,dashed"];
+    math_foundations_chain_rule [label="연쇄 법칙 (Chain Rule)\n(수학적 기초)", fillcolor="#cccccc", style="rounded,filled,dashed"];
 
     // Edges
     math_foundations_linear_transformation -> deep_learning_perceptron [style=dashed, color="#999999"];
